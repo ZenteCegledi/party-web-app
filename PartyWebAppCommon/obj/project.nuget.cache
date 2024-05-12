@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "dgSpecHash": "Xwlf5yqyi8q6Xe+pCj7MD2LHSOqGFPEC8Ed436pjFyjD5zug00xu8shInnP214fctl6DzneVTTdkLiNGfAhVYA==",
+  "success": true,
+  "projectFilePath": "D:\\git\\party-app\\PartyWebAppCommon\\PartyWebAppCommon.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Gentleman Bronco\\.nuget\\packages\\microsoft.aspnetcore.authorization\\6.0.19\\microsoft.aspnetcore.authorization.6.0.19.nupkg.sha512",
+    "C:\\Users\\Gentleman Bronco\\.nuget\\packages\\microsoft.aspnetcore.components\\6.0.19\\microsoft.aspnetcore.components.6.0.19.nupkg.sha512",
+    "C:\\Users\\Gentleman Bronco\\.nuget\\packages\\microsoft.aspnetcore.components.analyzers\\6.0.19\\microsoft.aspnetcore.components.analyzers.6.0.19.nupkg.sha512",
+    "C:\\Users\\Gentleman Bronco\\.nuget\\packages\\microsoft.aspnetcore.components.forms\\6.0.19\\microsoft.aspnetcore.components.forms.6.0.19.nupkg.sha512",
+    "C:\\Users\\Gentleman Bronco\\.nuget\\packages\\microsoft.aspnetcore.components.web\\6.0.19\\microsoft.aspnetcore.components.web.6.0.19.nupkg.sha512",
+    "C:\\Users\\Gentleman Bronco\\.nuget\\packages\\microsoft.aspnetcore.metadata\\6.0.19\\microsoft.aspnetcore.metadata.6.0.19.nupkg.sha512",
+    "C:\\Users\\Gentleman Bronco\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\6.0.1\\microsoft.extensions.dependencyinjection.6.0.1.nupkg.sha512",
+    "C:\\Users\\Gentleman Bronco\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\Gentleman Bronco\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.4\\microsoft.extensions.logging.abstractions.6.0.4.nupkg.sha512",
+    "C:\\Users\\Gentleman Bronco\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
+    "C:\\Users\\Gentleman Bronco\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "C:\\Users\\Gentleman Bronco\\.nuget\\packages\\microsoft.jsinterop\\6.0.19\\microsoft.jsinterop.6.0.19.nupkg.sha512",
+    "C:\\Users\\Gentleman Bronco\\.nuget\\packages\\system.io.pipelines\\6.0.3\\system.io.pipelines.6.0.3.nupkg.sha512",
+    "C:\\Users\\Gentleman Bronco\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

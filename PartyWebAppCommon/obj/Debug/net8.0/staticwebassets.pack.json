@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\git\\party-app\\PartyWebAppCommon\\wwwroot\\background.png",
+      "PackagePath": "staticwebassets\\background.png"
+    },
+    {
+      "Id": "D:\\git\\party-app\\PartyWebAppCommon\\wwwroot\\exampleJsInterop.js",
+      "PackagePath": "staticwebassets\\exampleJsInterop.js"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.PartyWebAppCommon.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.PartyWebAppCommon.props",
+      "PackagePath": "build\\PartyWebAppCommon.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.PartyWebAppCommon.props",
+      "PackagePath": "buildMultiTargeting\\PartyWebAppCommon.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.PartyWebAppCommon.props",
+      "PackagePath": "buildTransitive\\PartyWebAppCommon.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

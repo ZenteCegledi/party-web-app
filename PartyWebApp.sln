@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartyWebAppServer", "PartyWebAppServer\PartyWebAppServer.csproj", "{2DC021BE-BCE3-4BF6-9860-D6C9DC4BF8C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartyWebAppCommon", "PartyWebAppCommon\PartyWebAppCommon.csproj", "{2990ADF9-6906-46CB-96A3-8642176BDFF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartyWebAppClient", "PartyWebAppClient\PartyWebAppClient.csproj", "{31B8E2F9-5521-4545-B94F-CE47A05461B8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2DC021BE-BCE3-4BF6-9860-D6C9DC4BF8C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DC021BE-BCE3-4BF6-9860-D6C9DC4BF8C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DC021BE-BCE3-4BF6-9860-D6C9DC4BF8C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DC021BE-BCE3-4BF6-9860-D6C9DC4BF8C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2990ADF9-6906-46CB-96A3-8642176BDFF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2990ADF9-6906-46CB-96A3-8642176BDFF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2990ADF9-6906-46CB-96A3-8642176BDFF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2990ADF9-6906-46CB-96A3-8642176BDFF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31B8E2F9-5521-4545-B94F-CE47A05461B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31B8E2F9-5521-4545-B94F-CE47A05461B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31B8E2F9-5521-4545-B94F-CE47A05461B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31B8E2F9-5521-4545-B94F-CE47A05461B8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
