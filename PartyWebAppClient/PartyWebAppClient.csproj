@@ -9,9 +9,9 @@
 
     <ItemGroup>
         <PackageReference Include="Blazor.Bootstrap" Version="1.10.4" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.19"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.19" PrivateAssets="all"/>
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.25" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.4" PrivateAssets="all"/>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.4" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
@@ -25,7 +25,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Pages\" />
       <Folder Include="Shared\" />
       <Folder Include="wwwroot\css\Images\" />
       <Folder Include="wwwroot\Images\" />

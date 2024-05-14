@@ -9,7 +9,7 @@ builder.Services.AddDbContext<AppDbContext>(o =>
     o.UseNpgsql(Configuration.GetConnectionString("TimescaleConnection")));
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
