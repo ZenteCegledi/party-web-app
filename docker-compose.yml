@@ -2,6 +2,7 @@ services:
   postgres:
    image: postgres
    container_name: postgres
+   restart: unless-stopped
    ports:
      - 5432:5432
    environment:
@@ -12,5 +13,10 @@ services:
     image: party-web-app
     build: .
     container_name: app
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      - ConnectionStrings__TimescaleConnection=Host=postgres:5432;Database=${POSTGRES_DB};Username=postgres;Password=${POSTGRES_PASSWORD};
     ports:
       - 5259:5259
