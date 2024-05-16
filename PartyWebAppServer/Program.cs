@@ -35,7 +35,7 @@ using (var scope = app.Services.CreateScope())
     maiaContext.Database.Migrate();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
