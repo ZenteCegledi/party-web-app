@@ -11,7 +11,9 @@ services:
 
   app:
     image: party-web-app
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: app
     restart: unless-stopped
     depends_on:
@@ -19,4 +21,4 @@ services:
     environment:
       - ConnectionStrings__TimescaleConnection=Host=postgres:5432;Database=${POSTGRES_DB};Username=postgres;Password=${POSTGRES_PASSWORD};
     ports:
-      - 5259:5259
+      - 5259:8080
