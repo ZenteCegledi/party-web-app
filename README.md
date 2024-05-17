@@ -8,3 +8,4 @@ Dávid Várnai <varnaidavid0522@gmail.com>
 Dániel Lénárt <lenart.daniel.peter@gmail.com>
 Ceglédi Zente Holló <czh@czh.hu>
 Attila Lábodi <attila.labodi@proton.me>
+Huba Gerencséri <gerencserihuba@gmail.com>
