@@ -9,3 +9,4 @@ Dániel Lénárt <lenart.daniel.peter@gmail.com>
 Ceglédi Zente Holló <czh@czh.hu>
 Attila Lábodi <attila.labodi@proton.me>
 Huba Gerencséri <gerencserihuba@gmail.com>
+Ákos Olajkár <olajkar.akos05@gmail.com>
