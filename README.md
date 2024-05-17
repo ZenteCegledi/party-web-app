@@ -3,7 +3,7 @@
 ## Authors
 
 András Vidosits <andras@hyperplane.hu>
-Madai Bálint <madai.balint@gmail.com>
+Bálint Madai <madai.balint@gmail.com>
 Dávid Várnai <varnaidavid0522@gmail.com>
 Dániel Lénárt <lenart.daniel.peter@gmail.com>
 Ceglédi Zente Holló <czh@czh.hu>
