@@ -13,3 +13,4 @@ Huba Gerencséri <gerencserihuba@gmail.com>
 Dániel Szabó-Holman <szhdani@gmail.com>
 Barnabás Várszegi <barnabas.varszegi@gmail.com>
 Balázs Kristóf Virágh <viraghbalazs2005@gmail.com>
+Róbert Schindler <schindler.robert209@gmail.com>
