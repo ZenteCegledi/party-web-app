@@ -12,3 +12,4 @@ Huba Gerencséri <gerencserihuba@gmail.com>
 Ákos Olajkár <olajkar.akos05@gmail.com>
 Dániel Szabó-Holman <szhdani@gmail.com>
 Barnabás Várszegi <barnabas.varszegi@gmail.com>
+Balázs Kristóf Virágh <viraghbalazs2005@gmail.com>
