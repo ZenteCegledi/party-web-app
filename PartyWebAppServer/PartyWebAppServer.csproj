@@ -25,7 +25,6 @@
 
     <ItemGroup>
       <Folder Include="Controllers\" />
-      <Folder Include="Database\Models\" />
       <Folder Include="Migrations\" />
       <Folder Include="Profiles\" />
       <Folder Include="Services\" />
