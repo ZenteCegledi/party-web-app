@@ -31,6 +31,11 @@
       <Folder Include="ErrorHandling\ErrorModels\" />
       <Folder Include="Database\Models\" />
       <Folder Include="Migrations\" />
+<<<<<<< HEAD
+=======
+      <Folder Include="Profiles\" />
+>>>>>>> 3ec20fa (Transaction Table)
+      <Folder Include="Services\" />
     </ItemGroup>
 
 </Project>
