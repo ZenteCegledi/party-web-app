@@ -6,6 +6,7 @@ namespace PartyWebAppServer.Database;
 public class AppDbContext : DbContext
 {
     public DbSet<User> Users { get; set; }
+    public DbSet<Wallet> Wallets { get; set; }
 
     public AppDbContext()
     {
