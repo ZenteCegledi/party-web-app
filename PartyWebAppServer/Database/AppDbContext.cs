@@ -13,8 +13,6 @@ public class AppDbContext : DbContext
 
     public DbSet<Role> Roles { get; set; }
 
-    public DbSet<Role> Roles { get; set; }
-
     public DbSet<Transaction> Transactions { get; set; }
     public AppDbContext()
     {
@@ -42,6 +40,8 @@ public class AppDbContext : DbContext
 
 
         modelBuilder.Entity<Role>().HasKey(r => r.Id);
+        modelBuilder.Entity<Role>().Property(r => r.Name).HasConversion<string>();
+
 
     }
 }
