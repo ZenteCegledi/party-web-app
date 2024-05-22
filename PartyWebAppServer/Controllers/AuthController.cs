@@ -1,8 +1,7 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppServer.Database;
@@ -31,7 +30,8 @@ public class AuthController
     
     // Login (/login): léptessen be egy usert a paraméterül kapott username és password segítségével. Ha nincs ilyen user, vagy nem jó a jelszó, dobjon hibát.
     [HttpPost("login")]
-    public async Task<ClaimsIdentity> Login(SignInData data)
+    [AllowAnonymous]
+    public async Task<IActionResult> Login(SignInData data)
     {
             if (await DbContext.Users.AnyAsync(u => u.Username == data.Username && u.Password == data.Password))
             {
@@ -43,19 +43,19 @@ public class AuthController
                 identity.AddClaim(new Claim(ClaimTypes.Role, role.ToString()));
                 identity.AddClaim(new Claim(ClaimTypes.Expiration, cookieAndAuthTokenExpiration.ToString()));
                 
-                // this should be done in the the client app
-                // await HttpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), new AuthenticationProperties
-                // {
-                //     ExpiresUtc = cookieAndAuthTokenExpiration,
-                //      IsPersistent = true,
-                // });
-                
-                // return new StatusCodeResult(200);
-                
-                return identity;
-            }
+                await HttpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), new AuthenticationProperties
+                {
+                    ExpiresUtc = cookieAndAuthTokenExpiration,
+                     IsPersistent = true,
+                });
 
-            return new ClaimsIdentity(); // idk what should be returned here
+                return new StatusCodeResult(200);
+
+
+            }
+            // what should i do here?
+            // answer: return Unauthorized();
+            return new StatusCodeResult(401);
     }
 }
 
