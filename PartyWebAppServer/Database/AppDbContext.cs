@@ -7,12 +7,10 @@ public class AppDbContext : DbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Wallet> Wallets { get; set; }
-
     public DbSet<Location> Locations { get; set; }
-    
     public DbSet<Event> Events { get; set; }
-    
     public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<Role> Roles { get; set; }
     public AppDbContext()
     {
     }
@@ -34,5 +32,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Location>().HasKey(l => l.Id);
         
         modelBuilder.Entity<Transaction>().HasKey(t => t.Id);
+        modelBuilder.Entity<Role>().HasKey(r => r.Id);
+        
     }
 }
