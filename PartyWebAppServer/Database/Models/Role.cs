@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using PartyWebAppCommon.enums;
 
 namespace PartyWebAppServer.Database.Models;

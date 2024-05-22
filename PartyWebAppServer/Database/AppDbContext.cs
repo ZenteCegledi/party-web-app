@@ -36,5 +36,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Role>().Property(r => r.Name).HasConversion<string>();
 
         
+        modelBuilder.Entity<Role>().HasKey(r => r.Id);
+        
     }
 }
