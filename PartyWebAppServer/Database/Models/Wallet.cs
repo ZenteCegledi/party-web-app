@@ -1,20 +1,14 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using PartyWebAppCommon.enums;
 
 namespace PartyWebAppServer.Database.Models;
 
 public class Wallet
 {
-    public enum CurrencyType
-    {
-        HUF,
-        EUR,
-        USD,
-        CREDIT
-    }
 
     [Key]
-    public CurrencyType Currency { get; set; }
+    public CurrencyTypeEnum Currency { get; set; }
 
     [Key]
     [ForeignKey("User")]
@@ -23,16 +17,11 @@ public class Wallet
 
     public decimal Amount { get; set; }
 
-
-    public Wallet(CurrencyType currency, decimal amount, User owner)
+    public Wallet(CurrencyTypeEnum currency, decimal amount, User owner)
     {
         Currency = currency;
         Amount = amount;
         Owner = owner;
-    }
-
-    public Wallet()
-    {
     }
 
     public override string ToString()

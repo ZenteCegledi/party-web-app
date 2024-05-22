@@ -19,9 +19,9 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<User>().HasKey(u => u.Username);
         modelBuilder.UseSerialColumns();
 
+        modelBuilder.Entity<User>().HasKey(u => u.Username);
         modelBuilder.Entity<Wallet>().HasKey(w => new { w.Currency, w.UserID });
         modelBuilder.Entity<Wallet>().HasOne(w => w.Owner).WithMany(u => u.Wallets).HasForeignKey(w => w.UserID);
     }
