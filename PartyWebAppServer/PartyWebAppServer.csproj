@@ -32,6 +32,7 @@
       <Folder Include="Database\Models\" />
       <Folder Include="Migrations\" />
       <Folder Include="Profiles\" />
+      <Folder Include="Services\" />
     </ItemGroup>
 
 </Project>
