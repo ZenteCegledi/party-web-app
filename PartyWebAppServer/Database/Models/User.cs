@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PartyWebAppServer.Database.Models;
 
@@ -14,4 +15,7 @@ public class User
     public string Password { get; set; }
 
     public List<Wallet> Wallets { get; set; }
+    
+    [ForeignKey("Role")]
+    public int RoleId { get; set; }
 }
