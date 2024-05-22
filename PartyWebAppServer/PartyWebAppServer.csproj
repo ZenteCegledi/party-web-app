@@ -24,8 +24,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Database\Models\" />
-      <Folder Include="Controllers\" />
       <Folder Include="Migrations\" />
     </ItemGroup>
 
