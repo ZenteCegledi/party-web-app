@@ -1,43 +1,39 @@
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PartyWebAppCommon.DTOs;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
-using PartyWebAppCommon.Enums;
-using PartyWebAppCommon.Requests;
-using PartyWebAppServer.ErrorHandling.Exceptions;
-using PartyWebAppServer.Services.TransactionService;
 
 namespace PartyWebAppServer.Controllers;
 
 [ApiController]
-[Route("/api/[controller]")]
-public class TransactionController(ITransactionService _transactionService)
+[Route("/api/transactions")]
+public class TransactionController
 {
+    private AppDbContext DbContext { get; set; }
+
+    public TransactionController(AppDbContext dbContext)
+    {
+        DbContext = dbContext;
+    }
+
     [HttpGet()]
-    public async Task<List<TransactionDto>> GetTransactions() => 
-        await 
-            _transactionService
-            .GetTransactions();
+    public async Task<List<Transaction>> GetTransactions() => DbContext.Transactions.ToList();
 
     [HttpGet("{username}")]
-    public async Task<List<TransactionDto>> GetUserTransactions(string username) =>
-        await _transactionService.GetUserTransactions(username);
+    public async Task<List<Transaction>> GetTransaction(string username) =>
+        DbContext.Transactions.Where(t => t.User.Username == username).OrderBy(t => t.Date).ToList();
     
-    [HttpGet("wallet/{username}/{currency}")]
-    public async Task<List<TransactionDto>> GetUserTransactions(string username, CurrencyType currency) =>
-        await _transactionService.GetWalletTransactions(username, currency);
+    [HttpGet("{transactionType}")]
+    public async Task<List<Transaction>> GetTransaction(Transaction.TransactionTypes transactionType) =>
+        DbContext.Transactions.Where(t => t.TransactionType == transactionType).OrderBy(t => t.Date).ToList();
 
-    [HttpGet("type/{transactionType}")]
-    public async Task<List<TransactionDto>> GetTransactionsByType(TransactionType transactionType) =>
-        await _transactionService.GetTransactionsByType(transactionType);
-
-    [HttpPost()]
-    public async Task<TransactionDto> NewTransactionRequest(NewTransactionRequest newTransactionRequest)
+    [HttpPost("{id},{username},{walletId},{spentCurrency},{count},{locationId},{eventId},{transactionType},{date}")]
+    public async void NewTransactionRequest(int id, string username, int walletId, int spentCurrency, int count,
+        int locationId, int eventId, Transaction.TransactionTypes transactionType, DateTime date)
     {
-        Transaction transaction = _transactionService.CreateTransaction(newTransactionRequest);
-        _transactionService.ExecuteTransaction(transaction);
-        return await _transactionService.AddTransactionToDb(transaction);
+        User user = DbContext.Users.Where(u => u.Username == username).FirstOrDefault();
+        Wallet wallet = DbContext.Wallets.Where(w => w.Id == walletId).FirstOrDefault();
+        
+        Transaction transaction = new Transaction{ Id = id, User = user, Wallet = wallet};
     }
 }
