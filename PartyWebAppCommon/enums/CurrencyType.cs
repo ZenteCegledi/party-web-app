@@ -1,6 +1,6 @@
 namespace PartyWebAppCommon.enums;
 
-public enum CurrencyTypeEnum
+public enum CurrencyType
 {
     HUF,
     EUR,

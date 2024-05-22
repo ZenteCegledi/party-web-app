@@ -4,9 +4,10 @@ namespace PartyWebAppServer.Database.Models;
 
 public class User
 {
-    public string Name { get; set; }
     [Key]
     public string Username { get; set; }
+
+    public string Name { get; set; }
     public DateTime BirthDate { get; set; }
     public string Email { get; set; }
     public string Phone { get; set; }

@@ -8,21 +8,14 @@ public class Wallet
 {
 
     [Key]
-    public CurrencyTypeEnum Currency { get; set; }
+    public CurrencyType Currency { get; set; }
 
     [Key]
     [ForeignKey("User")]
-    public int UserID { get; set; }
+    public string Username { get; set; }
     public User Owner { get; set; }
 
     public decimal Amount { get; set; }
-
-    public Wallet(CurrencyTypeEnum currency, decimal amount, User owner)
-    {
-        Currency = currency;
-        Amount = amount;
-        Owner = owner;
-    }
 
     public override string ToString()
     {
