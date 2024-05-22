@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PartyWebAppServer.Database.Models;
 
 namespace PartyWebAppServer.Database;
 
 public class AppDbContext : DbContext
 {
+    public DbSet<User> Users { get; set; }
 
     public AppDbContext()
     {
@@ -17,6 +19,7 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<User>().HasKey(u => u.Username);
         modelBuilder.UseSerialColumns();
     }
 }
