@@ -1,4 +1,4 @@
-namespace DefaultNamespace;
+namespace PartyWebAppServer.Database.Model;
 
 public class RepourProvide
 {
