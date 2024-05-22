@@ -12,6 +12,8 @@ public class AppDbContext : DbContext
     
     public DbSet<Event> Events { get; set; }
     
+    public DbSet<Role> Roles { get; set; }
+    
     public AppDbContext()
     {
     }
@@ -31,6 +33,8 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Wallet>().HasOne(w => w.Owner).WithMany(u => u.Wallets).HasForeignKey(w => w.Username);
         
         modelBuilder.Entity<Location>().HasKey(l => l.Id);
+        
+        modelBuilder.Entity<Role>().HasKey(r => r.Id);
         
     }
 }
