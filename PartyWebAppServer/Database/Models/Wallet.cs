@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+namespace PartyWebAppServer.Database.Models;
+
 public class Wallet
 {
     public enum CurrencyType
