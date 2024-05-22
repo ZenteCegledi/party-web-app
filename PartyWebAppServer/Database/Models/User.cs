@@ -12,4 +12,5 @@ public class User
     public string Phone { get; set; }
     public string Password { get; set; }
 
+    public List<Wallet> Wallets { get; set; }
 }
