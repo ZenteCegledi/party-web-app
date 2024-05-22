@@ -1,7 +1,7 @@
-using BlazorFluentUI;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.FluentUI.AspNetCore.Components;
 using PartyWebAppClient;
 using PartyWebAppClient.Services;
 
@@ -21,6 +21,6 @@ builder.Services.AddTransient(sp => new HubConnectionBuilder()
     .WithAutomaticReconnect()
     .Build());
 
-builder.Services.AddBlazorFluentUI();
+builder.Services.AddFluentUIComponents();
 
 await builder.Build().RunAsync();
