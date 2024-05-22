@@ -1,3 +1,4 @@
+using BlazorFluentUI;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -19,5 +20,7 @@ builder.Services.AddTransient(sp => new HubConnectionBuilder()
     .WithUrl(new Uri(baseUri, "/hub").AbsoluteUri)
     .WithAutomaticReconnect()
     .Build());
+
+builder.Services.AddBlazorFluentUI();
 
 await builder.Build().RunAsync();
