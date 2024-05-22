@@ -13,7 +13,6 @@ public class AppDbContext : DbContext
     public DbSet<Event> Events { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<Role> Roles { get; set; }
-    
     public DbSet<Role> Roles { get; set; }
 
     public AppDbContext()
@@ -33,9 +32,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<User>().HasKey(u => u.Username);
         modelBuilder.Entity<Wallet>().HasKey(w => new { w.Currency, w.Username });
         modelBuilder.Entity<Wallet>().HasOne(w => w.Owner).WithMany(u => u.Wallets).HasForeignKey(w => w.Username);
-        
+
         modelBuilder.Entity<Location>().HasKey(l => l.Id);
-        
+
         modelBuilder.Entity<Transaction>().HasKey(t => t.Id);
         modelBuilder.Entity<Role>().HasKey(r => r.Id);
         modelBuilder.Entity<Role>().Property(r => r.Name).HasConversion<string>();
@@ -46,8 +45,6 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Role>().Property(r => r.Name).HasConversion<string>();
 
 
-        // Seed data ========================================
-
         #region RoleSeed
 
         modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Name = RoleType.Admin });
@@ -55,9 +52,6 @@ public class AppDbContext : DbContext
 
         #endregion
 
-        // Users
-        // modelBuilder.Entity<User>().HasData(new User { Username = "admin", Password = "admin", RoleId = 1, Email = "admin@admin.com"});
-        // create a new user using the UserDto
 
         #region UserSeed
 
