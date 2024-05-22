@@ -9,6 +9,8 @@ public class AppDbContext : DbContext
 
     public DbSet<Locations> Locations { get; set; }
     
+    public DbSet<Event> Events { get; set; }
+    
     public AppDbContext()
     {
     }
