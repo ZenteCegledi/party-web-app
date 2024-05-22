@@ -5,8 +5,7 @@ namespace PartyWebAppServer.Database.Models;
 
 public class Role
 {
-    // id
-    // name
+    
     [Key]
     public int Id { get; set; }
     
