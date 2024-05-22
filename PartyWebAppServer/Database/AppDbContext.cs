@@ -13,7 +13,6 @@ public class AppDbContext : DbContext
     public DbSet<Event> Events { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<Role> Roles { get; set; }
-    public DbSet<Role> Roles { get; set; }
 
     public AppDbContext()
     {
