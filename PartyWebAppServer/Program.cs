@@ -14,20 +14,6 @@ builder.Services.AddDbContext<AppDbContext>(o =>
 
 builder.Services.AddControllersWithViews();
 
-// Authentication
-builder.Services.AddAuthentication(
-    o =>
-    {
-        o.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    }
-).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
-{
-    // o.LoginPath = "/login";
-    o.Cookie.Name = "auth_cookie";
-    o.Cookie.SameSite = SameSiteMode.Strict;
-    // o.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-});
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
@@ -58,9 +44,6 @@ using (var scope = app.Services.CreateScope())
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 app.UseRouting();
-
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.MapControllers();
 
