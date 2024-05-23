@@ -29,6 +29,7 @@
       <Folder Include="ErrorHandling\ErrorModels\" />
       <Folder Include="Database\Models\" />
       <Folder Include="Migrations\" />
+      <Folder Include="Profiles\" />
     </ItemGroup>
 
 </Project>
