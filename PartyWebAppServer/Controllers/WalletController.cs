@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.enums;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
+using PartyWebAppServer.Services;
 
 namespace PartyWebAppServer.Controllers;
 
@@ -12,25 +14,25 @@ public class WalletController
 {
     public WalletController(AppDbContext context)
     {
-        DbContext = context;
+        WalletService = new WalletService(context);
     }
-    private AppDbContext DbContext { get; set; }
-
+    private WalletService WalletService { get; set; }
 
     [HttpGet("{username}")]
-    public async Task<List<Wallet>> GetWallets(string username)
+    // public async Task<List<Wallet>> GetWallets(string username)
+    // {
+    //     return await DbContext.Wallets.Where(w => w.Username == username).ToListAsync();
+    // }
+    
+    // use the Services.WalletService.GetWallets method
+    public async Task<List<WalletDto>> GetWallets(string username)
     {
-        return await DbContext.Wallets.Where(w => w.Username == username).ToListAsync();
+        return WalletService.GetWallets(username);
     }
 
     [HttpGet("{username}/{currency}")]
-    public async Task<Wallet> GetWallet(string username, CurrencyType currency)
+    public async Task<WalletDto> GetWallet(string username, CurrencyType currency)
     {
-        var wallet = await DbContext.Wallets.FirstOrDefaultAsync(w => w.Username == username && w.Currency == currency);
-        if (wallet == null)
-        {
-            throw new Exception("Wallet not found");
-        }
-        return wallet;
+       return WalletService.GetWallet(username, currency);
     }
 }
