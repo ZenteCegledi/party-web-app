@@ -1,4 +1,4 @@
-﻿using PartyWebAppServer.Database.Models;
+using PartyWebAppServer.Database.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
