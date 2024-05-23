@@ -24,8 +24,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<JwtService>();
 builder.AddBlazorAuth<ServerSideAuthenticationService>();
-
 
 var app = builder.Build();
 
@@ -48,6 +48,8 @@ using (var scope = app.Services.CreateScope())
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 app.UseRouting();
+
+app.UseAntiforgery();
 
 app.MapControllers();
 app.MapAuthEndpoints();
