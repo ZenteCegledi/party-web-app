@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
+using PartyWebAppCommon.enums;
 
 namespace PartyWebAppServer.Controllers;
 
@@ -24,16 +24,43 @@ public class TransactionController
         DbContext.Transactions.Where(t => t.User.Username == username).OrderBy(t => t.Date).ToList();
     
     [HttpGet("{transactionType}")]
-    public async Task<List<Transaction>> GetTransaction(Transaction.TransactionTypes transactionType) =>
+    public async Task<List<Transaction>> GetTransaction(TransactionType transactionType) =>
         DbContext.Transactions.Where(t => t.TransactionType == transactionType).OrderBy(t => t.Date).ToList();
 
-    [HttpPost("{id},{username},{walletId},{spentCurrency},{count},{locationId},{eventId},{transactionType},{date}")]
-    public async void NewTransactionRequest(int id, string username, int walletId, int spentCurrency, int count,
-        int locationId, int eventId, Transaction.TransactionTypes transactionType, DateTime date)
+    [HttpPost("{id},{username},{spentCurrency},{count},{locationId},{eventId},{transactionType},{date}")]
+    public async void NewTransactionRequest(int id, string username, int spentCurrency, int count,
+        int locationId, int eventId, TransactionType transactionType, DateTime date)
     {
-        User user = DbContext.Users.Where(u => u.Username == username).FirstOrDefault();
-        Wallet wallet = DbContext.Wallets.Where(w => w.Id == walletId).FirstOrDefault();
+        Location? location = null;
+        if(locationId != null)
+            location = DbContext.Locations.FirstOrDefault(l => l.Id == locationId);
+        Event? currentEvent = null;
+        if(eventId != null)
+            currentEvent = DbContext.Events.FirstOrDefault(e => e.Id == eventId);
         
-        Transaction transaction = new Transaction{ Id = id, User = user, Wallet = wallet};
+        switch (transactionType)
+        {
+            case TransactionType.Food:
+                if (location == null)
+                    throw new ArgumentNullException(nameof(location),"Incorrect location.");
+                if (location.Type == LocationType.ATM)
+                    throw new ArgumentException("Cannot buy food from ATM.");
+                if (currentEvent == null)
+                    break;
+                break;
+            case TransactionType.Ticket:
+                break;
+            case TransactionType.Deposit:
+                break;
+            case TransactionType.Credit:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(transactionType), transactionType, null);
+        }
+        
+        User user = DbContext.Users.FirstOrDefault(u => u.Username == username);
+        Wallet wallet = DbContext.Wallets.FirstOrDefault(w => w.Username == username);
+        
+        Transaction transaction = new Transaction{ Id = id, User = user, Wallet = wallet, SpentCurrency = spentCurrency, Count = count, Location = location, Event = currentEvent, TransactionType = transactionType, Date = date};
     }
 }
