@@ -3,26 +3,22 @@ using PartyWebAppServer.Database.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace PartyWebAppServer.Controllers;
+namespace PartyWebAppServer.Services;
 
-[ApiController]
-[Route("/")]
-public class UserService
+public class UserService : IUserService
 {
-    private AppDbContext DbContext { get; set; }
-
+    private AppDbContext DbContext;
+    
     public UserService(AppDbContext dbContext)
     {
         DbContext = dbContext;
     }
 
-    [HttpGet("api/")]
     public async Task<ActionResult<List<User>>> GetAllUsers()
     {
         return await DbContext.Users.ToListAsync();
     }
-    
-    [HttpPost("api/")]
+
     public async Task<ActionResult<User>> CreateUserRequest(string username, string name, DateTime birthDate, string email, string phone, string password, List<Wallet> wallets)
     {
         User user = new User
@@ -41,7 +37,6 @@ public class UserService
         return user;
     }
 
-    [HttpGet("api/username/{username}")]
     public async Task<ActionResult<User>> GetUser(string username)
     {
         try {
@@ -51,7 +46,6 @@ public class UserService
         }
     }
 
-    [HttpDelete("api/username/{username}")]
     public async Task<ActionResult<User>> DeleteUser(string username)
     {
         try {
@@ -64,7 +58,6 @@ public class UserService
         }
     }
 
-    [HttpPut("api/username/{username}")]
     public async Task<ActionResult<User>> EditUser(string username, string name, DateTime birthDate, string email, string phone, string password, List<Wallet> wallets)
     {
         try {
