@@ -33,7 +33,21 @@ public class EventService
     }
     
     // DeleteEvent
+    [HttpGet("DeleteEvent/{id}")]
+    public async Task<Event> DeleteEvent(int id)
+    {
+        Event events = DbContext.Events.ToList().Where(e => e.Id == id).ToList().First();
+        DbContext.Events.Remove(events);
+        return events;
+    }
     
     //EditEvent
+    [HttpPost("EditEvent/{id}")]
+    public async Task<Event> EditEvent(int id, Event EditEventRequest)
+    {
+        Event events = DbContext.Events.ToList().Where(e => e.Id == id).ToList().First();
+        events = EditEventRequest;
+        return events;
+    }
     
 }
