@@ -6,6 +6,7 @@ using BCrypt.Net;
 using PartyWebAppServer.Database.Models;
 using Microsoft.Extensions.Configuration;
 using PartyWebAppServer.Database;
+using PartyWebAppServer.Database.Models;
 
 public class ServerSideAuthenticationService : ServerSideAuthenticationService<SignInModel, SignUpModel>
 {
