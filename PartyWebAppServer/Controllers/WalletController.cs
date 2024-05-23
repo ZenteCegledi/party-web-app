@@ -14,14 +14,15 @@ public class WalletController
     {
         DbContext = context;
     }
-     private AppDbContext DbContext {get; set;}
-     
+    private AppDbContext DbContext { get; set; }
+
+
     [HttpGet("{username}")]
     public async Task<List<Wallet>> GetWallets(string username)
     {
         return await DbContext.Wallets.Where(w => w.Username == username).ToListAsync();
     }
-    
+
     [HttpGet("{username}/{currency}")]
     public async Task<Wallet> GetWallet(string username, CurrencyType currency)
     {
