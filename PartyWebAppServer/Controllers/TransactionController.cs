@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
 using PartyWebAppCommon.enums;
