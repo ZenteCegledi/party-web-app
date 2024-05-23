@@ -24,11 +24,20 @@ public class EventService
     }
     
     // GetEventsByLocation
+    [HttpGet()]
+    public async Task<List<Event>> GetEventsByLocation()
+    {
+
+        return new List<Event>();
+    }
+    
 
     [HttpPost()]
-    public async Task<Event> CreateEvent(Event CreateEventRequest)
+    public async Task<Event> CreateEvent(Event createEventRequest)
     {
-        Event newEvent = CreateEventRequest;
+        Event newEvent = createEventRequest;
+        DbContext.Events.Add(newEvent);
+        DbContext.SaveChanges();
         return newEvent;
     }
     
@@ -38,6 +47,7 @@ public class EventService
     {
         Event events = DbContext.Events.ToList().Where(e => e.Id == id).ToList().First();
         DbContext.Events.Remove(events);
+        DbContext.SaveChanges();
         return events;
     }
     
