@@ -45,16 +45,30 @@ public class AuthController
             {
                 var user = await DbContext.Users.Where(u => u.Username == data.Username).FirstOrDefaultAsync();
                 var role = await DbContext.Roles.Where(r => r.Id == user.RoleId).Select(r => r.Name).FirstOrDefaultAsync();
-                var cookieAndAuthTokenExpiration = DateTimeOffset.UtcNow.AddSeconds(10);
+                var cookieAndAuthTokenExpiration = DateTimeOffset.UtcNow.AddMinutes(5);
                 var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                 identity.AddClaim(new Claim(ClaimTypes.Name, data.Username));
                 identity.AddClaim(new Claim(ClaimTypes.Role, role.ToString()));
                 identity.AddClaim(new Claim(ClaimTypes.Expiration, cookieAndAuthTokenExpiration.ToString()));
                 
+                // im not sure this is needed here on the server
+                await HttpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), new AuthenticationProperties {
+                        // ExpiresUtc = cookieAndAuthTokenExpiration,
+                         IsPersistent = true,
+                    });
+                
+                
                 return identity;
             }
 
             return new ClaimsIdentity();
+    }
+    
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return new JsonResult(new { message = "logged out" });
     }
 }
 
