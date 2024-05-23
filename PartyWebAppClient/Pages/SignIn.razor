@@ -12,7 +12,7 @@
 <div style="display: flex; justify-content: center; align-items: center; width: 100%">
     <EditForm Model="@model" OnValidSubmit="@OnValidSubmit" FormName="SignInForm" style="width: 300px;">
         <DataAnnotationsValidator />
-        @* <ValidationSummary /> *@
+        <ValidationSummary />
 
         <FluentStack Orientation="Orientation.Vertical">
             <div style="width: 100%;">
@@ -40,7 +40,6 @@
     private async Task OnValidSubmit()
     {
         loading = true;
-        await Task.Delay(1000);
 
         var response = await UserService.SignInAsync(model);
 
