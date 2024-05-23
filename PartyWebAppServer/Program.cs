@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppServer.Database;
+using BitzArt.Blazor.Auth;
+using PartyWebAppServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddSwaggerGen();
+
+builder.AddBlazorAuth<ServerSideAuthenticationService>();
 
 
 var app = builder.Build();
@@ -46,8 +50,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.MapControllers();
-
-
+app.MapAuthEndpoints();
 
 app.UseEndpoints(endpoints =>
 {
