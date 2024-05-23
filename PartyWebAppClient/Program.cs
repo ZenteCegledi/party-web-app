@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.FluentUI.AspNetCore.Components;
 using PartyWebAppClient;
 using PartyWebAppClient.Services;
+using BitzArt.Blazor.Auth;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 var baseUri = new Uri(builder.HostEnvironment.BaseAddress);
@@ -15,6 +16,8 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddTransient<IAppHttpClient, AppHttpClient>();
 
 builder.Services.AddBlazorBootstrap();
+
+builder.AddBlazorAuth();
 
 builder.Services.AddTransient(sp => new HubConnectionBuilder()
     .WithUrl(new Uri(baseUri, "/hub").AbsoluteUri)
