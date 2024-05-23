@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace PartyWebAppClient.Models;
+namespace PartyWebAppCommon.Models;
 
 public class SignInModel
 {

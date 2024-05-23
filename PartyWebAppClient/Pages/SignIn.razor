@@ -1,6 +1,9 @@
 @page "/signin"
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
+@inject IUserService UserService
+
+@using PartyWebAppCommon.Models
 
 <PageTitle>PartyWebApp - Sign In</PageTitle>
 
@@ -38,10 +41,13 @@
     {
         loading = true;
         await Task.Delay(1000);
+
+        var response = await UserService.SignInAsync(model);
+
+        Console.WriteLine(response);
+
         loading = false;
 
-        NavigationManager.NavigateTo("/dashboard");
-
-        @* var response = await Http.PostAsJsonAsync("api/auth/signin", model); *@
+        NavigationManager.NavigateTo("/", true);
     }
 }
