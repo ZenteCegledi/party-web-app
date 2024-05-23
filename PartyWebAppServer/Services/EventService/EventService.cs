@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PartyWebAppCommon.enums;
 using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
 
-namespace PartyWebAppServer.Controllers;
+namespace PartyWebAppServer.Services.EventService;
 
 [ApiController]
 [Route("api/events")]
