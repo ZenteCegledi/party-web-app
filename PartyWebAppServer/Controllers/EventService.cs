@@ -42,7 +42,7 @@ public class EventService
     }
     
     // DeleteEvent
-    [HttpGet("DeleteEvent/{id}")]
+    [HttpGet("deleteevent/{id}")]
     public async Task<Event> DeleteEvent(int id)
     {
         Event events = DbContext.Events.ToList().Where(e => e.Id == id).ToList().First();
@@ -52,12 +52,21 @@ public class EventService
     }
     
     //EditEvent
-    [HttpPost("EditEvent/{id}")]
+    [HttpPut("editevent/{id}")]
     public async Task<Event> EditEvent(int id, Event EditEventRequest)
     {
-        Event events = DbContext.Events.ToList().Where(e => e.Id == id).ToList().First();
-        events = EditEventRequest;
-        return events;
+        Event eventToUpdate = await DbContext.Events.FindAsync(id);
+        if (eventToUpdate != null)
+        {
+            eventToUpdate.Name = EditEventRequest.Name;
+            eventToUpdate.Type = EditEventRequest.Type;
+            eventToUpdate.LocationId = EditEventRequest.LocationId;
+            eventToUpdate.Price = EditEventRequest.Price;
+
+            await DbContext.SaveChangesAsync();
+        }
+
+        return eventToUpdate;
     }
     
 }
