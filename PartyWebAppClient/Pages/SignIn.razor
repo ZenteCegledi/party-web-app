@@ -43,8 +43,6 @@
 
         var response = await UserService.SignInAsync(model);
 
-        Console.WriteLine(response);
-
         loading = false;
 
         NavigationManager.NavigateTo("/", true);

@@ -12,8 +12,6 @@ public class ServerSideAuthenticationService(JwtService jwtService)
 {
     protected override Task<AuthenticationResult> GetSignInResultAsync(SignInModel SignInModel)
     {
-        Console.WriteLine("asdsaddas");
-
         var authResult = AuthenticationResult.Success(jwtService.BuildJwtPair());
 
         return Task.FromResult(authResult);
