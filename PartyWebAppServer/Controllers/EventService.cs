@@ -16,6 +16,7 @@ public class EventService
         DbContext = dbContext;
     }
     
+    // GetEventById
     [HttpGet("{id}")]
     public async Task<Event> GetEventById(int id)
     {
@@ -24,15 +25,21 @@ public class EventService
     }
     
     // GetEventsByLocation
-    [HttpGet()]
-    public async Task<List<Event>> GetEventsByLocation()
+    [HttpGet("geteventsbylocation/{locationIds}")]
+    public async Task<List<Event>> GetEventsByLocation(List<int> locationIds)
     {
-
-        return new List<Event>();
+        if (locationIds.Count == 0)
+        {
+            return DbContext.Events.ToList();
+        }
+        else
+        {
+            return DbContext.Events.ToList().Where(e => locationIds.Contains(e.LocationId)).ToList();
+        }
     }
     
-
-    [HttpPost()]
+    // CreateEvent
+    [HttpPost("createevent")]
     public async Task<Event> CreateEvent(Event createEventRequest)
     {
         Event newEvent = createEventRequest;
