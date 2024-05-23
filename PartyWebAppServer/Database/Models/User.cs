@@ -12,10 +12,12 @@ public class User
     public DateTime BirthDate { get; set; }
     public string Email { get; set; }
     public string Phone { get; set; }
+
     public string Password { get; set; }
+    public DateTime PasswordUpdated { get; set; }
 
     public List<Wallet> Wallets { get; set; }
-    
+
     [ForeignKey("Role")]
     public int RoleId { get; set; }
 }
