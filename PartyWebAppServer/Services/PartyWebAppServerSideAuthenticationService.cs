@@ -1,19 +1,16 @@
-﻿using PartyWebAppServer;
-using PartyWebAppServer.Services;
+﻿namespace PartyWebAppServer.Services;
 
-namespace PartyWebAppServer.Blazor.Auth;
+using PartyWebAppServer;
+using PartyWebAppServer.Services;
+using BitzArt.Blazor.Auth;
+using PartyWebAppCommon.Models;
+
+public class SignUpModel { }
 
 public class ServerSideAuthenticationService(JwtService jwtService)
-    : ServerSideAuthenticationService<SignInPayload, SignUpPayload>()
+    : ServerSideAuthenticationService<SignInModel, SignUpModel>()
 {
-    protected override Task<AuthenticationResult> GetSignInResultAsync(SignInPayload signInPayload)
-    {
-        var authResult = AuthenticationResult.Success(jwtService.BuildJwtPair());
-
-        return Task.FromResult(authResult);
-    }
-
-    protected override Task<AuthenticationResult> GetSignUpResultAsync(SignUpPayload signUpPayload)
+    protected override Task<AuthenticationResult> GetSignInResultAsync(SignInModel SignInModel)
     {
         var authResult = AuthenticationResult.Success(jwtService.BuildJwtPair());
 
