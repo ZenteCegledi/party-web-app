@@ -1,9 +1,21 @@
 @namespace PartyWebAppClient.Pages.Dashboard
 
 @page "/dashboard"
+@attribute [Authorize]
+
+@using System.Text.Json
 
 <PageTitle>PartyWebApp - Dashboard</PageTitle>
 
 <h1>Dashboard</h1>
 
 <p>Welcome to your new app.</p>
+
+<AuthorizeView>
+    <pre>
+        @JsonSerializer.Serialize(@context
+                              .User.Claims.Select(x => new
+                              { x.Type, x.Value, x.Issuer, x.Subject?.Name, x.ValueType }
+                              ), new JsonSerializerOptions { WriteIndented = true })
+    </pre>
+</AuthorizeView>
