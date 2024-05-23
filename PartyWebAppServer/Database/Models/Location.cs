@@ -3,7 +3,7 @@ using PartyWebAppCommon.enums;
 
 namespace PartyWebAppServer.Database.Models;
 
-public class Locations
+public class Location
 {
     [Key]
     public int Id { get; set; }
