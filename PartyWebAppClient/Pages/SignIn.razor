@@ -1,6 +1,7 @@
 @page "/signin"
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
+@inject IToastService ToastService
 
 <PageTitle>PartyWebApp - Sign In</PageTitle>
 
@@ -25,7 +26,12 @@
             <FluentButton Style="width: 100%" IconStart="@(new Icons.Regular.Size16.PersonArrowRight())"
                 Loading="@loading" Type="Microsoft.FluentUI.AspNetCore.Components.ButtonType.Submit"
                 Appearance="Appearance.Accent">
-                Sign In</FluentButton>
+                Sign In
+            </FluentButton>
+
+            <FluentButton Style="width: 100%" OnClick="@ShowToast" Appearance="Appearance.Neutral">
+                Test Toast
+            </FluentButton>
         </FluentStack>
     </EditForm>
 </div>
@@ -33,6 +39,11 @@
 @code {
     private SignInModel model = new SignInModel();
     private bool loading = false;
+
+    private void ShowToast()
+    {
+        ToastService.ShowToast(ToastIntent.Success, "Sign in successful!");
+    }
 
     private async Task OnValidSubmit()
     {
