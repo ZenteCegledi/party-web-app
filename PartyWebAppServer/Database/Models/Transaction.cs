@@ -6,7 +6,6 @@ namespace PartyWebAppServer.Database.Models;
 public class Transaction
 {
     [Key] public int Id { get; set; }
-    public User User { get; set; }
     public Wallet Wallet { get; set; }
     public int SpentCurrency { get; set; }
     public int Count { get; set; }
