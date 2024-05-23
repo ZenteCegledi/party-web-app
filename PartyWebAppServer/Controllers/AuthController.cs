@@ -23,13 +23,21 @@ public class AuthController
     
     private AppDbContext DbContext { get; set; }
     private IHttpContextAccessor HttpContextAccessor { get; set; }
-    // [HttpGet("me")]
-    // public IActionResult GetMe()
-    // {
-    //     return Ok();
-    // }
+    [HttpGet("me")]
+    public IActionResult GetMe()
+    {
+        if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+        {
+            var username = HttpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+            var role = HttpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
+            var user = DbContext.Users.Where(u => u.Username == username).FirstOrDefault();
+            
+            return new JsonResult(new { user.Username, user.Name, user.BirthDate, user.Email, user.Phone, role });
+        }
+        
+        return new JsonResult(new { user = "not authenticated"});
+    }
     
-    // Login (/login): léptessen be egy usert a paraméterül kapott username és password segítségével. Ha nincs ilyen user, vagy nem jó a jelszó, dobjon hibát.
     [HttpPost("login")]
     public async Task<ClaimsIdentity> Login(SignInData data)
     {
@@ -43,19 +51,10 @@ public class AuthController
                 identity.AddClaim(new Claim(ClaimTypes.Role, role.ToString()));
                 identity.AddClaim(new Claim(ClaimTypes.Expiration, cookieAndAuthTokenExpiration.ToString()));
                 
-                // this should be done in the the client app
-                // await HttpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), new AuthenticationProperties
-                // {
-                //     ExpiresUtc = cookieAndAuthTokenExpiration,
-                //      IsPersistent = true,
-                // });
-                
-                // return new StatusCodeResult(200);
-                
                 return identity;
             }
 
-            return new ClaimsIdentity(); // idk what should be returned here
+            return new ClaimsIdentity();
     }
 }
 
