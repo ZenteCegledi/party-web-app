@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using PartyWebAppCommon.enums;
 
 namespace PartyWebAppServer.Database.Models;
 
@@ -11,14 +12,6 @@ public class Transaction
     public int Count { get; set; }
     public Location? Location { get; set; }
     public Event? Event { get; set; }
-    public TransactionTypes TransactionType { get; set; }
+    public TransactionType TransactionType { get; set; }
     public DateTime Date { get; set; }
-    
-    public enum TransactionTypes
-    {
-        Food,
-        Ticket,
-        Deposit,
-        Credit
-    }
 }
