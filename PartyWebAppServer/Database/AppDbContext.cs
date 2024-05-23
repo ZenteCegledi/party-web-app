@@ -11,6 +11,7 @@ public class AppDbContext : DbContext
     
     public DbSet<Event> Events { get; set; }
     
+    public DbSet<Transaction> Transactions { get; set; }
     public AppDbContext()
     {
     }
@@ -31,5 +32,6 @@ public class AppDbContext : DbContext
         
         modelBuilder.Entity<Location>().HasKey(l => l.Id);
         
+        modelBuilder.Entity<Transaction>().HasKey(t => t.Id);
     }
 }
