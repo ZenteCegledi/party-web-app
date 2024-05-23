@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
+using PartyWebAppServer.ErrorHandling;
+using PartyWebAppServer.ErrorHandling.Exceptions;
 
 namespace PartyWebAppServer.Services;
 
@@ -10,7 +13,6 @@ namespace PartyWebAppServer.Services;
 [Route("api/locations")]
 public class LocationService
 {
-
     private AppDbContext DbContext { get; set; }
 
     public LocationService(AppDbContext dbContext)
@@ -23,7 +25,7 @@ public class LocationService
     {
         if(id != null && DbContext.Locations.Find(id) != null)
             return DbContext.Locations.Find(id);
-        throw new Exception();
+        throw new LocationIdNotFoundAppException(id);
     }
 
     [HttpGet()]
@@ -57,7 +59,7 @@ public class LocationService
             return location;
         }
 
-        throw new Exception();
+        throw new LocationIdNotFoundAppException(id);
     }
 
     [HttpPut("{id}")]
@@ -78,7 +80,7 @@ public class LocationService
             return location;
         }
 
-        throw new Exception();
+        throw new LocationIdNotFoundAppException(id);
 
     }
 }

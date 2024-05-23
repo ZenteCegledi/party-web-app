@@ -28,6 +28,7 @@
     <ItemGroup>
       <Folder Include="ErrorHandling\ErrorModels\" />
       <Folder Include="Database\Models\" />
+      <Folder Include="Controllers\" />
       <Folder Include="Migrations\" />
       <Folder Include="Profiles\" />
     </ItemGroup>

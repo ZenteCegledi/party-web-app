@@ -38,8 +38,8 @@ if (app.Environment.IsDevelopment())
 //Apply migrations
 using (var scope = app.Services.CreateScope())
 {
-    var maiaContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    maiaContext.Database.Migrate();
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
 }
 
 // app.UseHttpsRedirection();
