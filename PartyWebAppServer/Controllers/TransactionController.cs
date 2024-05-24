@@ -28,12 +28,12 @@ public class TransactionController
     public async Task<List<Transaction>> GetTransaction(TransactionType transactionType) =>
         DbContext.Transactions.Where(t => t.TransactionType == transactionType).OrderBy(t => t.Date).ToList();
 
-    [HttpPost("{id},{username},{spentCurrency},{count},{locationName},{eventName},{transactionType},{date}")]
+    [HttpPost("{id},{username},{spentCurrency},{count},{locationId},{eventId},{transactionType},{date}")]
     public async void NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
-        string? locationName, string? eventName, TransactionType transactionType, DateTime date)
+        int locationId, int eventId, TransactionType transactionType, DateTime date)
     {
-        Location? location = DbContext.Locations.FirstOrDefault(l => l.Name == locationName);
-        Event? currentEvent = DbContext.Events.FirstOrDefault(e => e.Name == eventName);
+        Location? location = DbContext.Locations.FirstOrDefault(l => l.Id == locationId);
+        Event? currentEvent = DbContext.Events.FirstOrDefault(e => e.Id == eventId);
         Wallet? wallet = DbContext.Wallets.FirstOrDefault(w => w.Owner.Username == username && w.Currency == currencyType);
         User? user = DbContext.Users.FirstOrDefault(u => u.Username == username);
         
@@ -42,7 +42,7 @@ public class TransactionController
         switch (transactionType)
         {
             case TransactionType.Food:
-                if (location == null) throw new LocationNotExistsAppException(locationName);
+                if (location == null) throw new LocationNotExistsAppException(locationId);
                 if (location.Type == LocationType.ATM) throw new ArgumentException("Cannot buy food from ATM.");
                 if (wallet == null) throw new ArgumentException("Username does not exist.");
                 if (currencyType != wallet.Currency) throw new ArgumentException("Spent- and wallet currency does not match.");
@@ -51,14 +51,14 @@ public class TransactionController
                     throw new ArithmeticException("Insufficient funds.");
                 break;
             case TransactionType.Ticket:
-                if (location == null) throw new ArgumentException("Location does not exist.");
+                if (location == null) throw new LocationNotExistsAppException(locationId);
                 if (location.Type == LocationType.ATM) throw new ArgumentException("Cannot buy ticket from ATM.");
                 if (currentEvent == null) throw new ArgumentException("Event does not exist.");
                 if (wallet == null) throw new ArgumentException("Username does not exist.");
                 if (currencyType != wallet.Currency) throw new ArgumentException("Spent- and wallet currency does not match.");
                 
                 if (wallet.Amount < spentCurrency)
-                    throw new ArithmeticException("Insufficent funds.");
+                    throw new ArithmeticException("Insufficient funds.");
                 break;
             case TransactionType.Deposit:
                 if (location == null) throw new ArgumentException("Location does not exist.");
