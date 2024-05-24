@@ -43,7 +43,7 @@ public class TransactionController
         {
             case TransactionType.Food:
                 if (location == null) throw new LocationNotExistsAppException(locationId);
-                if (location.Type == LocationType.ATM) throw new ArgumentException("Cannot buy food from ATM.");
+                if (location.Type == LocationType.ATM) throw new LocationIsAtmAppException(transactionType);
                 if (wallet == null) throw new ArgumentException("Username does not exist.");
 
                 if (wallet.Amount < spentCurrency) 
@@ -51,17 +51,16 @@ public class TransactionController
                 break;
             case TransactionType.Ticket:
                 if (location == null) throw new LocationNotExistsAppException(locationId);
-                if (location.Type == LocationType.ATM) throw new ArgumentException("Cannot buy ticket from ATM.");
-                if (currentEvent == null) throw new ArgumentException("Event does not exist.");
+                if (location.Type == LocationType.ATM) throw new LocationIsAtmAppException(transactionType);
+                if (currentEvent == null) throw new EventNotExistsAppException(eventId);
                 if (wallet == null) throw new ArgumentException("Username does not exist.");
                 
                 if (wallet.Amount < spentCurrency)
                     throw new ArithmeticException("Insufficient funds.");
                 break;
             case TransactionType.Deposit:
-                if (location == null) throw new ArgumentException("Location does not exist.");
-                if (location.Type != LocationType.ATM) throw new ArgumentException("Only deposit to ATM.");
-                if (currentEvent == null) throw new ArgumentException("Event does not exist.");
+                if (location == null) throw new LocationNotExistsAppException(locationId);
+                if (location.Type != LocationType.ATM) throw new LocationNotAtmAppException(location.Type);
 
                 if (wallet == null)
                     wallet = new Wallet { Currency = currencyType, Owner = user, Amount = 0};

@@ -1,15 +1,15 @@
 ﻿using System.Net;
-using PartyWebAppCommon.enums;
 using PartyWebAppServer.ErrorHandling.ErrorModels;
+
 
 namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
-public class LocationNotAtmAppException : AppException
+public class EventNotExistsAppException : AppException
 {
-    public LocationNotAtmAppException(LocationType type)
+    public EventNotExistsAppException(int eventId)
     {
-        Message = $"Cannot Deposit from {type.ToString()}";
-        ErrorObject = new  LocationNotAtmErrorModel{LocationType = type.ToString()};
+        Message = $"Event with id: '{eventId}' does not exist.";
+        ErrorObject = new EventNotExistsErrorModel{EventId = eventId};
         HttpStatusCode = HttpStatusCode.BadRequest;
     }
     public override string Message { get; }
