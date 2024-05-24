@@ -74,6 +74,22 @@ namespace PartyWebAppServer.Migrations
                     b.ToTable("Locations");
                 });
 
+            modelBuilder.Entity("PartyWebAppServer.Database.Models.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Name")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Transaction", b =>
                 {
                     b.Property<int>("Id")
@@ -138,9 +154,15 @@ namespace PartyWebAppServer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("PasswordUpdated")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Username");
 
@@ -162,7 +184,7 @@ namespace PartyWebAppServer.Migrations
 
                     b.HasIndex("Username");
 
-                    b.ToTable("Wallet");
+                    b.ToTable("Wallets");
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Event", b =>

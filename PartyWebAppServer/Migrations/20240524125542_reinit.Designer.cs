@@ -12,8 +12,8 @@ using PartyWebAppServer.Database;
 namespace PartyWebAppServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240523125503_CreateTransactionsTable")]
-    partial class CreateTransactionsTable
+    [Migration("20240524125542_reinit")]
+    partial class reinit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,8 @@ namespace PartyWebAppServer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LocationId");
+
                     b.ToTable("Events");
                 });
 
@@ -73,6 +75,22 @@ namespace PartyWebAppServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Locations");
+                });
+
+            modelBuilder.Entity("PartyWebAppServer.Database.Models.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Name")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Transaction", b =>
@@ -139,9 +157,15 @@ namespace PartyWebAppServer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("PasswordUpdated")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Username");
 
@@ -163,7 +187,18 @@ namespace PartyWebAppServer.Migrations
 
                     b.HasIndex("Username");
 
-                    b.ToTable("Wallet");
+                    b.ToTable("Wallets");
+                });
+
+            modelBuilder.Entity("PartyWebAppServer.Database.Models.Event", b =>
+                {
+                    b.HasOne("PartyWebAppServer.Database.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Transaction", b =>
