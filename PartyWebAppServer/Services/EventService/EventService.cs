@@ -39,7 +39,7 @@ public class EventService : IEventService
     }
     
     //GetEventByLocationIds
-    public async Task<List<Event>> GetEventByLocationIds(EventsByLocationRequest request)
+    public async Task<List<Event>> GetEventByLocationIds([FromQuery]EventsByLocationRequest request)
     {
         if (request.LocationIds.Count == 0)
         {
