@@ -5,13 +5,13 @@
     </label>
     <nav class="sitenav" aria-labelledby="main-menu" onclick="document.getElementById('navmenu-toggle').click();">
         <FluentNavMenu Id="main-menu" Collapsible="true" Width="250" Title="Navigation menu" @bind-Expanded="expanded">
-            <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())"
+            <FluentNavLink Href="/dashboard" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())"
                 IconColor="Color.Accent">
                 Home
             </FluentNavLink>
 
-            <FluentNavLink Href="/logout" Icon="@(new Icons.Regular.Size20.SignOut())" IconColor="Color.Accent">
-                Logout
+            <FluentNavLink Href="/dashboard" Icon="@(new Icons.Regular.Size20.Wallet())" IconColor="Color.Accent">
+                Wallets
             </FluentNavLink>
         </FluentNavMenu>
     </nav>

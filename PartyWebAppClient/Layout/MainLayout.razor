@@ -11,15 +11,11 @@
                 <FluentAnchor Href="/signin" IconStart="@(new Icons.Regular.Size16.PersonArrowRight())">
                     Sign In
                 </FluentAnchor>
-            </NotAuthorized>
+            </NotAuthorized>            
             <Authorized>
                 <FluentAnchor Href="/dashboard" IconStart="@(new Icons.Regular.Size16.Home())">
                     Dashboard
                 </FluentAnchor>
-                <FluentButton Style="margin-left: 8px" IconStart="@(new Icons.Regular.Size16.DoorArrowLeft())"
-                    OnClick="async () => await SignOutAsync()">
-                    Sign Out
-                </FluentButton>
             </Authorized>
         </AuthorizeView>
     </FluentHeader>
@@ -33,11 +29,3 @@
 
     <FluentToastProvider MaxToastCount="6" />
 </FluentLayout>
-
-@code {
-    private async Task SignOutAsync()
-    {
-        await UserService.SignOutAsync();
-        NavigationManager.NavigateTo("/", true);
-    }
-}
