@@ -25,14 +25,8 @@
 
     <ItemGroup>
       <Folder Include="Controllers\" />
-<<<<<<< Updated upstream
-      <Folder Include="Database\Models\" />
-      <Folder Include="Migrations\" />
-      <Folder Include="Profiles\" />
-=======
       <Folder Include="Migrations\" />
       <Folder Include="Services\" />
->>>>>>> Stashed changes
     </ItemGroup>
 
 </Project>
