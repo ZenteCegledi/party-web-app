@@ -27,6 +27,8 @@
       <Folder Include="Controllers\" />
       <Folder Include="Migrations\" />
       <Folder Include="Services\" />
+      <Folder Include="Profiles\" />
+      <Folder Include="Database\Models\" />
     </ItemGroup>
 
 </Project>
