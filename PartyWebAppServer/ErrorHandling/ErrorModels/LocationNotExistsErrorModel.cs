@@ -2,5 +2,5 @@
 
 public class LocationNotExistsErrorModel
 {
-    public string Location { get; set; }
+    public int LocationId { get; set; }
 }
