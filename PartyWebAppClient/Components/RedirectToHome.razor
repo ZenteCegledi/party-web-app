@@ -1,7 +1,7 @@
 @inject NavigationManager NavigationManager
 
 @code {
-    protected async override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         NavigationManager.NavigateTo("/");
 
