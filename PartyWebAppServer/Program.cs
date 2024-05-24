@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppServer.Database;
+using PartyWebAppServer.Services.EventService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddTransient<IEventService, EventService>();
 
 var app = builder.Build();
 
