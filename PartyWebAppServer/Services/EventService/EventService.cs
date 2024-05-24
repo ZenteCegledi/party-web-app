@@ -2,96 +2,77 @@
 using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
+using PartyWebAppServer.Services.EventService;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using PartyWebAppServer.ErrorHandling.Exceptions;
 
 namespace PartyWebAppServer.Services.EventService;
 
 [ApiController]
 [Route("api/events")]
-public class EventService
+public class EventService : IEventService
 {
     private AppDbContext DbContext { get; set; }
-    
+
     public EventService(AppDbContext dbContext)
     {
         DbContext = dbContext;
     }
-    
-    // GetEventById
-    [HttpGet("{id}")]
-    public async Task<Event> GetEventById(int id)
+
+    public async Task<IEnumerable<Event>> GetAllEventsAsync()
     {
-        Event events = DbContext.Events.ToList().Where(e => e.Id == id).First();
-        return events;
+        return DbContext.Events.ToList();
     }
-    
-    // GetEventsByLocation
-    [HttpGet("geteventsbylocation")]
-    public async Task<List<Event>> GetEventsByLocation([FromQuery]EventsByLocationRequest request)
+
+    public async Task<Event> GetEventByIdAsync(string id)
     {
-        List<int> locationIds = request.LocationIds;
-        if (locationIds.Count == 0 || locationIds[0] == 0)
+        int eventId = int.Parse(id);
+        Event eventItem = DbContext.Events.ToList().Where(e => e.Id == eventId).FirstOrDefault();
+        if (eventItem == null)
         {
-            return DbContext.Events.ToList();
+            throw new EventIdNotFoundException(eventId);
         }
-        else
-        {
-            return DbContext.Events.ToList().Where(e => locationIds.Contains(e.LocationId)).ToList();
-        }
+        return eventItem;
     }
-    
-    // CreateEvent
-    [HttpPost("create")]
-    public async Task<Event> CreateEvent(CreateEventRequest request)
+
+    public async Task<Event> CreateEventAsync(Event newEvent)
     {
-        Event newEvent = new Event()
-        {
-            Name = request.Name,
-            Type = request.Type,
-            LocationId = request.LocationId,
-            Price = request.Price
-        };
         DbContext.Events.Add(newEvent);
         DbContext.SaveChanges();
         return newEvent;
     }
-    
-    // DeleteEvent
-    [HttpDelete("delete/{id}")]
-    public async Task<Event> DeleteEvent(int id)
+
+    public async Task UpdateEventAsync(Event updatedEvent)
     {
-        Event events = DbContext.Events.ToList().Where(e => e.Id == id).ToList().First();
-        DbContext.Events.Remove(events);
-        DbContext.SaveChanges();
-        return events;
-    }
-    
-    //EditEvent
-    [HttpPut("edit/")]
-    public async Task<Event> EditEvent(EditEventRequest request)
-    {
-        Event eventToUpdate = await DbContext.Events.FindAsync(request.Id);
+        Event eventToUpdate = await DbContext.Events.FindAsync(updatedEvent.Id);
         if (eventToUpdate != null)
         {
-            if (request.Name != null)
-            {
-                eventToUpdate.Name = request.Name;
-            }
-            if (request.Type != 0 && request.Type != null)
-            {
-                eventToUpdate.Type = request.Type;
-            }
-            if (request.LocationId != 0 && request.LocationId != null)
-            {
-                eventToUpdate.LocationId = request.LocationId;
-            }
-            if (request.Price != 0 && request.Price != null)
-            {
-                eventToUpdate.Price = request.Price;
-            }
+            eventToUpdate.Name = updatedEvent.Name;
+            eventToUpdate.Type = updatedEvent.Type;
+            eventToUpdate.LocationId = updatedEvent.LocationId;
+            eventToUpdate.Price = updatedEvent.Price;
             await DbContext.SaveChangesAsync();
         }
-
-        return eventToUpdate;
+        else
+        {
+            throw new EventIdNotFoundException(updatedEvent.Id);
+        }
     }
-    
+
+    public async Task DeleteEventAsync(string id)
+    {
+        int eventId = int.Parse(id);
+        Event eventToDelete = DbContext.Events.ToList().Where(e => e.Id == eventId).FirstOrDefault();
+        if (eventToDelete != null)
+        {
+            DbContext.Events.Remove(eventToDelete);
+            DbContext.SaveChanges();
+        }
+        else
+        {
+            throw new EventIdNotFoundException(eventId);
+        }
+    }
 }
