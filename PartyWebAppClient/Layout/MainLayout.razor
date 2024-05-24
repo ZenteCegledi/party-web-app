@@ -16,7 +16,7 @@
                 <FluentAnchor Href="/dashboard" IconStart="@(new Icons.Regular.Size16.Home())">
                     Dashboard
                 </FluentAnchor>
-                <FluentButton IconStart="@(new Icons.Regular.Size16.DoorArrowLeft())"
+                <FluentButton Style="margin-left: 8px" IconStart="@(new Icons.Regular.Size16.DoorArrowLeft())"
                     OnClick="async () => await SignOutAsync()">
                     Sign Out
                 </FluentButton>
@@ -30,6 +30,8 @@
         </div>
     </FluentBodyContent>
     @* </FluentStack> *@
+
+    <FluentToastProvider MaxToastCount="6" />
 </FluentLayout>
 
 @code {
