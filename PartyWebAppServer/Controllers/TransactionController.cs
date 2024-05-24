@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
 using PartyWebAppCommon.enums;
+using PartyWebAppServer.ErrorHandling.Exceptions;
 
 namespace PartyWebAppServer.Controllers;
 
@@ -21,46 +22,69 @@ public class TransactionController
 
     [HttpGet("{username}")]
     public async Task<List<Transaction>> GetTransaction(string username) =>
-        DbContext.Transactions.Where(t => t.User.Username == username).OrderBy(t => t.Date).ToList();
+        DbContext.Transactions.Where(t => t.Wallet.Owner.Username == username).OrderBy(t => t.Date).ToList();
     
     [HttpGet("{transactionType}")]
     public async Task<List<Transaction>> GetTransaction(TransactionType transactionType) =>
         DbContext.Transactions.Where(t => t.TransactionType == transactionType).OrderBy(t => t.Date).ToList();
 
-    [HttpPost("{id},{username},{spentCurrency},{count},{locationId},{eventId},{transactionType},{date}")]
-    public async void NewTransactionRequest(int id, string username, int spentCurrency, int count,
-        int locationId, int eventId, TransactionType transactionType, DateTime date)
+    [HttpPost("{id},{username},{spentCurrency},{count},{locationName},{eventName},{transactionType},{date}")]
+    public async void NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
+        string? locationName, string? eventName, TransactionType transactionType, DateTime date)
     {
-        Location? location = null;
-        if(locationId != null)
-            location = DbContext.Locations.FirstOrDefault(l => l.Id == locationId);
-        Event? currentEvent = null;
-        if(eventId != null)
-            currentEvent = DbContext.Events.FirstOrDefault(e => e.Id == eventId);
+        if (id == null) throw new ArgumentNullException(nameof(id), "Id cannot be empty");
+        if (username == null) throw new ArgumentNullException(nameof(username), "Username cannot be empty");
+        if (spentCurrency == null) throw new ArgumentNullException(nameof(spentCurrency), "Spent currency cannot be empty");
+        if (count == null) throw new ArgumentNullException(nameof(count), "Count cannot be empty");
+        if (transactionType == null) throw new ArgumentNullException(nameof(transactionType), "Transaction type cannot be empty");
+        if (currencyType == null) throw new ArgumentNullException(nameof(currencyType), "Currency type cannot be empty")
+        if (date == null) throw new ArgumentNullException(nameof(date), "Date cannot be empty");
+
+        Location? location = DbContext.Locations.FirstOrDefault(l => l.Id == locationId);
+        Event? currentEvent = DbContext.Events.FirstOrDefault(e => e.Id == eventId);
+        Wallet? wallet = DbContext.Wallets.FirstOrDefault(w => w.Owner.Username == username && w.Currency == currencyType);
+        User? user = DbContext.Users.FirstOrDefault(u => u.Username == username);
+        
+        if (user == null) throw new ArgumentException("User does not exist.");
         
         switch (transactionType)
         {
             case TransactionType.Food:
-                if (location == null)
-                    throw new ArgumentNullException(nameof(location),"Incorrect location.");
-                if (location.Type == LocationType.ATM)
-                    throw new ArgumentException("Cannot buy food from ATM.");
-                if (currentEvent == null)
-                    break;
+                if (location == null) throw new LocationNotExistsAppException();
+                if (location.Type == LocationType.ATM) throw new ArgumentException("Cannot buy food from ATM.");
+                if (wallet == null) throw new ArgumentException("Username does not exist.");
+                if (currencyType != wallet.Currency) throw new ArgumentException("Spent- and wallet currency does not match.");
+
+                if (wallet.Amount < spentCurrency) 
+                    throw new ArithmeticException("Insufficient funds.");
                 break;
             case TransactionType.Ticket:
+                if (location == null) throw new ArgumentException("Location does not exist.");
+                if (location.Type == LocationType.ATM) throw new ArgumentException("Cannot buy ticket from ATM.");
+                if (currentEvent == null) throw new ArgumentException("Event does not exist.");
+                if (wallet == null) throw new ArgumentException("Username does not exist.");
+                if (currencyType != wallet.Currency) throw new ArgumentException("Spent- and wallet currency does not match.");
+                
+                if (wallet.Amount < spentCurrency)
+                    throw new ArithmeticException("Insufficent funds.");
                 break;
             case TransactionType.Deposit:
+                if (location == null) throw new ArgumentException("Location does not exist.");
+                if (location.Type != LocationType.ATM) throw new ArgumentException("Only deposit to ATM.");
+                if (currentEvent == null) throw new ArgumentException("Event does not exist.");
+
+                if (wallet == null)
+                    wallet = new Wallet { Currency = currencyType, Owner = user, Amount = 0};
                 break;
             case TransactionType.Credit:
+                if (location != null || currentEvent == null) throw new ArgumentException("Location and event should be empty.");
+                if (location.Type != LocationType.ATM) throw new ArgumentException("Only deposit to ATM.");
+                if (wallet == null) throw new ArgumentException("");
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(transactionType), transactionType, null);
+                throw new ArgumentOutOfRangeException(nameof(transactionType), transactionType, "Transaction type does not exist.");
         }
         
-        User user = DbContext.Users.FirstOrDefault(u => u.Username == username);
-        Wallet wallet = DbContext.Wallets.FirstOrDefault(w => w.Username == username);
-        
-        Transaction transaction = new Transaction{ Id = id, User = user, Wallet = wallet, SpentCurrency = spentCurrency, Count = count, Location = location, Event = currentEvent, TransactionType = transactionType, Date = date};
+        Transaction transaction = new Transaction{ Id = id, Wallet = wallet, SpentCurrency = spentCurrency, Count = count, Location = location, Event = currentEvent, TransactionType = transactionType, Date = date};
     }
 }
