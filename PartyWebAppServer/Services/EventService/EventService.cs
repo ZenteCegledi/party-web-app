@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
@@ -24,6 +24,12 @@ public class EventService : IEventService
     public async Task<IEnumerable<Event>> GetAllEventsAsync()
     {
         return DbContext.Events.ToList();
+        if (DbContext.Events.ToList().Where(e => e.Id == id).ToList().Count == 0)
+        {
+            throw new EventIdNotFoundException(id);
+        }
+        Event events = DbContext.Events.ToList().Where(e => e.Id == id).First();
+        return events;
     }
 
     public async Task<Event> GetEventByIdAsync(string id)
@@ -40,13 +46,32 @@ public class EventService : IEventService
     public async Task<Event> CreateEventAsync(Event newEvent)
     {
         DbContext.Events.Add(newEvent);
-        DbContext.SaveChanges();
+        await DbContext.SaveChangesAsync();
         return newEvent;
     }
 
     public async Task UpdateEventAsync(Event updatedEvent)
     {
         Event eventToUpdate = await DbContext.Events.FindAsync(updatedEvent.Id);
+        if (DbContext.Events.ToList().Where(e => e.Id == id).ToList().Count == 0)
+        {
+        }
+            throw new EventIdNotFoundException(id);
+        Event events = DbContext.Events.ToList().Where(e => e.Id == id).ToList().First();
+        DbContext.Events.Remove(events);
+        await DbContext.SaveChangesAsync();
+        return events;
+    }
+    
+    //EditEvent
+    [HttpPut("edit/")]
+    public async Task<Event> EditEvent(EditEventRequest request)
+    {
+        if (DbContext.Events.ToList().Where(e => e.Id == request.Id).ToList().Count == 0)
+        {
+            throw new EventIdNotFoundException(request.Id);
+        }
+        Event eventToUpdate = await DbContext.Events.FindAsync(request.Id);
         if (eventToUpdate != null)
         {
             eventToUpdate.Name = updatedEvent.Name;
