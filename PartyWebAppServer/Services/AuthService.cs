@@ -1,4 +1,4 @@
-namespace PartyWebAppServer.Services;
+﻿namespace PartyWebAppServer.Services;
 
 using BitzArt.Blazor.Auth;
 using PartyWebAppCommon.Models;

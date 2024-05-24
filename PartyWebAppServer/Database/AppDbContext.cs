@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppCommon.enums;
+using PartyWebAppCommon.enums;
 using PartyWebAppServer.Database.Models;
 
 namespace PartyWebAppServer.Database;
@@ -15,6 +16,7 @@ public class AppDbContext : DbContext
 
     public DbSet<Role> Roles { get; set; }
 
+    public DbSet<Transaction> Transactions { get; set; }
     public AppDbContext()
     {
     }
@@ -35,11 +37,14 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<Location>().HasKey(l => l.Id);
 
+        modelBuilder.Entity<Transaction>().HasKey(t => t.Id);
         modelBuilder.Entity<Role>().HasKey(r => r.Id);
         modelBuilder.Entity<Role>().Property(r => r.Name).HasConversion<string>();
 
 
-        // Seed data ========================================
+        modelBuilder.Entity<Role>().HasKey(r => r.Id);
+        modelBuilder.Entity<Role>().Property(r => r.Name).HasConversion<string>();
+
 
         #region RoleSeed
 
@@ -48,9 +53,6 @@ public class AppDbContext : DbContext
 
         #endregion
 
-        // Users
-        // modelBuilder.Entity<User>().HasData(new User { Username = "admin", Password = "admin", RoleId = 1, Email = "admin@admin.com"});
-        // create a new user using the UserDto
 
         #region UserSeed
 

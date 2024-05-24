@@ -26,6 +26,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Controllers\" />
+      <Folder Include="ErrorHandling\ErrorModels\" />
+      <Folder Include="ErrorHandling\Exceptions\" />
       <Folder Include="Migrations\" />
     </ItemGroup>
 
