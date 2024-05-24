@@ -2,6 +2,7 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @inject IUserService UserService
+@inject IToastService ToastService
 
 @using PartyWebAppCommon.Models
 
@@ -12,7 +13,7 @@
 <div style="display: flex; justify-content: center; align-items: center; width: 100%">
     <EditForm Model="@model" OnValidSubmit="@OnValidSubmit" FormName="SignInForm" style="width: 300px;">
         <DataAnnotationsValidator />
-        <ValidationSummary />
+        @* <ValidationSummary /> *@
 
         <FluentStack Orientation="Orientation.Vertical">
             <div style="width: 100%;">
@@ -39,12 +40,15 @@
 
     private async Task OnValidSubmit()
     {
+        if (loading) return;
+
         loading = true;
 
         var response = await UserService.SignInAsync(model);
 
-        loading = false;
+        if (!response.IsSuccess) ToastService.ShowError(response.ErrorMessage ?? "An error occurred while signing in.");
+        else NavigationManager.NavigateTo("/", true);
 
-        NavigationManager.NavigateTo("/", true);
+        loading = false;
     }
 }

@@ -24,6 +24,12 @@ public class ServerSideAuthenticationService : ServerSideAuthenticationService<S
 
     protected override Task<AuthenticationResult> GetSignInResultAsync(SignInModel SignInModel)
     {
+        var user = dbContext.Users.FirstOrDefault(u => u.Email == SignInModel.Email);
+
+        if (user == null) return Task.FromResult(AuthenticationResult.Failure("User not found"));
+
+        if (!BCrypt.Verify(SignInModel.Password, user.Password)) return Task.FromResult(AuthenticationResult.Failure("Invalid password"));
+
         var authResult = AuthenticationResult.Success(jwtService.BuildJwtPair());
 
         return Task.FromResult(authResult);
@@ -39,7 +45,7 @@ public class ServerSideAuthenticationService : ServerSideAuthenticationService<S
             RoleId = SignUpModel.RoleId,
             Name = SignUpModel.Username,
             Phone = SignUpModel.Phone,
-            BirthDate = Convert.ToDateTime(SignUpModel.BirhtDate).ToUniversalTime(),
+            BirthDate = SignUpModel.BirhtDate.ToUniversalTime(),
             PasswordUpdated = DateTime.Now.ToUniversalTime(),
         };
 
