@@ -29,7 +29,7 @@ public class EventController
     }
     
     [HttpGet("findbylocationids")]
-    public async Task<List<Event>> GetEventByLocationIds(EventsByLocationRequest request)
+    public async Task<List<Event>> GetEventByLocationIds([FromQuery]EventsByLocationRequest request)
     {
         return await EventService.GetEventByLocationIds(request);
     }
