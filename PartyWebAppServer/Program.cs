@@ -3,6 +3,7 @@ using PartyWebAppServer.Database;
 using BitzArt.Blazor.Auth;
 using PartyWebAppServer.Services;
 using PartyWebAppServer.Services.LocationService;
+using PartyWebAppServer.Services.EventService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<JwtService>();
 builder.AddBlazorAuth<ServerSideAuthenticationService>();
+builder.Services.AddTransient<IEventService, EventService>();
 
 builder.Services.AddTransient<ILocationService, LocationService>();
 

@@ -6,6 +6,7 @@ using PartyWebAppServer.Services.EventService;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PartyWebAppCommon.enums;
 using PartyWebAppServer.ErrorHandling.Exceptions;
 
 namespace PartyWebAppServer.Services.EventService;
@@ -21,22 +22,28 @@ public class EventService : IEventService
         DbContext = dbContext;
     }
 
+    //GetAllEvents
+    [HttpGet("findall")]
     public async Task<List<Event>> GetAllEvents()
     {
         List<Event> events = DbContext.Events.ToList();
         return events;
     }
 
+    //GetEventById
+    [HttpGet("{id}")]
     public async Task<Event> GetEventById(int id)
     {
         if (DbContext.Events.ToList().Where(e => e.Id == id).ToList().Count == 0)
         {
-            throw new EventIdNotFoundException(id);
+            throw new EventIdNotFoundAppException(id);
         }
         Event eventItem = DbContext.Events.ToList().Where(e => e.Id == id).FirstOrDefault();
         return eventItem;
     }
 
+    //CreateEvent
+    [HttpPost("create")]
     public async Task<Event> CreateEvent(CreateEventRequest request)
     {
         Event newEvent = new Event()
@@ -46,19 +53,30 @@ public class EventService : IEventService
             LocationId = request.LocationId,
             Price = request.Price
         };
+        if (!Enum.IsDefined(typeof(EventType), newEvent.Type))
+        {
+            throw new EventTypeDoesNotExistAppException(newEvent.Type);
+        }
+        
         DbContext.Events.Add(newEvent);
         await DbContext.SaveChangesAsync();
         return newEvent;
     }
     
     //EditEvent
-    [HttpPut("edit/")]
+    [HttpPut("{id}")]
     public async Task<Event> EditEvent(EditEventRequest request)
     {
         if (DbContext.Events.ToList().Where(e => e.Id == request.Id).ToList().Count == 0)
         {
-            throw new EventIdNotFoundException(request.Id);
+            throw new EventIdNotFoundAppException(request.Id);
         }
+
+        if (!Enum.IsDefined(typeof(EventType), request.Type))
+        {
+            throw new EventTypeDoesNotExistAppException(request.Type);
+        }
+       
         Event eventToUpdate = await DbContext.Events.FindAsync(request.Id);
         if (eventToUpdate != null)
         {
@@ -71,15 +89,17 @@ public class EventService : IEventService
         }
         else
         {
-            throw new EventIdNotFoundException(request.Id);
+            throw new EventIdNotFoundAppException(request.Id);
         }
     }
 
+    //DeleteEvent
+    [HttpDelete("delete/{id}")]
     public async Task<Event> DeleteEvent(int id)
     {
         if (DbContext.Events.ToList().Where(e => e.Id == id).ToList().Count == 0)
         {
-            throw new EventIdNotFoundException(id);
+            throw new EventIdNotFoundAppException(id);
         }
         Event eventToDelete = DbContext.Events.ToList().Where(e => e.Id == id).FirstOrDefault();
         if (eventToDelete != null)

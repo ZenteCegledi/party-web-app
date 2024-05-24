@@ -3,13 +3,13 @@ using PartyWebAppServer.ErrorHandling.ErrorModels;
 
 namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
-public class EventIdNotFoundException : AppException
+public class EventIdNotFoundAppException : AppException
 {
         public override string Message { get; }
         
         public override HttpStatusCode HttpStatusCode { get; }
 
-        public EventIdNotFoundException(int eventId)
+        public EventIdNotFoundAppException(int eventId)
         {
             Message = $"Event with id {eventId} not found";
             HttpStatusCode = HttpStatusCode.BadRequest;
