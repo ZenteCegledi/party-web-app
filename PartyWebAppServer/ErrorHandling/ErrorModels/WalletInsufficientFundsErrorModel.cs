@@ -1,10 +1,9 @@
-﻿using PartyWebAppCommon.Enums;
+﻿using PartyWebAppCommon.enums;
 
 namespace PartyWebAppServer.ErrorHandling.ErrorModels;
 
 public class WalletInsufficientFundsErrorModel
 {
-    public int WalletId { get; set; }
     public int Amount { get; set; }
-    public int Currency { get; set; }
+    public CurrencyType Currency { get; set; }
 }
