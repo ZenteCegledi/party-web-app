@@ -2,5 +2,5 @@
 
 public class EventIdNotFoundErrorModel
 {
-    
+    public int Id { get; set; }
 }
