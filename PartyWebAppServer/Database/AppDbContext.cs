@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppCommon.enums;
-using PartyWebAppCommon.enums;
 using PartyWebAppServer.Database.Models;
 
 namespace PartyWebAppServer.Database;
@@ -9,14 +8,11 @@ public class AppDbContext : DbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Wallet> Wallets { get; set; }
-
     public DbSet<Location> Locations { get; set; }
-
     public DbSet<Event> Events { get; set; }
-
     public DbSet<Role> Roles { get; set; }
-
     public DbSet<Transaction> Transactions { get; set; }
+
     public AppDbContext()
     {
     }
