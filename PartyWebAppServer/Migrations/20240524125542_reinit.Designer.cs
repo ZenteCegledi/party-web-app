@@ -12,8 +12,8 @@ using PartyWebAppServer.Database;
 namespace PartyWebAppServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240523124128_ChangedUserModel")]
-    partial class ChangedUserModel
+    [Migration("20240524125542_reinit")]
+    partial class reinit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,10 +48,12 @@ namespace PartyWebAppServer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LocationId");
+
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("PartyWebAppServer.Database.Models.Locations", b =>
+            modelBuilder.Entity("PartyWebAppServer.Database.Models.Location", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,13 +85,56 @@ namespace PartyWebAppServer.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
+                    b.Property<int>("Name")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("PartyWebAppServer.Database.Models.Transaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Count")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("EventId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SpentCurrency")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("WalletCurrency")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("WalletUsername")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("WalletCurrency", "WalletUsername");
+
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.User", b =>
@@ -142,7 +187,41 @@ namespace PartyWebAppServer.Migrations
 
                     b.HasIndex("Username");
 
-                    b.ToTable("Wallet");
+                    b.ToTable("Wallets");
+                });
+
+            modelBuilder.Entity("PartyWebAppServer.Database.Models.Event", b =>
+                {
+                    b.HasOne("PartyWebAppServer.Database.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("PartyWebAppServer.Database.Models.Transaction", b =>
+                {
+                    b.HasOne("PartyWebAppServer.Database.Models.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId");
+
+                    b.HasOne("PartyWebAppServer.Database.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
+
+                    b.HasOne("PartyWebAppServer.Database.Models.Wallet", "Wallet")
+                        .WithMany()
+                        .HasForeignKey("WalletCurrency", "WalletUsername")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Location");
+
+                    b.Navigation("Wallet");
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Wallet", b =>

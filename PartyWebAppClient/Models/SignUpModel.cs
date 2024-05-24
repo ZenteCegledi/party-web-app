@@ -1,7 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace PartyWebAppCommon.Models;
-
 public class SignUpModel
 {
     [Required]
@@ -12,8 +10,8 @@ public class SignUpModel
     [DataType(DataType.Password)]
     public string Password { get; set; }
 
-    [Required]
-    [Compare("Password")]
+    [Required] 
+    [Compare("Password")] 
     public string ConfirmPassword { get; set; }
 
     [Required]
@@ -26,5 +24,6 @@ public class SignUpModel
     public int RoleId { get; set; }
 
     [Required]
+    [RegularExpression(@"^06\d{9}$", ErrorMessage = "The phone number should start with 06 and then followed by 9 digits")]
     public string Phone { get; set; }
 }

@@ -8,10 +8,8 @@ using Microsoft.Extensions.Configuration;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
 
-public class ServerSideAuthenticationService : ServerSideAuthenticationService<SignInModel, SignUpModel>
+public class ServerSideAuthenticationService : ServerSideAuthenticationService<SignInRequest, SignUpRequest>
 {
-    // private static readonly IConfiguration config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-
     private readonly JwtService jwtService;
     private readonly AppDbContext dbContext;
     private readonly IConfiguration config;
@@ -23,30 +21,32 @@ public class ServerSideAuthenticationService : ServerSideAuthenticationService<S
         this.config = config ?? throw new ArgumentNullException(nameof(config));
     }
 
-    protected override Task<AuthenticationResult> GetSignInResultAsync(SignInModel SignInModel)
+    protected override Task<AuthenticationResult> GetSignInResultAsync(SignInRequest signInRequest)
     {
-        var user = dbContext.Users.FirstOrDefault(u => u.Email == SignInModel.Email);
+        var user = dbContext.Users.FirstOrDefault(u => u.Email == signInRequest.Email);
 
         if (user == null) return Task.FromResult(AuthenticationResult.Failure("User not found"));
 
-        if (!BCrypt.Verify(SignInModel.Password, user.Password)) return Task.FromResult(AuthenticationResult.Failure("Invalid password"));
+        if (!BCrypt.Verify(signInRequest.Password, user.Password)) return Task.FromResult(AuthenticationResult.Failure("Invalid password"));
 
         var authResult = AuthenticationResult.Success(jwtService.BuildJwtPair());
 
         return Task.FromResult(authResult);
     }
 
-    protected override Task<AuthenticationResult> GetSignUpResultAsync(SignUpModel SignUpModel)
+    protected override Task<AuthenticationResult> GetSignUpResultAsync(SignUpRequest signUpRequest)
     {
+        if (dbContext.Users.Any(u => u.Email == signUpRequest.Email)) return Task.FromResult(AuthenticationResult.Failure("User already exists"));
+        
         var user = new User
         {
-            Email = SignUpModel.Email,
-            Password = BCrypt.HashPassword(SignUpModel.Password),
-            Username = SignUpModel.Username,
-            RoleId = SignUpModel.RoleId,
-            Name = SignUpModel.Username,
-            Phone = SignUpModel.Phone,
-            BirthDate = SignUpModel.BirhtDate.ToUniversalTime(),
+            Email = signUpRequest.Email,
+            Password = BCrypt.HashPassword(signUpRequest.Password),
+            Username = signUpRequest.Username,
+            RoleId = signUpRequest.RoleId,
+            Name = signUpRequest.Username,
+            Phone = signUpRequest.Phone,
+            BirthDate = signUpRequest.BirhtDate.ToUniversalTime(),
             PasswordUpdated = DateTime.Now.ToUniversalTime(),
         };
 
