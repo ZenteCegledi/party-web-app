@@ -2,13 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PartyWebAppCommon.Models;
 
-public class SignInModel
+public class SignInRequest
 {
-    [Required]
-    [EmailAddress]
     public string Email { get; set; }
-
-    [Required]
-    [DataType(DataType.Password)]
     public string Password { get; set; }
 }

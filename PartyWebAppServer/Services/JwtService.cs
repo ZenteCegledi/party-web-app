@@ -18,14 +18,17 @@ public class JwtService
     public JwtService(IConfiguration configuration)
     {
         config = configuration ?? throw new ArgumentNullException(nameof(configuration));
-        string SecretKey = config.GetValue<string>("SecretKey") ?? throw new JwtException("SecretKey not found in appsettings.json");
+        string SecretKey            = config.GetValue<string>("SecretKey")!;
+        string PublicKey            = config.GetValue<string>("PublicKey")!;
+        int    AccessTokenDuration  = config.GetValue<int>("AccessTokenDuration");
+        int    RefreshTokenDuration = config.GetValue<int>("RefreshTokenDuration");
 
         var options = new JwtOptions
         {
-            PublicKey = "MIIBCgKCAQEA12zIJKpaIuNNk2yAdQ4e/EsT7al1hozyi/qFeTduf7BJFS4niFK7k9OL4VJFoUbpDt18y7Yqlz0nsEyinu/7wZJjf646yYymA8jBib/4kxQw6zH7C3qaam283k72pxb+aZOeJ6iU9KNkwTbfMHxKuTHoxySS6VH0vt3Sn0FYWryp8BVdPFlbuJp6K5otksTbdFOPgzgvwNreoI3TgA0e2clRKaEv+FGwhmY6WqR/hp/ebo0mflL2hPwJI1PLzjXdlx1sPHmYYfDTA02eJWkGYVti4oUZ9UTI5pZeRMNItSu1IyjHi45iLDQ+kRaPsx2bL/YZ7NXJu/g+dk7Lb4KdfQIDAQAB",
+            PublicKey = PublicKey,
             PrivateKey = SecretKey,
-            AccessTokenDuration = new TimeSpan(0, 1, 0),
-            RefreshTokenDuration = new TimeSpan(0, 5, 0)
+            AccessTokenDuration = TimeSpan.FromMinutes(AccessTokenDuration),
+            RefreshTokenDuration = TimeSpan.FromMinutes(RefreshTokenDuration)
         };
 
         _tokenHandler = new JwtSecurityTokenHandler();
