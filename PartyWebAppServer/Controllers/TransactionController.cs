@@ -69,8 +69,7 @@ public class TransactionController
                     wallet = new Wallet { Currency = currencyType, Owner = user, Amount = 0};
                 break;
             case TransactionType.Credit:
-                if (location != null || currentEvent == null) throw new ArgumentException("Location and event should be empty.");
-                if (location.Type != LocationType.ATM) throw new ArgumentException("Only deposit to ATM.");
+                if (location != null || currentEvent != null) throw new ArgumentException("Location and event should be empty.");d
                 if (wallet == null) throw new ArgumentException("");
                 break;
             default:
