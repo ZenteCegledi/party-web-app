@@ -12,8 +12,8 @@ using PartyWebAppServer.Database;
 namespace PartyWebAppServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240523124128_Changed User Model")]
-    partial class ChangedUserModel
+    [Migration("20240524084659_Role&UserSeed")]
+    partial class RoleUserseed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,7 +51,7 @@ namespace PartyWebAppServer.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("PartyWebAppServer.Database.Models.Locations", b =>
+            modelBuilder.Entity("PartyWebAppServer.Database.Models.Location", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -90,6 +90,18 @@ namespace PartyWebAppServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "User"
+                        });
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.User", b =>
@@ -125,6 +137,19 @@ namespace PartyWebAppServer.Migrations
                     b.HasKey("Username");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Username = "admin",
+                            BirthDate = new DateTime(1994, 5, 24, 8, 46, 59, 581, DateTimeKind.Utc).AddTicks(719),
+                            Email = "admin@admin.com",
+                            Name = "Admin User",
+                            Password = "admin",
+                            PasswordUpdated = new DateTime(2024, 5, 24, 8, 46, 59, 581, DateTimeKind.Utc).AddTicks(745),
+                            Phone = "1234567890",
+                            RoleId = 1
+                        });
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Wallet", b =>
@@ -142,7 +167,7 @@ namespace PartyWebAppServer.Migrations
 
                     b.HasIndex("Username");
 
-                    b.ToTable("Wallet");
+                    b.ToTable("Wallets");
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Wallet", b =>
