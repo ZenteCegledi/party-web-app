@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PartyWebAppCommon.enums;
 using PartyWebAppServer.Database.Models;
 
 namespace PartyWebAppServer.Database;
@@ -42,6 +43,15 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Role>().HasKey(r => r.Id);
         modelBuilder.Entity<Role>().Property(r => r.Name).HasConversion<string>();
 
+
+        // Seed data ========================================
+
+        // Roles
+        modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Name = RoleType.Admin });
+        modelBuilder.Entity<Role>().HasData(new Role { Id = 2, Name = RoleType.User });
+
+        // Users
+        // modelBuilder.Entity<User>().HasData(new User { Username = "admin", Password = "admin", RoleId = 1, Email = "admin@admin.com"});
 
     }
 }
