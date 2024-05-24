@@ -32,14 +32,6 @@ public class TransactionController
     public async void NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
         string? locationName, string? eventName, TransactionType transactionType, DateTime date)
     {
-        if (id == null) throw new ArgumentNullException(nameof(id), "Id cannot be empty");
-        if (username == null) throw new ArgumentNullException(nameof(username), "Username cannot be empty");
-        if (spentCurrency == null) throw new ArgumentNullException(nameof(spentCurrency), "Spent currency cannot be empty");
-        if (count == null) throw new ArgumentNullException(nameof(count), "Count cannot be empty");
-        if (transactionType == null) throw new ArgumentNullException(nameof(transactionType), "Transaction type cannot be empty");
-        if (currencyType == null) throw new ArgumentNullException(nameof(currencyType), "Currency type cannot be empty");
-        if (date == null) throw new ArgumentNullException(nameof(date), "Date cannot be empty");
-
         Location? location = DbContext.Locations.FirstOrDefault(l => l.Name == locationName);
         Event? currentEvent = DbContext.Events.FirstOrDefault(e => e.Name == eventName);
         Wallet? wallet = DbContext.Wallets.FirstOrDefault(w => w.Owner.Username == username && w.Currency == currencyType);
