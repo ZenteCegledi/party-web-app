@@ -66,8 +66,9 @@ public class TransactionController
                     wallet = new Wallet { Currency = currencyType, Owner = user, Amount = 0};
                 break;
             case TransactionType.Credit:
-                if (location != null || currentEvent != null) throw new ArgumentException("Location and event should be empty.");
-                if (wallet == null) throw new ArgumentException("");
+                location = null;
+                currentEvent = null;
+                if (wallet == null) throw new UserHasNoWalletAppException(username, currencyType);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(transactionType), transactionType, "Transaction type does not exist.");
