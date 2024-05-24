@@ -11,8 +11,6 @@ using PartyWebAppServer.ErrorHandling.Exceptions;
 
 namespace PartyWebAppServer.Services.EventService;
 
-[ApiController]
-[Route("api/events")]
 public class EventService : IEventService
 {
     private AppDbContext DbContext { get; set; }
@@ -23,7 +21,6 @@ public class EventService : IEventService
     }
 
     //GetAllEvents
-    [HttpGet("findall")]
     public async Task<List<Event>> GetAllEvents()
     {
         List<Event> events = DbContext.Events.ToList();
@@ -31,7 +28,6 @@ public class EventService : IEventService
     }
 
     //GetEventById
-    [HttpGet("{id}")]
     public async Task<Event> GetEventById(int id)
     {
         if (DbContext.Events.ToList().Where(e => e.Id == id).ToList().Count == 0)
@@ -41,9 +37,20 @@ public class EventService : IEventService
         Event eventItem = DbContext.Events.ToList().Where(e => e.Id == id).FirstOrDefault();
         return eventItem;
     }
+    
+    //GetEventByLocationIds
+    public async Task<List<Event>> GetEventByLocationIds(EventsByLocationRequest request)
+    {
+        if (request.LocationIds.Count == 0)
+        {
+            return DbContext.Events.ToList();
+        }
+        List<Event> events = DbContext.Events.ToList().Where(e => request.LocationIds.Contains(e.LocationId)).ToList();
+        return events;
+    }
+    
 
     //CreateEvent
-    [HttpPost("create")]
     public async Task<Event> CreateEvent(CreateEventRequest request)
     {
         Event newEvent = new Event()
@@ -64,7 +71,6 @@ public class EventService : IEventService
     }
     
     //EditEvent
-    [HttpPut("{id}")]
     public async Task<Event> EditEvent(EditEventRequest request)
     {
         if (DbContext.Events.ToList().Where(e => e.Id == request.Id).ToList().Count == 0)
@@ -94,7 +100,6 @@ public class EventService : IEventService
     }
 
     //DeleteEvent
-    [HttpDelete("delete/{id}")]
     public async Task<Event> DeleteEvent(int id)
     {
         if (DbContext.Events.ToList().Where(e => e.Id == id).ToList().Count == 0)
