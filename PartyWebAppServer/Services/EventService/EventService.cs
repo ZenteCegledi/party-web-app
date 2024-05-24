@@ -12,7 +12,7 @@ namespace PartyWebAppServer.Services.EventService;
 
 [ApiController]
 [Route("api/events")]
-public class EventService
+public class EventService : IEventService
 {
     private AppDbContext DbContext { get; set; }
 
@@ -75,7 +75,7 @@ public class EventService
         }
     }
 
-    public async Task DeleteEvent(int id)
+    public async Task<Event> DeleteEvent(int id)
     {
         if (DbContext.Events.ToList().Where(e => e.Id == id).ToList().Count == 0)
         {
@@ -87,5 +87,6 @@ public class EventService
             DbContext.Events.Remove(eventToDelete);
             DbContext.SaveChanges();
         }
+        return eventToDelete;
     }
 }
