@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace PartyWebAppServer.Database.Model;
 
 public class RepourProvide
