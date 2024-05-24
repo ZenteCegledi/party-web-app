@@ -47,7 +47,7 @@
         var response = await UserService.SignInAsync(model);
 
         if (!response.IsSuccess) ToastService.ShowError(response.ErrorMessage ?? "An error occurred while signing in.");
-        else NavigationManager.NavigateTo("/", true);
+        else NavigationManager.NavigateTo("/dashboard", true);
 
         loading = false;
     }
