@@ -1,47 +1,56 @@
+using AutoMapper;
 using PartyWebAppServer.Database.Models;
 using Microsoft.AspNetCore.Mvc;
+using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Services;
 
 namespace PartyWebAppServer.Controllers;
 
 [ApiController]
 [Route("api/")]
-public class UserController
-{   
-    private readonly IUserService _userService;
-
-    public UserController(IUserService userService)
-    {
-        _userService = userService;
-    }
-
+public class UserController(IUserService userService, IMapper mapper)
+{
     [HttpGet]
-    public Task<ActionResult<List<User>>> GetAllUsers()
+    public Task<List<User>> GetAllUsers()
     {
-        return _userService.GetAllUsers();
+        var user = userService.GetAllUsers();
+        return mapper.Map<Task<List<User>>>(user);
     }
 
     [HttpPost]
-    public Task<ActionResult<User>> CreateUserRequest(string username, string name, DateTime birthDate, string email, string phone, string password, List<Wallet> wallets)
+    public Task<User> CreateUser(string username, string name, DateTime birthDate, string email, string phone, string password, List<Wallet> wallets)
     {
-        return _userService.CreateUserRequest(username, name, birthDate, email, phone, password, wallets);
+        CreateUserRequest userRequest = new CreateUserRequest(
+            username,
+            name,
+            birthDate,
+            email,
+            phone,
+            password
+        );
+        
+        var user = userService.CreateUser(userRequest);
+        return mapper.Map<Task<User>>(user);
     }
 
-    [HttpGet("/username/{username}")]
-    public async Task<ActionResult<User>> GetUser(string username)
+    [HttpGet("/{username}")]
+    public async Task<User> GetUser(string username)
     {
-        return await _userService.GetUser(username);
+        var user = userService.GetUser(username);
+        return await mapper.Map<Task<User>>(user);
     }
 
-    [HttpDelete("/username/{username}")]
-    public async Task<ActionResult<User>> DeleteUser(string username)
+    [HttpDelete("/{username}")]
+    public async Task<User> DeleteUser(string username)
     {
-        return await _userService.DeleteUser(username);
+        var user = userService.DeleteUser(username);
+        return await mapper.Map<Task<User>>(user);
     }
 
-    [HttpPut("/username/{username}")]
-    public async Task<ActionResult<User>> EditUser(string username, string name, DateTime birthDate, string email, string phone, string password, List<Wallet> wallets)
+    [HttpPut("/{username}")]
+    public async Task<User> EditUser(string username, string? name, DateTime? birthDate, string? email, string? phone, string? password)
     {
-        return await _userService.EditUser(username, name, birthDate, email, phone, password, wallets);
+        var user = userService.EditUser(username, name, birthDate, email, phone, password);
+        return await mapper.Map<Task<User>>(user);
     }
 }

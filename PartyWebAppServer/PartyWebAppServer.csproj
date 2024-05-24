@@ -8,7 +8,7 @@
     </PropertyGroup> 
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="AutoMapper" Version="13.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4">
           <PrivateAssets>all</PrivateAssets>
@@ -25,9 +25,14 @@
 
     <ItemGroup>
       <Folder Include="Controllers\" />
+<<<<<<< Updated upstream
       <Folder Include="Database\Models\" />
       <Folder Include="Migrations\" />
       <Folder Include="Profiles\" />
+=======
+      <Folder Include="Migrations\" />
+      <Folder Include="Services\" />
+>>>>>>> Stashed changes
     </ItemGroup>
 
 </Project>
