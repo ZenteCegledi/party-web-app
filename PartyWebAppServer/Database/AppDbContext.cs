@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppCommon.enums;
+using PartyWebAppCommon.enums;
 using PartyWebAppServer.Database.Models;
 
 namespace PartyWebAppServer.Database;
