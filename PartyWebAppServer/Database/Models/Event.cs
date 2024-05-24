@@ -12,5 +12,6 @@ public class Event
     public EventType Type {get ; set;}
     [ForeignKey("Location")]
     public int LocationId { get; set; }
+    public Location? Location { get; set; }
     public int Price { get; set; }
 }
