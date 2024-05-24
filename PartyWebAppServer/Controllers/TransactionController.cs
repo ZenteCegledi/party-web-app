@@ -69,7 +69,7 @@ public class TransactionController
                     wallet = new Wallet { Currency = currencyType, Owner = user, Amount = 0};
                 break;
             case TransactionType.Credit:
-                if (location != null || currentEvent != null) throw new ArgumentException("Location and event should be empty.");d
+                if (location != null || currentEvent != null) throw new ArgumentException("Location and event should be empty.");
                 if (wallet == null) throw new ArgumentException("");
                 break;
             default:
