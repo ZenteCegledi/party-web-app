@@ -6,10 +6,10 @@ namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
 public class LocationNotExistsAppException : AppException
 {
-    public LocationNotExistsAppException(string location)
+    public LocationNotExistsAppException(int locationId)
     {
-        Message = $"The {location} does not exist.";
-        ErrorObject = new LocationNotExistsErrorModel{Location = location};
+        Message = $"Location with id: '{locationId}' does not exist.";
+        ErrorObject = new LocationNotExistsErrorModel{LocationId = locationId};
         HttpStatusCode = HttpStatusCode.BadRequest;
     }
     public override string Message { get; }
