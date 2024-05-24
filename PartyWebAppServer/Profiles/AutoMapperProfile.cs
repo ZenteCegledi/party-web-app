@@ -9,5 +9,7 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         CreateMap<Database.Models.Wallet, WalletDto>();
+        CreateMap<Database.Models.User, UserDto>()
+            .ForMember(dest => dest.Wallets, opt => opt.MapFrom(src => src.Wallets));
     }
 }

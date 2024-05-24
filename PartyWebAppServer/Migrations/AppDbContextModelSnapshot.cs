@@ -151,6 +151,19 @@ namespace PartyWebAppServer.Migrations
                     b.HasKey("Username");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Username = "admin",
+                            BirthDate = new DateTime(1994, 5, 24, 8, 46, 59, 581, DateTimeKind.Utc).AddTicks(719),
+                            Email = "admin@admin.com",
+                            Name = "Admin User",
+                            Password = "admin",
+                            PasswordUpdated = new DateTime(2024, 5, 24, 8, 46, 59, 581, DateTimeKind.Utc).AddTicks(745),
+                            Phone = "1234567890",
+                            RoleId = 1
+                        });
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Wallet", b =>
@@ -168,7 +181,7 @@ namespace PartyWebAppServer.Migrations
 
                     b.HasIndex("Username");
 
-                    b.ToTable("Wallet");
+                    b.ToTable("Wallets");
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Event", b =>
