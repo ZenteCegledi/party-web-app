@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BitzArt.Blazor.Auth;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.enums;
@@ -19,12 +20,6 @@ public class WalletController
     private WalletService WalletService { get; set; }
 
     [HttpGet("{username}")]
-    // public async Task<List<Wallet>> GetWallets(string username)
-    // {
-    //     return await DbContext.Wallets.Where(w => w.Username == username).ToListAsync();
-    // }
-    
-    // use the Services.WalletService.GetWallets method
     public async Task<List<WalletDto>> GetWallets(string username)
     {
         return WalletService.GetWallets(username);
@@ -33,6 +28,6 @@ public class WalletController
     [HttpGet("{username}/{currency}")]
     public async Task<WalletDto> GetWallet(string username, CurrencyType currency)
     {
-       return WalletService.GetWallet(username, currency);
+        return WalletService.GetWallet(username, currency);
     }
 }

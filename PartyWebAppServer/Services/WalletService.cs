@@ -1,22 +1,28 @@
-﻿using PartyWebAppCommon.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.enums;
 using PartyWebAppServer.Database;
+using PartyWebAppServer.ErrorHandling.Exceptions;
 
 namespace PartyWebAppServer.Services;
 
-public class WalletService
+public interface IWalletService
 {
-    
-    public WalletService(AppDbContext context)
-    {
-        DbContext = context;
-    }
-    private AppDbContext DbContext { get; set; }
+    List<WalletDto> GetWallets(string username);
+    WalletDto GetWallet(string username, CurrencyType currency);
+}
 
-
+public class WalletService(AppDbContext context)
+{
     public List<WalletDto> GetWallets(string username)
     {
-        var wallets = DbContext.Wallets.Where(w => w.Username == username).ToList();
+        var user = context.Users.FirstOrDefault(u => u.Username == username);
+        if (user == null)
+        {
+            throw new Exception("User not found");
+        }
+
+        var wallets = context.Wallets.Where(w => w.Username == username).ToList();
         return wallets.Select(w => new WalletDto
         {
             Currency = w.Currency,
@@ -27,11 +33,17 @@ public class WalletService
 
     public WalletDto GetWallet(string username, CurrencyType currency)
     {
-        var wallet = DbContext.Wallets.FirstOrDefault(w => w.Username == username && w.Currency == currency);
+        var user = context.Users.FirstOrDefault(u => u.Username == username);
+        if (user == null)
+        {
+            throw new Exception("No user found with that username: " + username);
+        }
+        var wallet = context.Wallets.FirstOrDefault(w => w.Username == username && w.Currency == currency);
         if (wallet == null)
         {
-            throw new Exception("Wallet not found");
+            throw new WalletNotExistsAppException();
         }
+
         return new WalletDto
         {
             Currency = wallet.Currency,
