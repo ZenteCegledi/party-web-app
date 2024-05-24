@@ -21,9 +21,9 @@ public class EventService
         DbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Event>> GetAllEvents()
+    public async Task<List<Event>> GetAllEvents()
     {
-        IEnumerable<Event> events = DbContext.Events.ToList();
+        List<Event> events = DbContext.Events.ToList();
         return events;
     }
 
@@ -37,8 +37,15 @@ public class EventService
         return eventItem;
     }
 
-    public async Task<Event> CreateEvent(Event newEvent)
+    public async Task<Event> CreateEvent(CreateEventRequest request)
     {
+        Event newEvent = new Event()
+        {
+            Name = request.Name,
+            Type = request.Type,
+            LocationId = request.LocationId,
+            Price = request.Price
+        };
         DbContext.Events.Add(newEvent);
         await DbContext.SaveChangesAsync();
         return newEvent;
