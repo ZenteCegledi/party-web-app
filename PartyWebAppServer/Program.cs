@@ -5,11 +5,13 @@ using PartyWebAppServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 var Configuration = builder.Configuration;
 builder.Services.AddDbContext<AppDbContext>(o =>
     o.UseNpgsql(Configuration.GetConnectionString("TimescaleConnection")));
 
+
+// add configuratuion from appsettings
+builder.Configuration.AddJsonFile("appsettings.json");
 
 builder.Services.AddControllersWithViews();
 

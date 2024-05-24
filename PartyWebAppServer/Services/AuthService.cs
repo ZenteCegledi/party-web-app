@@ -1,83 +1,66 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PartyWebAppServer.Database;
+namespace PartyWebAppServer.Services;
+
+using BitzArt.Blazor.Auth;
+using PartyWebAppCommon.Models;
+using BCrypt.Net;
 using PartyWebAppServer.Database.Models;
+using Microsoft.Extensions.Configuration;
+using PartyWebAppServer.Database;
 
-namespace PartyWebAppServer.Controllers;
-
-[ApiController]
-[Route("api/auth")]
-public class AuthController
+public class ServerSideAuthenticationService : ServerSideAuthenticationService<SignInModel, SignUpModel>
 {
+    // private static readonly IConfiguration config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
-    public AuthController(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+    private readonly JwtService jwtService;
+    private readonly AppDbContext dbContext;
+    private readonly IConfiguration config;
+
+    public ServerSideAuthenticationService(JwtService jwtService, AppDbContext dbContext, IConfiguration config)
     {
-        DbContext = dbContext;
-        HttpContextAccessor = httpContextAccessor;
-
+        this.jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
+        this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        this.config = config ?? throw new ArgumentNullException(nameof(config));
     }
 
-    private AppDbContext DbContext { get; set; }
-    private IHttpContextAccessor HttpContextAccessor { get; set; }
-    [HttpGet("me")]
-    public IActionResult GetMe()
+    protected override Task<AuthenticationResult> GetSignInResultAsync(SignInModel SignInModel)
     {
-        if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+        var user = dbContext.Users.FirstOrDefault(u => u.Email == SignInModel.Email);
+
+        if (user == null) return Task.FromResult(AuthenticationResult.Failure("User not found"));
+
+        if (!BCrypt.Verify(SignInModel.Password, user.Password)) return Task.FromResult(AuthenticationResult.Failure("Invalid password"));
+
+        var authResult = AuthenticationResult.Success(jwtService.BuildJwtPair());
+
+        return Task.FromResult(authResult);
+    }
+
+    protected override Task<AuthenticationResult> GetSignUpResultAsync(SignUpModel SignUpModel)
+    {
+        var user = new User
         {
-            var username = HttpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
-            var role = HttpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
-            var user = DbContext.Users.Where(u => u.Username == username).FirstOrDefault();
+            Email = SignUpModel.Email,
+            Password = BCrypt.HashPassword(SignUpModel.Password),
+            Username = SignUpModel.Username,
+            RoleId = SignUpModel.RoleId,
+            Name = SignUpModel.Username,
+            Phone = SignUpModel.Phone,
+            BirthDate = SignUpModel.BirhtDate.ToUniversalTime(),
+            PasswordUpdated = DateTime.Now.ToUniversalTime(),
+        };
 
-            return new JsonResult(new { user.Username, user.Name, user.BirthDate, user.Email, user.Phone, role });
-        }
+        dbContext.Users.Add(user);
+        dbContext.SaveChanges();
 
-        return new JsonResult(new { user = "not authenticated" });
+        var authResult = AuthenticationResult.Success(jwtService.BuildJwtPair());
+
+        return Task.FromResult(authResult);
     }
 
-    [HttpPost("login")]
-    public async Task<User?> Login(SignInData data)
+    public override Task<AuthenticationResult> RefreshJwtPairAsync(string refreshToken)
     {
-        if (await DbContext.Users.AnyAsync(u => u.Username == data.Username && u.Password == data.Password))
-        {
-            var user = await DbContext.Users.Where(u => u.Username == data.Username).FirstOrDefaultAsync();
-            var role = await DbContext.Roles.Where(r => r.Id == user.RoleId).Select(r => r.Name).FirstOrDefaultAsync();
-            var cookieAndAuthTokenExpiration = DateTimeOffset.UtcNow.AddMinutes(5);
-            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-            identity.AddClaim(new Claim(ClaimTypes.Name, data.Username));
-            identity.AddClaim(new Claim(ClaimTypes.Role, role.ToString()));
-            identity.AddClaim(new Claim(ClaimTypes.Expiration, cookieAndAuthTokenExpiration.ToString()));
+        var authResult = AuthenticationResult.Success(jwtService.BuildJwtPair());
 
-            // im not sure this is needed here on the server
-            await HttpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), new AuthenticationProperties
-            {
-                // ExpiresUtc = cookieAndAuthTokenExpiration,
-                IsPersistent = true,
-            });
-
-
-            return user;
-        }
-
-        return null;
-
-
+        return Task.FromResult(authResult);
     }
-
-    [HttpPost("logout")]
-    public async Task<IActionResult> Logout()
-    {
-        await HttpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return new JsonResult(new { message = "logged out" });
-    }
-}
-
-public class SignInData
-{
-    public string Username { get; set; }
-    public string Password { get; set; }
 }
