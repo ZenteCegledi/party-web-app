@@ -1,4 +1,4 @@
-﻿namespace PartyWebAppServer.ErrorHandling.ErrorModels;
+namespace PartyWebAppServer.ErrorHandling.ErrorModels;
 
 public class EventIdNotFoundErrorModel
 {
