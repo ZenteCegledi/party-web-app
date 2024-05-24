@@ -1,15 +1,14 @@
 ﻿using System.Net;
-using PartyWebAppCommon.DTOs;
 using PartyWebAppServer.ErrorHandling.ErrorModels;
 
 namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
 public class UserNotExistsAppException : AppException
 {
-    public UserNotExistsAppException(UserDto user)
+    public UserNotExistsAppException(string username)
     {
-        Message = $"User with '{user.Username}' username does not exist.";
-        ErrorObject = new UserNotExistsErrorModel{Username = user.Username};
+        Message = $"User with '{username}' username does not exist.";
+        ErrorObject = new UserNotExistsErrorModel{ Username = username};
         HttpStatusCode = HttpStatusCode.BadRequest;
     }
     public override string Message { get; }
