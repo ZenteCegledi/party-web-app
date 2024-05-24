@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using PartyWebAppCommon.DTOs;
 using PartyWebAppServer.ErrorHandling.ErrorModels;
 
 
@@ -7,10 +6,10 @@ namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
 public class EventNotExistsAppException : AppException
 {
-    public EventNotExistsAppException(EventDto currentEvent)
+    public EventNotExistsAppException(int eventId)
     {
-        Message = $"Event: '{currentEvent.Name}' does not exist in DB.";
-        ErrorObject = new EventNotExistsErrorModel{Name = currentEvent.Name};
+        Message = $"Event with id: '{eventId}' does not exist.";
+        ErrorObject = new EventNotExistsErrorModel{EventId = eventId};
         HttpStatusCode = HttpStatusCode.BadRequest;
     }
     public override string Message { get; }
