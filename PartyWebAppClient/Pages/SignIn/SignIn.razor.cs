@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
-using PartyWebAppCommon.Models;
 
-namespace PartyWebAppClient.Pages;
+namespace PartyWebAppClient.Pages.SignIn;
 
 public partial class SignIn : ComponentBase {
 	private SignInModel _model = new SignInModel();
