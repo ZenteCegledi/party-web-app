@@ -25,6 +25,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<JwtService>();
 builder.AddBlazorAuth<ServerSideAuthenticationService>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 var app = builder.Build();
 
