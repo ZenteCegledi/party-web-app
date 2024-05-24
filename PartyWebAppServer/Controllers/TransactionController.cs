@@ -37,26 +37,26 @@ public class TransactionController
         Wallet? wallet = DbContext.Wallets.FirstOrDefault(w => w.Owner.Username == username && w.Currency == currencyType);
         User? user = DbContext.Users.FirstOrDefault(u => u.Username == username);
         
-        if (user == null) throw new ArgumentException("User does not exist.");
+        if (user == null) throw new UserNotExistsAppException(username);
         
         switch (transactionType)
         {
             case TransactionType.Food:
                 if (location == null) throw new LocationNotExistsAppException(locationId);
                 if (location.Type == LocationType.ATM) throw new LocationIsAtmAppException(transactionType);
-                if (wallet == null) throw new ArgumentException("Username does not exist.");
+                if (wallet == null) throw new UserHasNoWalletAppException(username, currencyType);
 
                 if (wallet.Amount < spentCurrency) 
-                    throw new ArithmeticException("Insufficient funds.");
+                    throw new WalletInsufficientFundsAppException(spentCurrency, currencyType);
                 break;
             case TransactionType.Ticket:
                 if (location == null) throw new LocationNotExistsAppException(locationId);
                 if (location.Type == LocationType.ATM) throw new LocationIsAtmAppException(transactionType);
                 if (currentEvent == null) throw new EventNotExistsAppException(eventId);
-                if (wallet == null) throw new ArgumentException("Username does not exist.");
+                if (wallet == null) throw new UserHasNoWalletAppException(username, currencyType);
                 
                 if (wallet.Amount < spentCurrency)
-                    throw new ArithmeticException("Insufficient funds.");
+                    throw new WalletInsufficientFundsAppException(spentCurrency, currencyType);
                 break;
             case TransactionType.Deposit:
                 if (location == null) throw new LocationNotExistsAppException(locationId);
