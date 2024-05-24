@@ -37,11 +37,11 @@ public class TransactionController
         if (spentCurrency == null) throw new ArgumentNullException(nameof(spentCurrency), "Spent currency cannot be empty");
         if (count == null) throw new ArgumentNullException(nameof(count), "Count cannot be empty");
         if (transactionType == null) throw new ArgumentNullException(nameof(transactionType), "Transaction type cannot be empty");
-        if (currencyType == null) throw new ArgumentNullException(nameof(currencyType), "Currency type cannot be empty")
+        if (currencyType == null) throw new ArgumentNullException(nameof(currencyType), "Currency type cannot be empty");
         if (date == null) throw new ArgumentNullException(nameof(date), "Date cannot be empty");
 
-        Location? location = DbContext.Locations.FirstOrDefault(l => l.Id == locationId);
-        Event? currentEvent = DbContext.Events.FirstOrDefault(e => e.Id == eventId);
+        Location? location = DbContext.Locations.FirstOrDefault(l => l.Name == locationName);
+        Event? currentEvent = DbContext.Events.FirstOrDefault(e => e.Name == eventName);
         Wallet? wallet = DbContext.Wallets.FirstOrDefault(w => w.Owner.Username == username && w.Currency == currencyType);
         User? user = DbContext.Users.FirstOrDefault(u => u.Username == username);
         
@@ -50,7 +50,7 @@ public class TransactionController
         switch (transactionType)
         {
             case TransactionType.Food:
-                if (location == null) throw new LocationNotExistsAppException();
+                if (location == null) throw new LocationNotExistsAppException(locationName);
                 if (location.Type == LocationType.ATM) throw new ArgumentException("Cannot buy food from ATM.");
                 if (wallet == null) throw new ArgumentException("Username does not exist.");
                 if (currencyType != wallet.Currency) throw new ArgumentException("Spent- and wallet currency does not match.");
