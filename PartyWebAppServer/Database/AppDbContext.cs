@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.enums;
 using PartyWebAppServer.Database.Models;
 
@@ -9,7 +10,7 @@ public class AppDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Wallet> Wallets { get; set; }
 
-    public DbSet<Locations> Locations { get; set; }
+    public DbSet<Location> Locations { get; set; }
 
     public DbSet<Event> Events { get; set; }
 
@@ -33,7 +34,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Wallet>().HasKey(w => new { w.Currency, w.Username });
         modelBuilder.Entity<Wallet>().HasOne(w => w.Owner).WithMany(u => u.Wallets).HasForeignKey(w => w.Username);
 
-        modelBuilder.Entity<Locations>().HasKey(l => l.Id);
+        modelBuilder.Entity<Location>().HasKey(l => l.Id);
 
         modelBuilder.Entity<Role>().HasKey(r => r.Id);
         modelBuilder.Entity<Role>().Property(r => r.Name).HasConversion<string>();
@@ -41,12 +42,34 @@ public class AppDbContext : DbContext
 
         // Seed data ========================================
 
-        // Roles
+        #region RoleSeed
+
         modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Name = RoleType.Admin });
         modelBuilder.Entity<Role>().HasData(new Role { Id = 2, Name = RoleType.User });
 
+        #endregion
+
         // Users
         // modelBuilder.Entity<User>().HasData(new User { Username = "admin", Password = "admin", RoleId = 1, Email = "admin@admin.com"});
+        // create a new user using the UserDto
 
+        #region UserSeed
+
+        modelBuilder.Entity<User>().HasData(
+            new User
+            {
+                Password = "admin",
+                Username = "admin",
+                RoleId = 1,
+                Email = "admin@admin.com",
+                Name = "Admin User",
+                BirthDate = DateTime.UtcNow.AddYears(-30),
+                Phone = "1234567890",
+                PasswordUpdated = DateTime.UtcNow,
+                Wallets = []
+            }
+        );
+
+        #endregion
     }
 }
