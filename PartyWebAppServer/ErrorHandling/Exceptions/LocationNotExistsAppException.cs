@@ -1,16 +1,15 @@
 ﻿using System.Net;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using PartyWebAppCommon.DTOs;
 using PartyWebAppServer.ErrorHandling.ErrorModels;
 
 namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
 public class LocationNotExistsAppException : AppException
 {
-    public LocationNotExistsAppException(LocationDto location)
+    public LocationNotExistsAppException(string location)
     {
-        Message = $"Location with name:'{location.Name}' and address:'{location.Address}' does not exist in DB.";
-        ErrorObject = new LocationNotExistsErrorModel{Name = location.Name, Address = location.Address};
+        Message = $"The {location} does not exist.";
+        ErrorObject = new LocationNotExistsErrorModel{Location = location};
         HttpStatusCode = HttpStatusCode.BadRequest;
     }
     public override string Message { get; }
