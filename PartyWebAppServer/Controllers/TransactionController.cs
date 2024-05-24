@@ -45,7 +45,6 @@ public class TransactionController
                 if (location == null) throw new LocationNotExistsAppException(locationId);
                 if (location.Type == LocationType.ATM) throw new ArgumentException("Cannot buy food from ATM.");
                 if (wallet == null) throw new ArgumentException("Username does not exist.");
-                if (currencyType != wallet.Currency) throw new ArgumentException("Spent- and wallet currency does not match.");
 
                 if (wallet.Amount < spentCurrency) 
                     throw new ArithmeticException("Insufficient funds.");
@@ -55,7 +54,6 @@ public class TransactionController
                 if (location.Type == LocationType.ATM) throw new ArgumentException("Cannot buy ticket from ATM.");
                 if (currentEvent == null) throw new ArgumentException("Event does not exist.");
                 if (wallet == null) throw new ArgumentException("Username does not exist.");
-                if (currencyType != wallet.Currency) throw new ArgumentException("Spent- and wallet currency does not match.");
                 
                 if (wallet.Amount < spentCurrency)
                     throw new ArithmeticException("Insufficient funds.");
