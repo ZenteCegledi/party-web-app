@@ -12,7 +12,7 @@ namespace PartyWebAppServer.Services.EventService;
 
 [ApiController]
 [Route("api/events")]
-public class EventService : IEventService
+public class EventService
 {
     private AppDbContext DbContext { get; set; }
 
@@ -21,46 +21,27 @@ public class EventService : IEventService
         DbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Event>> GetAllEventsAsync()
+    public async Task<IEnumerable<Event>> GetAllEvents()
     {
-        return DbContext.Events.ToList();
+        IEnumerable<Event> events = DbContext.Events.ToList();
+        return events;
+    }
+
+    public async Task<Event> GetEventById(int id)
+    {
         if (DbContext.Events.ToList().Where(e => e.Id == id).ToList().Count == 0)
         {
             throw new EventIdNotFoundException(id);
         }
-        Event events = DbContext.Events.ToList().Where(e => e.Id == id).First();
-        return events;
-    }
-
-    public async Task<Event> GetEventByIdAsync(string id)
-    {
-        int eventId = int.Parse(id);
-        Event eventItem = DbContext.Events.ToList().Where(e => e.Id == eventId).FirstOrDefault();
-        if (eventItem == null)
-        {
-            throw new EventIdNotFoundException(eventId);
-        }
+        Event eventItem = DbContext.Events.ToList().Where(e => e.Id == id).FirstOrDefault();
         return eventItem;
     }
 
-    public async Task<Event> CreateEventAsync(Event newEvent)
+    public async Task<Event> CreateEvent(Event newEvent)
     {
         DbContext.Events.Add(newEvent);
         await DbContext.SaveChangesAsync();
         return newEvent;
-    }
-
-    public async Task UpdateEventAsync(Event updatedEvent)
-    {
-        Event eventToUpdate = await DbContext.Events.FindAsync(updatedEvent.Id);
-        if (DbContext.Events.ToList().Where(e => e.Id == id).ToList().Count == 0)
-        {
-        }
-            throw new EventIdNotFoundException(id);
-        Event events = DbContext.Events.ToList().Where(e => e.Id == id).ToList().First();
-        DbContext.Events.Remove(events);
-        await DbContext.SaveChangesAsync();
-        return events;
     }
     
     //EditEvent
@@ -74,30 +55,30 @@ public class EventService : IEventService
         Event eventToUpdate = await DbContext.Events.FindAsync(request.Id);
         if (eventToUpdate != null)
         {
-            eventToUpdate.Name = updatedEvent.Name;
-            eventToUpdate.Type = updatedEvent.Type;
-            eventToUpdate.LocationId = updatedEvent.LocationId;
-            eventToUpdate.Price = updatedEvent.Price;
+            eventToUpdate.Name = request.Name;
+            eventToUpdate.Type = request.Type;
+            eventToUpdate.LocationId = request.LocationId;
+            eventToUpdate.Price = request.Price;
             await DbContext.SaveChangesAsync();
+            return eventToUpdate;
         }
         else
         {
-            throw new EventIdNotFoundException(updatedEvent.Id);
+            throw new EventIdNotFoundException(request.Id);
         }
     }
 
-    public async Task DeleteEventAsync(string id)
+    public async Task DeleteEvent(int id)
     {
-        int eventId = int.Parse(id);
-        Event eventToDelete = DbContext.Events.ToList().Where(e => e.Id == eventId).FirstOrDefault();
+        if (DbContext.Events.ToList().Where(e => e.Id == id).ToList().Count == 0)
+        {
+            throw new EventIdNotFoundException(id);
+        }
+        Event eventToDelete = DbContext.Events.ToList().Where(e => e.Id == id).FirstOrDefault();
         if (eventToDelete != null)
         {
             DbContext.Events.Remove(eventToDelete);
             DbContext.SaveChanges();
-        }
-        else
-        {
-            throw new EventIdNotFoundException(eventId);
         }
     }
 }
