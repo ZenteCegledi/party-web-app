@@ -1,8 +1,9 @@
 @using PartyWebAppClient.Components
+@using PartyWebAppClient.Layout
 
 <Router AppAssembly="typeof(Program).Assembly">
     <Found Context="routeData">
-        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)">
+        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)">
             <Authorizing>
                 <LoadInProgress />
             </Authorizing>
