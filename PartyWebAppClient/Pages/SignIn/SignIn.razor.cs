@@ -2,7 +2,8 @@
 
 namespace PartyWebAppClient.Pages.SignIn;
 
-public partial class SignIn : ComponentBase {
+public partial class SignIn : ComponentBase
+{
 	private SignInModel _model = new SignInModel();
 	private bool loading = false;
 
