@@ -184,22 +184,22 @@ namespace PartyWebAppServer.Migrations
                         new
                         {
                             Username = "admin",
-                            BirthDate = new DateTime(1994, 5, 26, 14, 51, 24, 718, DateTimeKind.Utc).AddTicks(2377),
+                            BirthDate = new DateTime(1994, 5, 26, 17, 17, 44, 837, DateTimeKind.Utc).AddTicks(3795),
                             Email = "admin@admin.com",
                             Name = "Admin User",
-                            Password = "admin",
-                            PasswordUpdated = new DateTime(2024, 5, 26, 14, 51, 24, 718, DateTimeKind.Utc).AddTicks(2384),
+                            Password = "$2a$11$9pNs1ln.HVueKI8Gy/I5D.WjCdM/XlXNs4Ro55zh8f6op72ZetknK",
+                            PasswordUpdated = new DateTime(2024, 5, 26, 17, 17, 44, 837, DateTimeKind.Utc).AddTicks(3804),
                             Phone = "1234567890",
                             RoleId = 1
                         },
                         new
                         {
                             Username = "user",
-                            BirthDate = new DateTime(2004, 5, 26, 14, 51, 24, 718, DateTimeKind.Utc).AddTicks(2397),
+                            BirthDate = new DateTime(2004, 5, 26, 17, 17, 44, 965, DateTimeKind.Utc).AddTicks(3410),
                             Email = "user@gmail.com",
                             Name = "User",
-                            Password = "user",
-                            PasswordUpdated = new DateTime(2024, 5, 26, 14, 51, 24, 718, DateTimeKind.Utc).AddTicks(2399),
+                            Password = "$2a$11$vlasOEq/bRT3HsUV8O4ThO91T45WDAHhdepR6u78f.YX2jdJSL6eW",
+                            PasswordUpdated = new DateTime(2024, 5, 26, 17, 17, 44, 965, DateTimeKind.Utc).AddTicks(3420),
                             Phone = "0987654321",
                             RoleId = 2
                         });
@@ -227,13 +227,25 @@ namespace PartyWebAppServer.Migrations
                         {
                             Currency = 1,
                             Username = "user",
-                            Amount = 1000m
+                            Amount = 100m
                         },
                         new
                         {
                             Currency = 2,
                             Username = "user",
-                            Amount = 2000m
+                            Amount = 400m
+                        },
+                        new
+                        {
+                            Currency = 0,
+                            Username = "user",
+                            Amount = 5000m
+                        },
+                        new
+                        {
+                            Currency = 3,
+                            Username = "user",
+                            Amount = 10000m
                         });
                 });
 

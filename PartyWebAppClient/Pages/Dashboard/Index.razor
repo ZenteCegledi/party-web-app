@@ -6,6 +6,7 @@
 
 @using PartyWebAppClient.Layout
 @using System.Text.Json
+@using PartyWebAppClient.Components.Dashboard
 
 <PageTitle>PartyWebApp - Dashboard</PageTitle>
 
@@ -14,6 +15,12 @@
 <p>Welcome to your new app.</p>
 
 <AuthorizeView>
+    <Wallets />
+
+    <h1 class="text-3xl font-semibold">User CLAIM - UserName: @context.User.FindFirst("userName")?.Value</h1>
+    <h1 class="text-3xl font-semibold">User CLAIM - RoleID: @context.User.FindFirst("RoleID")?.Value</h1>
+    <h1 class="text-3xl font-semibold">User CLAIM - Email: @context.User.FindFirst("Email")?.Value</h1>
+
     <h1 class="text-3xl font-semibold">Current User Object in the Context:</h1>
     <pre>@JsonSerializer.Serialize(context.User, new JsonSerializerOptions { WriteIndented = true, ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve })</pre>
 </AuthorizeView>

@@ -1,5 +1,6 @@
 using BitzArt.Blazor.Auth;
 using Microsoft.IdentityModel.Tokens;
+using PartyWebAppServer.Database.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -18,10 +19,10 @@ public class JwtService
     public JwtService(IConfiguration configuration)
     {
         config = configuration ?? throw new ArgumentNullException(nameof(configuration));
-        string SecretKey            = config.GetValue<string>("SecretKey")!;
-        string PublicKey            = config.GetValue<string>("PublicKey")!;
-        int    AccessTokenDuration  = config.GetValue<int>("AccessTokenDuration");
-        int    RefreshTokenDuration = config.GetValue<int>("RefreshTokenDuration");
+        string SecretKey = config.GetValue<string>("SecretKey")!;
+        string PublicKey = config.GetValue<string>("PublicKey")!;
+        int AccessTokenDuration = config.GetValue<int>("AccessTokenDuration");
+        int RefreshTokenDuration = config.GetValue<int>("RefreshTokenDuration");
 
         var options = new JwtOptions
         {
@@ -45,15 +46,23 @@ public class JwtService
         _refreshTokenDuration = options.RefreshTokenDuration;
     }
 
-    public JwtPair BuildJwtPair()
+    public JwtPair BuildJwtPair(User? user)
     {
         var issuedAt = DateTime.UtcNow;
         var accessTokenExpiresAt = issuedAt + _accessTokenDuration;
 
+        if (user == null) throw new JwtException("User is null at JWTService.BuildJwtPair()");
+
         var accessToken = _tokenHandler.WriteToken(new JwtSecurityToken(
             claims: new[]
             {
-                new Claim("tt", "a")
+                new Claim("tt", "a"),
+                new Claim("Username", user.Username),
+                new Claim("RoleID", user.RoleId.ToString()),
+                new Claim("Email", user.Email),
+                new Claim("Name", user.Name),
+                new Claim("Phone", user.Phone),
+                new Claim("BirthDate", user.BirthDate.ToString()),
             },
             notBefore: issuedAt,
             expires: accessTokenExpiresAt,
@@ -65,7 +74,13 @@ public class JwtService
         var refreshToken = _tokenHandler.WriteToken(new JwtSecurityToken(
             claims: new[]
             {
-                new Claim("tt", "r")
+                new Claim("tt", "r"),
+                new Claim("Username", user.Username),
+                new Claim("RoleID", user.RoleId.ToString()),
+                new Claim("Email", user.Email),
+                new Claim("Name", user.Name),
+                new Claim("Phone", user.Phone),
+                new Claim("BirthDate", user.BirthDate.ToString()),
             },
             notBefore: issuedAt,
             expires: refreshTokenExpiresAt,
@@ -79,6 +94,62 @@ public class JwtService
             AccessTokenExpiresAt = accessTokenExpiresAt,
             RefreshTokenExpiresAt = refreshTokenExpiresAt
         };
+    }
+
+    public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+    {
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = false,
+            ValidateIssuer = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = _signingCredentials.Key,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
+
+        SecurityToken securityToken;
+        try
+        {
+            var principal = _tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.RsaSha256, StringComparison.InvariantCultureIgnoreCase)) throw new SecurityTokenException("Invalid token");
+
+            return principal;
+        }
+        catch (SecurityTokenExpiredException)
+        {
+            throw new JwtException("Token has expired");
+        }
+    }
+
+    public JwtPair RefreshJwtPair(string refreshToken)
+    {
+        try
+        {
+            var principal = GetPrincipalFromExpiredToken(refreshToken);
+
+            if (principal.FindFirst("tt")?.Value != "r") throw new JwtException("Invalid token type");
+
+            var user = new User
+            {
+                Username = principal.FindFirst("Username")?.Value,
+                RoleId = int.Parse(principal.FindFirst("RoleID")?.Value),
+                Email = principal.FindFirst("Email")?.Value,
+                Name = principal.FindFirst("Name")?.Value,
+                Phone = principal.FindFirst("Phone")?.Value,
+                BirthDate = DateTime.Parse(principal.FindFirst("BirthDate")?.Value),
+            };
+
+            return BuildJwtPair(user);
+        }
+        catch (JwtException ex)
+        {
+            Console.WriteLine(ex.Message);
+
+            throw new JwtException("Invalid token", ex);
+        }
     }
 }
 

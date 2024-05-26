@@ -1,0 +1,23 @@
+﻿@page "/Wallets"
+
+@attribute [Authorize]
+
+@using PartyWebAppCommon.DTOs
+
+<h3>Wallets</h3>
+
+<AuthorizeView>
+	<FluentHorizontalScroll Style="width: 400px; height: 400px; margin: auto;" Speed="1200"
+		Easing="ScrollEasing.EaseInOut">
+		@foreach (WalletDto wallet in wallets)
+		{
+			var currencyInfo = currencyMap[wallet.Currency];
+
+			<FluentCard class="bg-body-tertiary" Width="400px" Height="400px">
+				<img src="@currencyInfo.image" width="200" height="200" alt="@wallet.Currency" />
+				<span>@currencyInfo.symbol - @wallet.Amount</span>
+			</FluentCard>
+		}
+	</FluentHorizontalScroll>
+
+</AuthorizeView>

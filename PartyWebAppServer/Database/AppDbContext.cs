@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppCommon.enums;
 using PartyWebAppServer.Database.Models;
+using BCrypt.Net;
 
 namespace PartyWebAppServer.Database;
 
@@ -48,7 +49,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<User>().HasData(
             new User
             {
-                Password = "admin",
+                Password = BCrypt.Net.BCrypt.HashPassword("admin"),
                 Username = "admin",
                 RoleId = 1,
                 Email = "admin@admin.com",
@@ -62,7 +63,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<User>().HasData(
             new User
             {
-                Password = "user",
+                Password = BCrypt.Net.BCrypt.HashPassword("user"),
                 Username = "user",
                 RoleId = 2,
                 Email = "user@gmail.com",
@@ -82,7 +83,7 @@ public class AppDbContext : DbContext
             {
                 Currency = CurrencyType.EUR,
                 Username = "user",
-                Amount = 1000
+                Amount = 100
             }
         );
 
@@ -91,7 +92,25 @@ public class AppDbContext : DbContext
             {
                 Currency = CurrencyType.USD,
                 Username = "user",
-                Amount = 2000
+                Amount = 400
+            }
+        );
+
+        modelBuilder.Entity<Wallet>().HasData(
+            new Wallet
+            {
+                Currency = CurrencyType.HUF,
+                Username = "user",
+                Amount = 5000
+            }
+        );
+
+        modelBuilder.Entity<Wallet>().HasData(
+            new Wallet
+            {
+                Currency = CurrencyType.CREDIT,
+                Username = "user",
+                Amount = 10000
             }
         );
 

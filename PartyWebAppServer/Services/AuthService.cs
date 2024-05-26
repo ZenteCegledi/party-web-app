@@ -29,7 +29,7 @@ public class ServerSideAuthenticationService : ServerSideAuthenticationService<S
 
         if (!BCrypt.Verify(signInRequest.Password, user.Password)) return Task.FromResult(AuthenticationResult.Failure("Invalid password"));
 
-        var authResult = AuthenticationResult.Success(jwtService.BuildJwtPair());
+        var authResult = AuthenticationResult.Success(jwtService.BuildJwtPair(user));
 
         return Task.FromResult(authResult);
     }
@@ -37,7 +37,7 @@ public class ServerSideAuthenticationService : ServerSideAuthenticationService<S
     protected override Task<AuthenticationResult> GetSignUpResultAsync(SignUpRequest signUpRequest)
     {
         if (dbContext.Users.Any(u => u.Email == signUpRequest.Email)) return Task.FromResult(AuthenticationResult.Failure("User already exists"));
-        
+
         var user = new User
         {
             Email = signUpRequest.Email,
@@ -53,14 +53,14 @@ public class ServerSideAuthenticationService : ServerSideAuthenticationService<S
         dbContext.Users.Add(user);
         dbContext.SaveChanges();
 
-        var authResult = AuthenticationResult.Success(jwtService.BuildJwtPair());
+        var authResult = AuthenticationResult.Success(jwtService.BuildJwtPair(user));
 
         return Task.FromResult(authResult);
     }
 
     public override Task<AuthenticationResult> RefreshJwtPairAsync(string refreshToken)
     {
-        var authResult = AuthenticationResult.Success(jwtService.BuildJwtPair());
+        var authResult = AuthenticationResult.Success(jwtService.RefreshJwtPair(refreshToken));
 
         return Task.FromResult(authResult);
     }

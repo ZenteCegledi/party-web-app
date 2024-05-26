@@ -29,4 +29,6 @@ builder.Services.AddTransient(sp => new HubConnectionBuilder()
 builder.Services.AddFluentUIComponents();
 builder.Services.AddCascadingAuthenticationState();
 
+builder.Services.AddAuthorizationCore();
+
 await builder.Build().RunAsync();
