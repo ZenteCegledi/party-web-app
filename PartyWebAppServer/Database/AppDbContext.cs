@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using PartyWebAppCommon.enums;
+using PartyWebAppCommon.Enums;
 using PartyWebAppServer.Database.Models;
 using BCrypt.Net;
 

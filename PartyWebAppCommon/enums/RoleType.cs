@@ -1,4 +1,4 @@
-﻿namespace PartyWebAppCommon.enums;
+﻿namespace PartyWebAppCommon.Enums;
 
 public enum RoleType
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PartyWebAppCommon.DTOs;
-using PartyWebAppCommon.enums;
+using PartyWebAppCommon.Enums;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.ErrorHandling.Exceptions;
 

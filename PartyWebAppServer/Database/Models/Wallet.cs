@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using PartyWebAppCommon.enums;
+using PartyWebAppCommon.Enums;
 
 namespace PartyWebAppServer.Database.Models;
 
