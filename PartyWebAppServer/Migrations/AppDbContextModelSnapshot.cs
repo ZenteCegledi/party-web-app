@@ -184,13 +184,24 @@ namespace PartyWebAppServer.Migrations
                         new
                         {
                             Username = "admin",
-                            BirthDate = new DateTime(1994, 5, 24, 15, 11, 6, 100, DateTimeKind.Utc).AddTicks(46),
+                            BirthDate = new DateTime(1994, 5, 26, 14, 51, 24, 718, DateTimeKind.Utc).AddTicks(2377),
                             Email = "admin@admin.com",
                             Name = "Admin User",
                             Password = "admin",
-                            PasswordUpdated = new DateTime(2024, 5, 24, 15, 11, 6, 100, DateTimeKind.Utc).AddTicks(78),
+                            PasswordUpdated = new DateTime(2024, 5, 26, 14, 51, 24, 718, DateTimeKind.Utc).AddTicks(2384),
                             Phone = "1234567890",
                             RoleId = 1
+                        },
+                        new
+                        {
+                            Username = "user",
+                            BirthDate = new DateTime(2004, 5, 26, 14, 51, 24, 718, DateTimeKind.Utc).AddTicks(2397),
+                            Email = "user@gmail.com",
+                            Name = "User",
+                            Password = "user",
+                            PasswordUpdated = new DateTime(2024, 5, 26, 14, 51, 24, 718, DateTimeKind.Utc).AddTicks(2399),
+                            Phone = "0987654321",
+                            RoleId = 2
                         });
                 });
 
@@ -210,6 +221,20 @@ namespace PartyWebAppServer.Migrations
                     b.HasIndex("Username");
 
                     b.ToTable("Wallets");
+
+                    b.HasData(
+                        new
+                        {
+                            Currency = 1,
+                            Username = "user",
+                            Amount = 1000m
+                        },
+                        new
+                        {
+                            Currency = 2,
+                            Username = "user",
+                            Amount = 2000m
+                        });
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Event", b =>

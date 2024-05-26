@@ -34,7 +34,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Location>().HasKey(l => l.Id);
 
         modelBuilder.Entity<Transaction>().HasKey(t => t.Id);
-        
+
         #region RoleSeed
 
         modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Name = RoleType.Admin });
@@ -56,6 +56,42 @@ public class AppDbContext : DbContext
                 BirthDate = DateTime.UtcNow.AddYears(-30),
                 Phone = "1234567890",
                 PasswordUpdated = DateTime.UtcNow,
+            }
+        );
+
+        modelBuilder.Entity<User>().HasData(
+            new User
+            {
+                Password = "user",
+                Username = "user",
+                RoleId = 2,
+                Email = "user@gmail.com",
+                Name = "User",
+                BirthDate = DateTime.UtcNow.AddYears(-20),
+                Phone = "0987654321",
+                PasswordUpdated = DateTime.UtcNow,
+            }
+        );
+
+        #endregion
+
+        #region WalletSeed
+
+        modelBuilder.Entity<Wallet>().HasData(
+            new Wallet
+            {
+                Currency = CurrencyType.EUR,
+                Username = "user",
+                Amount = 1000
+            }
+        );
+
+        modelBuilder.Entity<Wallet>().HasData(
+            new Wallet
+            {
+                Currency = CurrencyType.USD,
+                Username = "user",
+                Amount = 2000
             }
         );
 
