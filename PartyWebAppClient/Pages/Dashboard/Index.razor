@@ -1,9 +1,19 @@
 @namespace PartyWebAppClient.Pages.Dashboard
 
 @page "/dashboard"
+@layout DashboardLayout
+@attribute [Authorize]
+
+@using PartyWebAppClient.Layout
+@using System.Text.Json
 
 <PageTitle>PartyWebApp - Dashboard</PageTitle>
 
 <h1>Dashboard</h1>
 
 <p>Welcome to your new app.</p>
+
+<AuthorizeView>
+    <h1 class="text-3xl font-semibold">Current User Object in the Context:</h1>
+    <pre>@JsonSerializer.Serialize(context.User, new JsonSerializerOptions { WriteIndented = true, ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve })</pre>
+</AuthorizeView>
