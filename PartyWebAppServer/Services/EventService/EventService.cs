@@ -14,59 +14,52 @@ using PartyWebAppServer.ErrorHandling.Exceptions;
 
 namespace PartyWebAppServer.Services.EventService;
 
-public class EventService : IEventService
+public class EventService(AppDbContext dbContext, IMapper mapper) : IEventService
 {
-    private AppDbContext DbContext { get; set; }
-    private IMapper Mapper { get; set; }
-
-    public EventService(AppDbContext dbContext)
-    {
-        DbContext = dbContext;
-    }
-
     //GetAllEvents
     public async Task<List<EventDTO>> GetAllEvents()
     {
-        List<Event> events = DbContext.Events.ToList();
-        return Mapper.Map<List<EventDTO>>(events);
+        List<Event> events = dbContext.Events.ToList();
+        return mapper.Map<List<EventDTO>>(events);
     }
 
     //GetEventById
     public async Task<EventDTO> GetEventById(int id)
     {
-        if (DbContext.Events.ToList().Where(e => e.Id == id).ToList().Count == 0)
+        if (dbContext.Events.Where(e => e.Id == id).ToList().Count == 0)
         {
             throw new EventIdNotFoundAppException(id);
         }
-        Event eventItem = DbContext.Events.ToList().Where(e => e.Id == id).FirstOrDefault();
+        Event eventItem = dbContext.Events.Where(e => e.Id == id).FirstOrDefault();
         
-        return Mapper.Map<EventDTO>(eventItem);
+        return mapper.Map<EventDTO>(eventItem);
     }
     
     //GetEventByLocationIds
     public async Task<List<EventDTO>> GetEventByLocationIds([FromQuery]EventsByLocationRequest request)
     {
-        if (request.LocationIds.Count == 0)
+        List<Event> events;
+        if (request.LocationIds.Count > 0)
         {
-            List<EventDTO> eventDtos = new List<EventDTO>();
-            await DbContext.Events.ForEachAsync(e =>
+            events = await dbContext.Events
+                .Where(e => request.LocationIds.Contains(e.LocationId))
+                .ToListAsync();
+
+            List<EventDTO> eventDto = events.Select(e => new EventDTO()
             {
-                eventDtos.Add(new EventDTO()
-                {
-                    Id = e.Id,
-                    Name = e.Name,
-                    Type = e.Type,
-                    LocationId = e.LocationId,
-                    Price = e.Price
-                });
-            });
-            return eventDtos;
+                Id = e.Id,
+                Name = e.Name,
+                Type = e.Type,
+                LocationId = e.LocationId,
+                Price = e.Price
+            }).ToList();
+
+            return eventDto;
         }
-        List<Event> events = DbContext.Events.ToList().Where(e => request.LocationIds.Contains(e.LocationId)).ToList();
-        return Mapper.Map<List<EventDTO>>(events);
+        events = dbContext.Events.ToList().Where(e => request.LocationIds.Contains(e.LocationId)).ToList();
+        return mapper.Map<List<EventDTO>>(events);
     }
     
-
     //CreateEvent
     public async Task<EventDTO> CreateEvent(CreateEventRequest request)
     {
@@ -82,15 +75,17 @@ public class EventService : IEventService
             throw new EventTypeDoesNotExistAppException(newEvent.Type);
         }
         
-        DbContext.Events.Add(newEvent);
-        await DbContext.SaveChangesAsync();
-        return Mapper.Map<EventDTO>(newEvent);
+        dbContext.Events.Add(newEvent);
+        await dbContext.SaveChangesAsync();
+        return mapper.Map<EventDTO>(newEvent);
     }
     
     //EditEvent
     public async Task<EventDTO> EditEvent(EditEventRequest request)
     {
-        if (DbContext.Events.ToList().Where(e => e.Id == request.Id).ToList().Count == 0)
+        Event eventToUpdate = await dbContext.Events.FirstOrDefaultAsync(e => e.Id == request.Id);
+
+        if (eventToUpdate == null)
         {
             throw new EventIdNotFoundAppException(request.Id);
         }
@@ -99,36 +94,30 @@ public class EventService : IEventService
         {
             throw new EventTypeDoesNotExistAppException(request.Type);
         }
-       
-        Event eventToUpdate = await DbContext.Events.FindAsync(request.Id);
-        if (eventToUpdate != null)
-        {
-            eventToUpdate.Name = request.Name;
-            eventToUpdate.Type = request.Type;
-            eventToUpdate.LocationId = request.LocationId;
-            eventToUpdate.Price = request.Price;
-            await DbContext.SaveChangesAsync();
-            return Mapper.Map<EventDTO>(eventToUpdate);
-        }
-        else
-        {
-            throw new EventIdNotFoundAppException(request.Id);
-        }
+
+        eventToUpdate.Name = request.Name;
+        eventToUpdate.Type = (EventType)request.Type;
+        eventToUpdate.LocationId = (int)request.LocationId;
+        eventToUpdate.Price = (int)request.Price;
+
+        await dbContext.SaveChangesAsync();
+
+        return mapper.Map<EventDTO>(eventToUpdate);
     }
 
     //DeleteEvent
     public async Task<EventDTO> DeleteEvent(int id)
     {
-        if (DbContext.Events.ToList().Where(e => e.Id == id).ToList().Count == 0)
+        if (dbContext.Events.ToList().Where(e => e.Id == id).ToList().Count == 0)
         {
             throw new EventIdNotFoundAppException(id);
         }
-        Event eventToDelete = DbContext.Events.ToList().Where(e => e.Id == id).FirstOrDefault();
+        Event eventToDelete = dbContext.Events.ToList().Where(e => e.Id == id).FirstOrDefault();
         if (eventToDelete != null)
         {
-            DbContext.Events.Remove(eventToDelete);
-            DbContext.SaveChanges();
+            dbContext.Events.Remove(eventToDelete);
+            dbContext.SaveChanges();
         }
-        return Mapper.Map<EventDTO>(eventToDelete);
+        return mapper.Map<EventDTO>(eventToDelete);
     }
 }
