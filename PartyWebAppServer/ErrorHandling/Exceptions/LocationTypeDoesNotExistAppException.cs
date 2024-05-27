@@ -10,10 +10,10 @@ public class LocationTypeDoesNotExistAppException : AppException
     public override string Message { get; }
     public override HttpStatusCode HttpStatusCode { get; }
 
-    public LocationTypeDoesNotExistAppException(LocationType? type)
+    public LocationTypeDoesNotExistAppException(int? type)
     {
         Message = $"Location type {type} does not exist";
         HttpStatusCode = HttpStatusCode.BadRequest;
-        ErrorObject = new LocationTypeDoesNotExistErrorModel { Type = (LocationType)type };
+        ErrorObject = new LocationTypeDoesNotExistErrorModel { Type = (int)type };
     }
 }

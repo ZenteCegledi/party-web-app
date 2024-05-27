@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database.Models;
 using PartyWebAppServer.Services;
@@ -10,42 +12,44 @@ namespace PartyWebAppServer.Controllers;
 public class LocationController
 {
     
-    private ILocationService LocationService;
-
-    public LocationController(ILocationService locationService)
+    private ILocationService _locationService;
+    
+    private readonly IMapper _mapper;
+    
+    public LocationController(ILocationService locationService, IMapper mapper)
     {
-        LocationService = locationService;
+        _locationService = locationService;
+        _mapper = mapper;
     }
-
     
     [HttpGet("{id}")]
-    public async Task<Location> GetLocation(int id)
+    public async Task<LocationDTO> GetLocation(int id)
     {
-        return await LocationService.GetLocation(id);
+        return await _locationService.GetLocation(id);
     }
     
     
     [HttpGet()]
-    public async Task<List<Location>> GetLocations()
+    public async Task<List<LocationDTO>> GetLocations()
     {
-        return await LocationService.GetLocations();
+        return await _locationService.GetLocations();
     }
 
     [HttpPost()]
-    public async Task<Location> CreateLocation(CreateLocationRequest request)
+    public async Task<LocationDTO> CreateLocation(CreateLocationRequest request)
     {
-        return await LocationService.CreateLocation(request);
+        return await _locationService.CreateLocation(request);
     }
 
     [HttpDelete("{id}")]
-    public async Task<Location> DeleteLocation(int id)
+    public async Task<LocationDTO> DeleteLocation(int id)
     {
-        return await LocationService.DeleteLocation(id);
+        return await _locationService.DeleteLocation(id);
     }
 
     [HttpPut("{id}")]
-    public async Task<Location> EditLocation(int id, EditLocationRequest request)
+    public async Task<LocationDTO> EditLocation(int id, EditLocationRequest request)
     {
-        return await LocationService.EditLocation(id, request);
+        return await _locationService.EditLocation(id, request);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System.Net;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.enums;
 using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database;
@@ -11,30 +13,40 @@ using PartyWebAppServer.ErrorHandling.Exceptions;
 namespace PartyWebAppServer.Services;
 public class LocationService : ILocationService
 {
-    private AppDbContext DbContext { get; set; }
+    private readonly AppDbContext _dbContext;
+    private readonly IMapper _mapper;
 
-    public LocationService(AppDbContext dbContext)
+    public LocationService(AppDbContext dbContext, IMapper mapper)
     {
-        DbContext = dbContext;
+        _dbContext = dbContext;
+        _mapper = mapper;
     }
 
-    public async Task<Location> GetLocation(int id)
+    public async Task<LocationDTO> GetLocation(int id)
     {
-        Location location = await DbContext.Locations.FindAsync(id);
+        var location = await _dbContext.Locations.FirstOrDefaultAsync(l => l.Id == id);
         if (location == null)
             throw new LocationIdNotFoundAppException(id);
-        return location;
+        return _mapper.Map<LocationDTO>(location);
     }
 
-    public async Task<List<Location>> GetLocations()
+    public async Task<List<LocationDTO>> GetLocations()
     {
-        return await DbContext.Locations.ToListAsync();
+        List<LocationDTO> locationDtos = new List<LocationDTO>();
+        await _dbContext.Locations.ForEachAsync(l => locationDtos.Add(_mapper.Map<LocationDTO>(l)));
+        return locationDtos;
     }
 
-    public async Task<Location> CreateLocation(CreateLocationRequest request)
+    public async Task<LocationDTO> CreateLocation(CreateLocationRequest request)
     {
         if(!Enum.IsDefined(typeof(LocationType), request.Type))
-            throw new LocationTypeDoesNotExistAppException(request.Type);
+            throw new LocationTypeDoesNotExistAppException(Convert.ToInt32(request.Type));
+        
+        await _dbContext.Locations.ForEachAsync(l =>
+        {
+            if (l.Name == request.Name && l.Address == request.Address)
+                throw new LocationAlreadyExistsAppException(request.Name, request.Address);
+        });
         
         Location location = new Location
         {
@@ -42,42 +54,48 @@ public class LocationService : ILocationService
             Address = request.Address,
             Type = request.Type
         };
-        DbContext.Locations.Add(location);
-        await DbContext.SaveChangesAsync();
-        return location;
+        _dbContext.Locations.Add(location);
+        await _dbContext.SaveChangesAsync();
+        return _mapper.Map<LocationDTO>(location);
     }
 
-    public async Task<Location> DeleteLocation(int id)
+    public async Task<LocationDTO> DeleteLocation(int id)
     {
-        Location location = await DbContext.Locations.FindAsync(id);
+        var location = await _dbContext.Locations.FirstOrDefaultAsync(l => l.Id == id);
         if (location == null)
             throw new LocationIdNotFoundAppException(id);
         
-        DbContext.Locations.Remove(location);
-        await DbContext.SaveChangesAsync();
-        return location;
+        _dbContext.Locations.Remove(location);
+        await _dbContext.SaveChangesAsync();
+        return _mapper.Map<LocationDTO>(location);
     }
 
-    public async Task<Location> EditLocation(int id, EditLocationRequest request)
+    public async Task<LocationDTO> EditLocation(int id, EditLocationRequest request)
     {
-        Location location = await DbContext.Locations.FindAsync(id);
+        var location = await _dbContext.Locations.FirstOrDefaultAsync(l => l.Id == id);
         if (location == null)
             throw new LocationIdNotFoundAppException(id);
+        
+        await _dbContext.Locations.ForEachAsync(l =>
+        {
+            if (l.Name == request.Name && l.Address == request.Address)
+                throw new LocationAlreadyExistsAppException(request.Name, request.Address);
+        });
         
         if (!string.IsNullOrEmpty(request.Name))
             location.Name = request.Name;
-        if (!string.IsNullOrEmpty(request.Address))
-            location.Address = request.Address;
+        
+        location.Address = request.Address;
 
         if (request.Type != null)
         {
             if(Enum.IsDefined(typeof(LocationType), request.Type))
                 location.Type = request.Type;
             else
-                throw new LocationTypeDoesNotExistAppException(request.Type);
+                throw new LocationTypeDoesNotExistAppException(Convert.ToInt32(request.Type));
         }
 
-        await DbContext.SaveChangesAsync();
-        return location;
+        await _dbContext.SaveChangesAsync();
+        return _mapper.Map<LocationDTO>(location);
     }
 }
