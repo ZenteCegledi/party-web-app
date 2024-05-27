@@ -55,7 +55,7 @@ public class AppHttpClient : IAppHttpClient
             return (default, null);
         }
     }
-    
+
     public async Task<(T?, AppErrorModel?)> PostAsync<T>(string query, object content)
     {
         var stringContent = new StringContent(

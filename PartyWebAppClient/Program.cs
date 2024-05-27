@@ -5,6 +5,7 @@ using Microsoft.FluentUI.AspNetCore.Components;
 using PartyWebAppClient;
 using PartyWebAppClient.Services;
 using BitzArt.Blazor.Auth;
+using BitzArt.Blazor.Cookies;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 var baseUri = new Uri(builder.HostEnvironment.BaseAddress);
@@ -17,6 +18,7 @@ builder.Services.AddTransient<IAppHttpClient, AppHttpClient>();
 
 builder.Services.AddBlazorBootstrap();
 
+builder.AddBlazorCookies();
 builder.AddBlazorAuth();
 
 builder.Services.AddTransient(sp => new HubConnectionBuilder()
@@ -25,5 +27,8 @@ builder.Services.AddTransient(sp => new HubConnectionBuilder()
     .Build());
 
 builder.Services.AddFluentUIComponents();
+builder.Services.AddCascadingAuthenticationState();
+
+builder.Services.AddAuthorizationCore();
 
 await builder.Build().RunAsync();

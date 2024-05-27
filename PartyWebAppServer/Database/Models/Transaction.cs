@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using PartyWebAppCommon.enums;
+using PartyWebAppCommon.Enums;
 
 namespace PartyWebAppServer.Database.Models;
 

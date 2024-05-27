@@ -88,6 +88,18 @@ namespace PartyWebAppServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = 1
+                        });
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Transaction", b =>
@@ -167,6 +179,30 @@ namespace PartyWebAppServer.Migrations
                     b.HasKey("Username");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Username = "admin",
+                            BirthDate = new DateTime(1994, 5, 27, 12, 50, 10, 312, DateTimeKind.Utc).AddTicks(9759),
+                            Email = "admin@admin.com",
+                            Name = "Admin User",
+                            Password = "$2a$11$b3z3nkEivp6BmIc2oaFyuuuJlyaua76/97WGBBD0Dkv2kbSciyEhC",
+                            PasswordUpdated = new DateTime(2024, 5, 27, 12, 50, 10, 312, DateTimeKind.Utc).AddTicks(9780),
+                            Phone = "1234567890",
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Username = "user",
+                            BirthDate = new DateTime(2004, 5, 27, 12, 50, 10, 514, DateTimeKind.Utc).AddTicks(1216),
+                            Email = "user@gmail.com",
+                            Name = "User",
+                            Password = "$2a$11$PSGj9IGXlAROAxx4yBK3Y.eFmwMeqkmcPaNnYy2iSxgaSDhaCgKHW",
+                            PasswordUpdated = new DateTime(2024, 5, 27, 12, 50, 10, 514, DateTimeKind.Utc).AddTicks(1236),
+                            Phone = "0987654321",
+                            RoleId = 2
+                        });
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Wallet", b =>
@@ -180,11 +216,44 @@ namespace PartyWebAppServer.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Currency", "Username");
 
                     b.HasIndex("Username");
 
                     b.ToTable("Wallets");
+
+                    b.HasData(
+                        new
+                        {
+                            Currency = 1,
+                            Username = "user",
+                            Amount = 100m,
+                            IsPrimary = false
+                        },
+                        new
+                        {
+                            Currency = 2,
+                            Username = "user",
+                            Amount = 400m,
+                            IsPrimary = false
+                        },
+                        new
+                        {
+                            Currency = 0,
+                            Username = "user",
+                            Amount = 5000m,
+                            IsPrimary = true
+                        },
+                        new
+                        {
+                            Currency = 3,
+                            Username = "user",
+                            Amount = 10000m,
+                            IsPrimary = false
+                        });
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Event", b =>

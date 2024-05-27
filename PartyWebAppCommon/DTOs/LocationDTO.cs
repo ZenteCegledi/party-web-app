@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Forms.Mapping;
-using PartyWebAppCommon.enums;
+using PartyWebAppCommon.Enums;
 
 namespace PartyWebAppCommon.DTOs;
 
