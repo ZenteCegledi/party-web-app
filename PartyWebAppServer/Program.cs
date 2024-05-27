@@ -27,6 +27,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<JwtService>();
 builder.AddBlazorAuth<ServerSideAuthenticationService>();
+
 builder.Services.AddTransient<IEventService, EventService>();
 
 builder.Services.AddTransient<ILocationService, LocationService>();
