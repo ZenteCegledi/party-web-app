@@ -184,22 +184,22 @@ namespace PartyWebAppServer.Migrations
                         new
                         {
                             Username = "admin",
-                            BirthDate = new DateTime(1994, 5, 26, 17, 17, 44, 837, DateTimeKind.Utc).AddTicks(3795),
+                            BirthDate = new DateTime(1994, 5, 27, 12, 50, 10, 312, DateTimeKind.Utc).AddTicks(9759),
                             Email = "admin@admin.com",
                             Name = "Admin User",
-                            Password = "$2a$11$9pNs1ln.HVueKI8Gy/I5D.WjCdM/XlXNs4Ro55zh8f6op72ZetknK",
-                            PasswordUpdated = new DateTime(2024, 5, 26, 17, 17, 44, 837, DateTimeKind.Utc).AddTicks(3804),
+                            Password = "$2a$11$b3z3nkEivp6BmIc2oaFyuuuJlyaua76/97WGBBD0Dkv2kbSciyEhC",
+                            PasswordUpdated = new DateTime(2024, 5, 27, 12, 50, 10, 312, DateTimeKind.Utc).AddTicks(9780),
                             Phone = "1234567890",
                             RoleId = 1
                         },
                         new
                         {
                             Username = "user",
-                            BirthDate = new DateTime(2004, 5, 26, 17, 17, 44, 965, DateTimeKind.Utc).AddTicks(3410),
+                            BirthDate = new DateTime(2004, 5, 27, 12, 50, 10, 514, DateTimeKind.Utc).AddTicks(1216),
                             Email = "user@gmail.com",
                             Name = "User",
-                            Password = "$2a$11$vlasOEq/bRT3HsUV8O4ThO91T45WDAHhdepR6u78f.YX2jdJSL6eW",
-                            PasswordUpdated = new DateTime(2024, 5, 26, 17, 17, 44, 965, DateTimeKind.Utc).AddTicks(3420),
+                            Password = "$2a$11$PSGj9IGXlAROAxx4yBK3Y.eFmwMeqkmcPaNnYy2iSxgaSDhaCgKHW",
+                            PasswordUpdated = new DateTime(2024, 5, 27, 12, 50, 10, 514, DateTimeKind.Utc).AddTicks(1236),
                             Phone = "0987654321",
                             RoleId = 2
                         });
@@ -216,6 +216,9 @@ namespace PartyWebAppServer.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Currency", "Username");
 
                     b.HasIndex("Username");
@@ -227,25 +230,29 @@ namespace PartyWebAppServer.Migrations
                         {
                             Currency = 1,
                             Username = "user",
-                            Amount = 100m
+                            Amount = 100m,
+                            IsPrimary = false
                         },
                         new
                         {
                             Currency = 2,
                             Username = "user",
-                            Amount = 400m
+                            Amount = 400m,
+                            IsPrimary = false
                         },
                         new
                         {
                             Currency = 0,
                             Username = "user",
-                            Amount = 5000m
+                            Amount = 5000m,
+                            IsPrimary = true
                         },
                         new
                         {
                             Currency = 3,
                             Username = "user",
-                            Amount = 10000m
+                            Amount = 10000m,
+                            IsPrimary = false
                         });
                 });
 

@@ -12,9 +12,9 @@ public class WalletController
 {
     public WalletController(AppDbContext context)
     {
-        WalletService = (IWalletService)new ServerWalletService(context);
+        WalletService = new ServerWalletService(context);
     }
-    private IWalletService WalletService { get; set; }
+    private ServerWalletService WalletService { get; set; }
 
     [HttpGet("{username}")]
     public async Task<List<WalletDto>> GetWallets(string username)

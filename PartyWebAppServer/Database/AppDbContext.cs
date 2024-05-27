@@ -101,7 +101,8 @@ public class AppDbContext : DbContext
             {
                 Currency = CurrencyType.HUF,
                 Username = "user",
-                Amount = 5000
+                Amount = 5000,
+                IsPrimary = true
             }
         );
 

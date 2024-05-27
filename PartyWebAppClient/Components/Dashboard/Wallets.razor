@@ -1,6 +1,4 @@
-﻿@page "/Wallets"
-
-@attribute [Authorize]
+﻿@attribute [Authorize]
 
 @using PartyWebAppCommon.DTOs
 
@@ -13,12 +11,11 @@
 				{
 						<FluentButton Appearance="Appearance.Lightweight" @onclick="() => chosenWallet = wallet">
 							<img alt="@wallet.Currency" class="rounded-circle" height="20"
-								src="@currencyMap[wallet.Currency].image" style="object-fit: cover" width="20" /> -
+								src="@currencyMap[wallet.Currency].image" style="object-fit: cover" width="20" />
 						@wallet.Currency
 						</FluentButton>
 				}
 			</div>
-
 
 			<div>
 				<FluentButton Appearance="Appearance.Lightweight" IconStart="@(new Icons.Regular.Size24.Wallet())">
@@ -28,7 +25,7 @@
 		</div>
 	</FluentCard>
 
-	<FluentCard class="mt-4" Height="300px" Width="300px">
+	<FluentCard class="mt-4" Height="300px" Width="100%">
 		<div class="d-flex justify-content-between flex-column h-100">
 			<div class="w-100 d-flex justify-content-between">
 				<img alt="@chosenWallet.Currency" class="rounded-circle" height="75"

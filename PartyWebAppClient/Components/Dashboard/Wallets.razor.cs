@@ -1,10 +1,7 @@
-﻿using System.Net.Http.Json;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Enums;
-using PartyWebAppClient.Services;
-using BlazorBootstrap;
 using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace PartyWebAppClient.Components.Dashboard;
@@ -15,7 +12,7 @@ public partial class Wallets : ComponentBase
     private Task<AuthenticationState>? authenticationState { get; set; }
 
     [Inject]
-    private AppHttpClient? Http { get; set; }
+    private HttpClient? Http { get; set; }
 
     [Inject]
     private IToastService? ToastService { get; set; }
@@ -38,10 +35,11 @@ public partial class Wallets : ComponentBase
         if (user == null) return;
 
         var walletService = new ClientWalletService(Http!);
-        var (_wallets, error) = await walletService.GetUserWallets(user.FindFirst("username")?.Value!);
 
-        if (error is not null) ToastService?.ShowError(error.Message);
-        else wallets = _wallets ?? new List<WalletDto>();
+        // var (_wallets, error) = await walletService.GetUserWallets(user.FindFirst("username")?.Value!);
+        // if (error is not null) ToastService?.ShowError(error.Message);
+
+        wallets = await walletService.GetUserWallets(user.FindFirst("username")?.Value!);
 
         if (wallets.Count > 0) chosenWallet = wallets.Find(w => w.IsPrimary) ?? wallets[0];
 
