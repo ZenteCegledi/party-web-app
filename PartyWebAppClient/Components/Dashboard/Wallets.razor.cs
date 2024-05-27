@@ -23,7 +23,7 @@ public partial class Wallets : ComponentBase
         CurrencyType.USD => ("$", "images/flags/us.svg"),
         CurrencyType.EUR => ("€", "images/flags/eu.svg"),
         CurrencyType.HUF => ("Ft", "images/flags/hu.svg"),
-        CurrencyType.CREDIT => ("C", "images/flags/hu.svg"),
+        CurrencyType.CREDIT => ("C", "images/flags/credit.svg"),
     });
     private WalletDto chosenWallet = new WalletDto();
 
