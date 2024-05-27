@@ -6,6 +6,9 @@ using PartyWebAppServer.Services.EventService;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.enums;
 using PartyWebAppServer.ErrorHandling.Exceptions;
 
@@ -14,6 +17,7 @@ namespace PartyWebAppServer.Services.EventService;
 public class EventService : IEventService
 {
     private AppDbContext DbContext { get; set; }
+    private IMapper Mapper { get; set; }
 
     public EventService(AppDbContext dbContext)
     {
@@ -21,37 +25,50 @@ public class EventService : IEventService
     }
 
     //GetAllEvents
-    public async Task<List<Event>> GetAllEvents()
+    public async Task<List<EventDTO>> GetAllEvents()
     {
         List<Event> events = DbContext.Events.ToList();
-        return events;
+        return Mapper.Map<List<EventDTO>>(events);
     }
 
     //GetEventById
-    public async Task<Event> GetEventById(int id)
+    public async Task<EventDTO> GetEventById(int id)
     {
         if (DbContext.Events.ToList().Where(e => e.Id == id).ToList().Count == 0)
         {
             throw new EventIdNotFoundAppException(id);
         }
         Event eventItem = DbContext.Events.ToList().Where(e => e.Id == id).FirstOrDefault();
-        return eventItem;
+        
+        return Mapper.Map<EventDTO>(eventItem);
     }
     
     //GetEventByLocationIds
-    public async Task<List<Event>> GetEventByLocationIds([FromQuery]EventsByLocationRequest request)
+    public async Task<List<EventDTO>> GetEventByLocationIds([FromQuery]EventsByLocationRequest request)
     {
         if (request.LocationIds.Count == 0)
         {
-            return DbContext.Events.ToList();
+            List<EventDTO> eventDtos = new List<EventDTO>();
+            await DbContext.Events.ForEachAsync(e =>
+            {
+                eventDtos.Add(new EventDTO()
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    Type = e.Type,
+                    LocationId = e.LocationId,
+                    Price = e.Price
+                });
+            });
+            return eventDtos;
         }
         List<Event> events = DbContext.Events.ToList().Where(e => request.LocationIds.Contains(e.LocationId)).ToList();
-        return events;
+        return Mapper.Map<List<EventDTO>>(events);
     }
     
 
     //CreateEvent
-    public async Task<Event> CreateEvent(CreateEventRequest request)
+    public async Task<EventDTO> CreateEvent(CreateEventRequest request)
     {
         Event newEvent = new Event()
         {
@@ -67,11 +84,11 @@ public class EventService : IEventService
         
         DbContext.Events.Add(newEvent);
         await DbContext.SaveChangesAsync();
-        return newEvent;
+        return Mapper.Map<EventDTO>(newEvent);
     }
     
     //EditEvent
-    public async Task<Event> EditEvent(EditEventRequest request)
+    public async Task<EventDTO> EditEvent(EditEventRequest request)
     {
         if (DbContext.Events.ToList().Where(e => e.Id == request.Id).ToList().Count == 0)
         {
@@ -91,7 +108,7 @@ public class EventService : IEventService
             eventToUpdate.LocationId = request.LocationId;
             eventToUpdate.Price = request.Price;
             await DbContext.SaveChangesAsync();
-            return eventToUpdate;
+            return Mapper.Map<EventDTO>(eventToUpdate);
         }
         else
         {
@@ -100,7 +117,7 @@ public class EventService : IEventService
     }
 
     //DeleteEvent
-    public async Task<Event> DeleteEvent(int id)
+    public async Task<EventDTO> DeleteEvent(int id)
     {
         if (DbContext.Events.ToList().Where(e => e.Id == id).ToList().Count == 0)
         {
@@ -112,6 +129,6 @@ public class EventService : IEventService
             DbContext.Events.Remove(eventToDelete);
             DbContext.SaveChanges();
         }
-        return eventToDelete;
+        return Mapper.Map<EventDTO>(eventToDelete);
     }
 }
