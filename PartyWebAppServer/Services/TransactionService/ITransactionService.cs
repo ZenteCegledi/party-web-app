@@ -1,8 +1,6 @@
 ﻿using AutoMapper.Configuration;
 using Microsoft.EntityFrameworkCore;
-using PartyWebAppCommon.DTOs;
-using PartyWebAppCommon.Enums;
-using PartyWebAppCommon.Requests;
+using PartyWebAppCommon.enums;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
 
@@ -10,12 +8,11 @@ namespace PartyWebAppServer.Services.TransactionService;
 
 public interface ITransactionService
 {
-    public Task<List<TransactionDto>> GetTransactions();
-    public Task<List<TransactionDto>> GetUserTransactions(string username);
-    public Task<List<TransactionDto>> GetWalletTransactions(string username, CurrencyType currencyType);
-    public Task<List<TransactionDto>> GetTransactionsByType(TransactionType transactionType);
+    public List<Transaction> GetTransactions();
+    public List<Transaction> GetUserTransactions(string username);
+    public List<Transaction> GetTransactionsByType(TransactionType transactionType);
     
-    public Transaction CreateTransaction(NewTransactionRequest transactionRequest);
-    public Transaction ExecuteTransaction(Transaction transaction);
-    public Task<TransactionDto> AddTransactionToDb(Transaction transaction);
+    public Transaction NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
+        int locationId, int eventId, TransactionType transactionType, DateTime date);
+    public void AddTransactionToDb(Transaction transaction);
 }
