@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using PartyWebAppServer.Database;
 using BitzArt.Blazor.Auth;
 using PartyWebAppServer.Services;
+using PartyWebAppServer.Services.LocationService;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +31,8 @@ builder.AddBlazorAuth<ServerSideAuthenticationService>();
 builder.Services.AddTransient<PartyWebAppServer.Services.IUserService, PartyWebAppServer.Services.UserService>();
 
 
+builder.Services.AddTransient<ILocationService, LocationService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,8 +45,8 @@ if (app.Environment.IsDevelopment())
 //Apply migrations
 using (var scope = app.Services.CreateScope())
 {
-    var maiaContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    maiaContext.Database.Migrate();
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
 }
 
 // app.UseHttpsRedirection();
