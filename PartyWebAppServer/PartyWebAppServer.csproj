@@ -8,7 +8,7 @@
     </PropertyGroup> 
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="AutoMapper" Version="13.0.1" />
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
         <PackageReference Include="BitzArt.Blazor.Auth.Server" Version="0.2.3" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.4" />
@@ -28,6 +28,7 @@
     <ItemGroup>
       <Folder Include="ErrorHandling\ErrorModels\" />
       <Folder Include="Database\Models\" />
+      <Folder Include="Controllers\" />
       <Folder Include="Migrations\" />
     </ItemGroup>
 
