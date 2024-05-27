@@ -9,7 +9,7 @@ public class Event
     [Key]
     public int Id { get; set; }
     public string? Name { get; set; }
-    public EventType? Type {get ; set;}
+    public EventType Type {get ; set;}
     [ForeignKey("Location")]
     public int LocationId { get; set; }
     public Location? Location { get; set; }
