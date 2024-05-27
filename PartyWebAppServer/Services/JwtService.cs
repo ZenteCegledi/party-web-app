@@ -59,10 +59,6 @@ public class JwtService
                 new Claim("tt", "a"),
                 new Claim("Username", user.Username),
                 new Claim("RoleID", user.RoleId.ToString()),
-                new Claim("Email", user.Email),
-                new Claim("Name", user.Name),
-                new Claim("Phone", user.Phone),
-                new Claim("BirthDate", user.BirthDate.ToString()),
             },
             notBefore: issuedAt,
             expires: accessTokenExpiresAt,
@@ -77,10 +73,6 @@ public class JwtService
                 new Claim("tt", "r"),
                 new Claim("Username", user.Username),
                 new Claim("RoleID", user.RoleId.ToString()),
-                new Claim("Email", user.Email),
-                new Claim("Name", user.Name),
-                new Claim("Phone", user.Phone),
-                new Claim("BirthDate", user.BirthDate.ToString()),
             },
             notBefore: issuedAt,
             expires: refreshTokenExpiresAt,
@@ -134,12 +126,8 @@ public class JwtService
 
             var user = new User
             {
-                Username = principal.FindFirst("Username")?.Value,
-                RoleId = int.Parse(principal.FindFirst("RoleID")?.Value),
-                Email = principal.FindFirst("Email")?.Value,
-                Name = principal.FindFirst("Name")?.Value,
-                Phone = principal.FindFirst("Phone")?.Value,
-                BirthDate = DateTime.Parse(principal.FindFirst("BirthDate")?.Value),
+                Username = principal.FindFirst("Username")?.Value!,
+                RoleId = int.Parse(principal.FindFirst("RoleID")?.Value!),
             };
 
             return BuildJwtPair(user);

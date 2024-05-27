@@ -1,10 +1,7 @@
-﻿using BitzArt.Blazor.Auth;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Enums;
 using PartyWebAppServer.Database;
-using PartyWebAppServer.Database.Models;
 using PartyWebAppServer.Services;
 
 namespace PartyWebAppServer.Controllers;
@@ -15,9 +12,9 @@ public class WalletController
 {
     public WalletController(AppDbContext context)
     {
-        WalletService = new WalletService(context);
+        WalletService = (IWalletService)new ServerWalletService(context);
     }
-    private WalletService WalletService { get; set; }
+    private IWalletService WalletService { get; set; }
 
     [HttpGet("{username}")]
     public async Task<List<WalletDto>> GetWallets(string username)

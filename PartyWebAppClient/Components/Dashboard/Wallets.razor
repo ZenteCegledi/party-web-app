@@ -11,11 +11,11 @@
 			<div>
 				@foreach (WalletDto wallet in wallets)
 				{
-					<FluentButton Appearance="Appearance.Lightweight" @onclick="() => chosenWallet = wallet">
-						<img alt="@wallet.Currency" class="rounded-circle" height="20"
-							src="@currencyMap[wallet.Currency].image" style="object-fit: cover" width="20" /> -
+						<FluentButton Appearance="Appearance.Lightweight" @onclick="() => chosenWallet = wallet">
+							<img alt="@wallet.Currency" class="rounded-circle" height="20"
+								src="@currencyMap[wallet.Currency].image" style="object-fit: cover" width="20" /> -
 						@wallet.Currency
-					</FluentButton>
+						</FluentButton>
 				}
 			</div>
 
