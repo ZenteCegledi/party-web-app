@@ -1,4 +1,4 @@
-﻿using PartyWebAppCommon.Enums;
+﻿using PartyWebAppCommon.enums;
 
 namespace PartyWebAppCommon.DTOs;
 
