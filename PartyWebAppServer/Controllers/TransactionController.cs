@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PartyWebAppCommon.DTOs;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
 using PartyWebAppCommon.enums;
@@ -22,22 +23,22 @@ public class TransactionController
     }
 
     [HttpGet()]
-    public async Task<List<Transaction>> GetTransactions() => TransactionService.GetTransactions();
+    public async Task<List<TransactionDto>> GetTransactions() => 
+        await TransactionService.GetTransactions();
 
     [HttpGet("{username}")]
-    public async Task<List<Transaction>> GetUserTransactions(string username) =>
-        TransactionService.GetUserTransactions(username);
+    public async Task<List<TransactionDto>> GetUserTransactions(string username) =>
+        await TransactionService.GetUserTransactions(username);
 
     [HttpGet("{transactionType}")]
-    public async Task<List<Transaction>> GetTransactionsByType(TransactionType transactionType) =>
-        TransactionService.GetTransactionsByType(transactionType);
+    public async Task<List<TransactionDto>> GetTransactionsByType(TransactionType transactionType) =>
+        await TransactionService.GetTransactionsByType(transactionType);
 
     [HttpPost("{id},{username},{spentCurrency},{count},{locationId},{eventId},{transactionType},{date}")]
-    public async Task<Transaction> NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
+    public async Task<TransactionDto> NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
         int locationId, int eventId, TransactionType transactionType, DateTime date)
     {
         Transaction transaction = TransactionService.NewTransactionRequest(id, username, spentCurrency, currencyType, count, locationId, eventId, transactionType, date);
-        TransactionService.AddTransactionToDb(transaction);
-        return transaction;
+        return await TransactionService.AddTransactionToDb(transaction);
     }
 }
