@@ -6,7 +6,7 @@ using PartyWebAppServer.ErrorHandling.Exceptions;
 
 namespace PartyWebAppServer.Services;
 
-public class UserService(AppDbContext dbContext) : IUserService
+public class UserService(AppDbContext dbContext) : PartyWebAppServer.Services.IUserService
 {
     public async Task<List<User?>> GetAllUsers()
     {

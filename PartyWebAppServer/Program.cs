@@ -3,6 +3,7 @@ using PartyWebAppServer.Database;
 using BitzArt.Blazor.Auth;
 using PartyWebAppServer.Services;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 var Configuration = builder.Configuration;
@@ -25,7 +26,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<JwtService>();
 builder.AddBlazorAuth<ServerSideAuthenticationService>();
-builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<PartyWebAppServer.Services.IUserService, PartyWebAppServer.Services.UserService>();
+
 
 var app = builder.Build();
 
