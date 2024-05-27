@@ -23,13 +23,13 @@ public class TransactionService : ITransactionService
     public async Task<List<TransactionDto>> GetTransactionsByType(TransactionType transactionType) => 
         Mapper.Map<List<TransactionDto>>(await DbContext.Transactions.Where(t => t.TransactionType == transactionType).OrderBy(t => t.Date).ToListAsync());
 
-    public async Task<Transaction> NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
+    public Transaction NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
         int locationId, int eventId, TransactionType transactionType, DateTime date)
     {
-        Location? location = await DbContext.Locations.FirstOrDefaultAsync(l => l.Id == locationId);
-        Event? currentEvent = await DbContext.Events.FirstOrDefaultAsync(e => e.Id == eventId);
-        Wallet? wallet = await DbContext.Wallets.FirstOrDefaultAsync(w => w.Owner.Username == username && w.Currency == currencyType);
-        User? user = await DbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
+        Location? location = DbContext.Locations.FirstOrDefault(l => l.Id == locationId);
+        Event? currentEvent = DbContext.Events.FirstOrDefault(e => e.Id == eventId);
+        Wallet? wallet = DbContext.Wallets.FirstOrDefault(w => w.Owner.Username == username && w.Currency == currencyType);
+        User? user = DbContext.Users.FirstOrDefault(u => u.Username == username);
         
         if (user == null) throw new UserNotExistsAppException(username);
         
