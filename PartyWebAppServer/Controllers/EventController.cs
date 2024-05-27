@@ -8,48 +8,41 @@ namespace PartyWebAppServer.Controllers;
 
 [ApiController]
 [Route("api/events")]
-public class EventController
+public class EventController(IEventService eventService)
 {
-    private IEventService EventService { get; set; }
-
-    public EventController(IEventService eventService)
-    {
-        EventService = eventService;
-    }
-    
     [HttpGet()]
     public async Task<List<EventDTO>> GetAllEvents()
     {
-        return await EventService.GetAllEvents();
+        return await eventService.GetAllEvents();
     }
     
     [HttpGet("{id}")]
     public async Task<EventDTO> GetEventById(int id)
     {
-        return await EventService.GetEventById(id);
+        return await eventService.GetEventById(id);
     }
     
     [HttpGet("bylocationids")]
     public async Task<List<EventDTO>> GetEventByLocationIds([FromQuery]EventsByLocationRequest request)
     {
-        return await EventService.GetEventByLocationIds(request);
+        return await eventService.GetEventByLocationIds(request);
     }
     
     [HttpPost()]
     public async Task<EventDTO> CreateEvent(CreateEventRequest request)
     {
-        return await EventService.CreateEvent(request);
+        return await eventService.CreateEvent(request);
     }
     
     [HttpPut()]
     public async Task<EventDTO> EditEvent(EditEventRequest request)
     {
-        return await EventService.EditEvent(request);
+        return await eventService.EditEvent(request);
     }
     
     [HttpDelete("{id}")]
     public async Task<EventDTO> DeleteEvent(int id)
     {
-        return await EventService.DeleteEvent(id);
+        return await eventService.DeleteEvent(id);
     }
 }
