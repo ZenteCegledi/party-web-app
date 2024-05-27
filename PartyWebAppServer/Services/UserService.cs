@@ -3,10 +3,12 @@ using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppCommon.DTOs;
+
 using PartyWebAppCommon.Requests;
 using PartyWebAppServer.ErrorHandling.Exceptions;
 
 namespace PartyWebAppServer.Services;
+
 
 public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
 {
@@ -23,6 +25,7 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
     }
 
     public async Task<UserDTO?> CreateUser(CreateUserRequest user)
+
     {
         if (await dbContext.Users.AnyAsync(u => u.Email == user.Email)) {
             throw new EmailAlreadyInUseException(user.Email);
@@ -39,6 +42,7 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
             };
             dbContext.Users.Add(tmpUser);
             await dbContext.SaveChangesAsync();
+
             return mapper.Map<UserDTO>(tmpUser);
         } catch (Exception e) {
             Console.WriteLine(e);
@@ -46,19 +50,24 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
         }
     }
 
+
     public async Task<UserDTO?> GetUser(string username)
+
     {
         var user = await dbContext.Users.Where(u => u.Username == username).Include(u => u.Wallets).FirstOrDefaultAsync();
         
         if (user != null)
         {
             return mapper.Map<UserDTO?>(user);
+
         }
 
         throw new UserNotFoundException(username);
     }
 
+
     public async Task<UserDTO?> DeleteUser(string username)
+
     {
         try {
             User? user = await dbContext.Users.Where(u => u.Username == username).FirstAsync();
@@ -71,6 +80,7 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
     }
 
     public async Task<UserDTO?> EditUser(string username, string? name, DateTime? birthDate, string? email, string? phone, string? password)
+
     {
         try {
             User? user = await dbContext.Users.Where(u => u.Username == username).FirstAsync();
@@ -80,10 +90,12 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
             if (phone != null) user.Phone = phone;
             if (password != null) user.Password = password;
             await dbContext.SaveChangesAsync();
+
             return mapper.Map<UserDTO>(user);
         } catch
         {
             throw new UserNotFoundException(username);
+
         }
     }
 }

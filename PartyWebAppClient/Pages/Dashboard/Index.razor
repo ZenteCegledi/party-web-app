@@ -1,0 +1,17 @@
+@namespace PartyWebAppClient.Pages.Dashboard
+
+@page "/dashboard"
+@layout DashboardLayout
+@attribute [Authorize]
+
+@using PartyWebAppClient.Layout
+
+<PageTitle>PartyWebApp - Dashboard</PageTitle>
+
+<h1>Dashboard</h1>
+
+<p>Welcome to your new app.</p>
+
+<AuthorizeView>
+    <h1>Próba</h1>
+</AuthorizeView>

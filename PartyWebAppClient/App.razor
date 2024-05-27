@@ -1,7 +1,16 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+@using PartyWebAppClient.Components
+
+<Router AppAssembly="typeof(Program).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData"/>
-        <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
+        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)">
+            <Authorizing>
+                <LoadInProgress />
+            </Authorizing>
+            <NotAuthorized>
+                <RedirectToSignIn />
+            </NotAuthorized>
+        </AuthorizeRouteView>
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
         <PageTitle>Not found</PageTitle>

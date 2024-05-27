@@ -8,6 +8,10 @@
     </PropertyGroup> 
 
     <ItemGroup>
+
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+        <PackageReference Include="BitzArt.Blazor.Auth.Server" Version="0.2.3" />
+
         <PackageReference Include="AutoMapper" Version="13.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4">
@@ -24,6 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="ErrorHandling\ErrorModels\" />
       <Folder Include="Controllers\" />
       <Folder Include="Migrations\" />
       <Folder Include="Services\" />

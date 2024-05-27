@@ -1,16 +1,21 @@
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppServer.Database;
+using BitzArt.Blazor.Auth;
 using PartyWebAppServer.Services;
 
-var builder = WebApplication.CreateBuilder(args);
 
+var builder = WebApplication.CreateBuilder(args);
 
 var Configuration = builder.Configuration;
 builder.Services.AddDbContext<AppDbContext>(o =>
     o.UseNpgsql(Configuration.GetConnectionString("TimescaleConnection")));
 
 
+// add configuratuion from appsettings
+builder.Configuration.AddJsonFile("appsettings.json");
+
 builder.Services.AddControllersWithViews();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
@@ -19,7 +24,11 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddTransient<IUserService, UserService>();
+
+builder.Services.AddScoped<JwtService>();
+builder.AddBlazorAuth<ServerSideAuthenticationService>();
+builder.Services.AddTransient<PartyWebAppServer.Services.IUserService, PartyWebAppServer.Services.UserService>();
+
 
 var app = builder.Build();
 
@@ -43,9 +52,12 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseAuthorization();
+app.UseAntiforgery();
 
 app.MapControllers();
+
+app.MapAuthEndpoints();
+
 
 app.UseEndpoints(endpoints =>
 {

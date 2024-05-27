@@ -19,6 +19,7 @@ public class UserController(IUserService userService)
 
     [HttpPost]
     public async Task<UserDTO?> CreateUser(string username, string name, DateTime birthDate, string email, string phone, string password)
+
     {
         CreateUserRequest userRequest = new CreateUserRequest(
             username,
@@ -48,5 +49,6 @@ public class UserController(IUserService userService)
     public async Task<UserDTO?> EditUser(string username, string? name, DateTime? birthDate, string? email, string? phone, string? password)
     {
         return await userService.EditUser(username, name, birthDate, email, phone, password);
+
     }
 }
