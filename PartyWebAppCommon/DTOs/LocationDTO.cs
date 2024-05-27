@@ -1,11 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using PartyWebAppCommon.Enums;
+﻿using Microsoft.AspNetCore.Components.Forms.Mapping;
+using PartyWebAppCommon.enums;
 
-namespace PartyWebAppServer.Database.Models;
+namespace PartyWebAppCommon.DTOs;
 
-public class Location
+public class LocationDTO
 {
-    [Key]
     public int Id { get; set; }
     public string Name { get; set; }
     public string Address { get; set; }
