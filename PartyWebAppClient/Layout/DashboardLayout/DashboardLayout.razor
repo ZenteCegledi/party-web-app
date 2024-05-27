@@ -17,13 +17,13 @@
 				<div class="collapse navbar-collapse justify-content-center" id="navbarNav">
 					<ul class="navbar-nav">
 						<li class="nav-item">
-							<a class="nav-link active" aria-current="page" href="#">Home</a>
+							<a class="nav-link active" aria-current="page" href="/dashboard">Home</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">Events</a>
+							<a class="nav-link" href="/dashboard">Events</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">Locations</a>
+							<a class="nav-link" href="/dashboard">Locations</a>
 						</li>
 					</ul>
 				</div>
@@ -44,16 +44,11 @@
 		</div>
 	</nav>
 
-
-
-
-	<FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
-		<FluentBodyContent Class="body-content">
+	<FluentStack Class="main overflow-visible" Orientation="Orientation.Horizontal" Width="100%">
+		<FluentBodyContent Class="body-content overflow-visible">
 			<div class="content">
 				@Body
 			</div>
 		</FluentBodyContent>
 	</FluentStack>
-
-	<FluentToastProvider MaxToastCount="6" />
 </FluentLayout>

@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.FluentUI.AspNetCore.Components;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Enums;
 
@@ -22,17 +23,21 @@ public partial class Wallets : ComponentBase
         CurrencyType.HUF => ("Ft", "images/flags/hu.svg"),
         CurrencyType.CREDIT => ("C", "images/flags/hu.svg"),
     });
+    private WalletDto chosenWallet = new WalletDto();
+    
+    FluentHorizontalScroll _walletsContainer = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine("auth state:");
         var authState = await authenticationState!;
         var user = authState?.User;
 
         if (user == null) return;
 
         wallets = await Http?.GetFromJsonAsync<List<WalletDto>>($"http://localhost:5259/api/Wallet/{user.FindFirst("Username")?.Value}")! ?? new List<WalletDto>();
-
+    
+        if (wallets.Count > 0) chosenWallet = wallets.First();
+            
         StateHasChanged();
     }
 }

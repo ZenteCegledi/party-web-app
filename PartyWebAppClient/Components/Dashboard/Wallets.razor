@@ -4,20 +4,57 @@
 
 @using PartyWebAppCommon.DTOs
 
-<h3>Wallets</h3>
-
 <AuthorizeView>
-	<FluentHorizontalScroll Style="width: 400px; height: 400px; margin: auto;" Speed="1200"
-		Easing="ScrollEasing.EaseInOut">
-		@foreach (WalletDto wallet in wallets)
-		{
-			var currencyInfo = currencyMap[wallet.Currency];
+	<FluentCard>
+		<div class = "w-100 d-flex justify-content-between">
 
-			<FluentCard class="bg-body-tertiary" Width="400px" Height="400px">
-				<img src="@currencyInfo.image" width="200" height="200" alt="@wallet.Currency" />
-				<span>@currencyInfo.symbol - @wallet.Amount</span>
-			</FluentCard>
-		}
-	</FluentHorizontalScroll>
+			<div>
+				@foreach (WalletDto wallet in wallets) {
+					<FluentButton Appearance = "Appearance.Lightweight"
+					              @onclick = "() => chosenWallet = wallet">
+						@wallet.Currency
+					</FluentButton>
+				}
+			</div>
 
+
+			<div>
+				<FluentButton
+					Appearance = "Appearance.Lightweight"
+					IconStart = "@(new Icons.Regular.Size24.Wallet())">
+					Add Wallet
+				</FluentButton>
+			</div>
+		</div>
+	</FluentCard>
+
+	<FluentCard class = "m-2"
+	            Height = "300px"
+	            Width = "300px">
+		<div class = "d-flex justify-content-between flex-column h-100">
+			<div class = "w-100 d-flex justify-content-between">
+				<img alt = "@chosenWallet.Currency"
+				     class = "rounded-circle"
+				     height = "75"
+				     src = "@currencyMap[chosenWallet.Currency].image"
+				     style = "object-fit: cover"
+				     width = "75"/>
+
+				<div class = "d-flex gap-2">
+					<FluentButton Appearance = "Appearance.Lightweight"
+					              IconStart = "@(new Icons.Regular.Size24.ArrowUp())">
+					</FluentButton>
+					<FluentButton Appearance = "Appearance.Lightweight"
+					              IconStart = "@(new Icons.Regular.Size24.ArrowDown())">
+					</FluentButton>
+				</div>
+			</div>
+
+			<div>
+				<h1 class = "mb-0 font-monospace">@chosenWallet.Amount</h1>
+				<h3 class = "text-black-50 fw-lighter">@currencyMap[chosenWallet.Currency].symbol - @chosenWallet.Currency</h3>
+			</div>
+
+		</div>
+	</FluentCard>
 </AuthorizeView>
