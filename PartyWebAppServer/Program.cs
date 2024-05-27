@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppServer.Database;
+using PartyWebAppServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddTransient<IUserService, UserService>();
 
 var app = builder.Build();
 
@@ -44,8 +46,6 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
-
-
 
 app.UseEndpoints(endpoints =>
 {
