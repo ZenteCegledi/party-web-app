@@ -4,5 +4,5 @@ namespace PartyWebAppServer.Controllers;
 
 public class LocationTypeDoesNotExistErrorModel
 {
-    public int Type { get; set; }
+    public int TypeId { get; set; }
 }

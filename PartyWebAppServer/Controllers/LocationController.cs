@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database.Models;
@@ -9,19 +8,9 @@ namespace PartyWebAppServer.Controllers;
 
 [ApiController]
 [Route("api/locations")]
-public class LocationController
+public class LocationController(ILocationService _locationService)
 {
-    
-    private ILocationService _locationService;
-    
-    private readonly IMapper _mapper;
-    
-    public LocationController(ILocationService locationService, IMapper mapper)
-    {
-        _locationService = locationService;
-        _mapper = mapper;
-    }
-    
+
     [HttpGet("{id}")]
     public async Task<LocationDTO> GetLocation(int id)
     {

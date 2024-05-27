@@ -1,27 +1,15 @@
-﻿using System.Net;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.enums;
 using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
-using PartyWebAppServer.ErrorHandling;
 using PartyWebAppServer.ErrorHandling.Exceptions;
 
-namespace PartyWebAppServer.Services;
-public class LocationService : ILocationService
+namespace PartyWebAppServer.Services.LocationService;
+public class LocationService(AppDbContext _dbContext, IMapper _mapper) : ILocationService
 {
-    private readonly AppDbContext _dbContext;
-    private readonly IMapper _mapper;
-
-    public LocationService(AppDbContext dbContext, IMapper mapper)
-    {
-        _dbContext = dbContext;
-        _mapper = mapper;
-    }
-
     public async Task<LocationDTO> GetLocation(int id)
     {
         var location = await _dbContext.Locations.FirstOrDefaultAsync(l => l.Id == id);
@@ -78,7 +66,7 @@ public class LocationService : ILocationService
         
         await _dbContext.Locations.ForEachAsync(l =>
         {
-            if (l.Name == request.Name && l.Address == request.Address)
+            if (l.Name == request.Name && l.Address == request.Address && l.Id != id)
                 throw new LocationAlreadyExistsAppException(request.Name, request.Address);
         });
         

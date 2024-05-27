@@ -14,6 +14,6 @@ public class LocationTypeDoesNotExistAppException : AppException
     {
         Message = $"Location type {type} does not exist";
         HttpStatusCode = HttpStatusCode.BadRequest;
-        ErrorObject = new LocationTypeDoesNotExistErrorModel { Type = (int)type };
+        ErrorObject = new LocationTypeDoesNotExistErrorModel { TypeId = (int)type };
     }
 }
