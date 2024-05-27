@@ -13,7 +13,7 @@ public interface ITransactionService
     public Task<List<TransactionDto>> GetUserTransactions(string username);
     public Task<List<TransactionDto>> GetTransactionsByType(TransactionType transactionType);
     
-    public Task<Transaction> NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
+    public Transaction NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
         int locationId, int eventId, TransactionType transactionType, DateTime date);
     public Task<TransactionDto> AddTransactionToDb(Transaction transaction);
 }
