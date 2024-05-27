@@ -3,6 +3,7 @@ using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database.Models;
 using PartyWebAppServer.Services;
+using PartyWebAppServer.Services.LocationService;
 
 namespace PartyWebAppServer.Controllers;
 

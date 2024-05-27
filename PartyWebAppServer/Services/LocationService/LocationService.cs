@@ -19,22 +19,19 @@ public class LocationService(AppDbContext _dbContext, IMapper _mapper) : ILocati
     }
 
     public async Task<List<LocationDTO>> GetLocations()
-    {
-        List<LocationDTO> locationDtos = new List<LocationDTO>();
-        await _dbContext.Locations.ForEachAsync(l => locationDtos.Add(_mapper.Map<LocationDTO>(l)));
-        return locationDtos;
+    { 
+        return _mapper.Map<List<LocationDTO>>(await _dbContext.Locations.ToListAsync());
     }
 
     public async Task<LocationDTO> CreateLocation(CreateLocationRequest request)
     {
         if(!Enum.IsDefined(typeof(LocationType), request.Type))
             throw new LocationTypeDoesNotExistAppException(Convert.ToInt32(request.Type));
+
+        Location? existingLocation = await _dbContext.Locations.FirstOrDefaultAsync(l => l.Name == request.Name && l.Address == request.Address);
         
-        await _dbContext.Locations.ForEachAsync(l =>
-        {
-            if (l.Name == request.Name && l.Address == request.Address)
-                throw new LocationAlreadyExistsAppException(request.Name, request.Address);
-        });
+        if(existingLocation != null)
+            throw new LocationAlreadyExistsAppException(request.Name, request.Address);
         
         Location location = new Location
         {
@@ -64,11 +61,10 @@ public class LocationService(AppDbContext _dbContext, IMapper _mapper) : ILocati
         if (location == null)
             throw new LocationIdNotFoundAppException(id);
         
-        await _dbContext.Locations.ForEachAsync(l =>
-        {
-            if (l.Name == request.Name && l.Address == request.Address && l.Id != id)
-                throw new LocationAlreadyExistsAppException(request.Name, request.Address);
-        });
+        Location? existingLocation = await _dbContext.Locations.FirstOrDefaultAsync(l => l.Name == request.Name && l.Address == request.Address);
+        
+        if(existingLocation != null && existingLocation.Id != id)
+            throw new LocationAlreadyExistsAppException(request.Name, request.Address);
         
         if (!string.IsNullOrEmpty(request.Name))
             location.Name = request.Name;
