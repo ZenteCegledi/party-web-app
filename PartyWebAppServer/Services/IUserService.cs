@@ -1,3 +1,6 @@
+
+using PartyWebAppCommon.DTOs;
+
 using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database.Models;
 
@@ -5,13 +8,15 @@ namespace PartyWebAppServer.Services
 {
     public interface IUserService
     {
-        Task<List<User?>> GetAllUsers();
 
-        Task<User?> CreateUser(CreateUserRequest user);
+        Task<List<UserDTO?>> GetAllUsers();
 
-        Task<User?> GetUser(string username);
-        Task<User?> DeleteUser(string username);
+        Task<UserDTO?> CreateUser(CreateUserRequest user);
 
-        Task<User?> EditUser(string username, string? name, DateTime? birthDate, string? email, string? phone, string? password);
+        Task<UserDTO?> GetUser(string username);
+        Task<UserDTO?> DeleteUser(string username);
+
+        Task<UserDTO?> EditUser(string username, string? name, DateTime? birthDate, string? email, string? phone, string? password);
     }
 }
+

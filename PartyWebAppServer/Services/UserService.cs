@@ -1,19 +1,31 @@
+using AutoMapper;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
 using Microsoft.EntityFrameworkCore;
+using PartyWebAppCommon.DTOs;
+
 using PartyWebAppCommon.Requests;
 using PartyWebAppServer.ErrorHandling.Exceptions;
 
 namespace PartyWebAppServer.Services;
 
-public class UserService(AppDbContext dbContext) : PartyWebAppServer.Services.IUserService
+
+public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
 {
-    public async Task<List<User?>> GetAllUsers()
+    public async Task<List<UserDTO?>> GetAllUsers()
     {
-        return await dbContext.Users.ToListAsync();
+        List<UserDTO?> users = new List<UserDTO?>();
+
+        foreach (User user in await dbContext.Users.ToListAsync())
+        {
+            users.Add(mapper.Map<UserDTO?>(user));
+        }
+
+        return users;
     }
 
-    public async Task<User?> CreateUser(CreateUserRequest user)
+    public async Task<UserDTO?> CreateUser(CreateUserRequest user)
+
     {
         if (await dbContext.Users.AnyAsync(u => u.Email == user.Email)) {
             throw new EmailAlreadyInUseException(user.Email);
@@ -30,37 +42,45 @@ public class UserService(AppDbContext dbContext) : PartyWebAppServer.Services.IU
             };
             dbContext.Users.Add(tmpUser);
             await dbContext.SaveChangesAsync();
-            return tmpUser;
-        } catch {
+
+            return mapper.Map<UserDTO>(tmpUser);
+        } catch (Exception e) {
+            Console.WriteLine(e);
             throw new UserCreationException(user.Username);
         }
     }
 
-    public async Task<User?> GetUser(string username)
+
+    public async Task<UserDTO?> GetUser(string username)
+
     {
         var user = await dbContext.Users.Where(u => u.Username == username).Include(u => u.Wallets).FirstOrDefaultAsync();
         
         if (user != null)
         {
-            return user;
+            return mapper.Map<UserDTO?>(user);
+
         }
 
         throw new UserNotFoundException(username);
     }
 
-    public async Task<User?> DeleteUser(string username)
+
+    public async Task<UserDTO?> DeleteUser(string username)
+
     {
         try {
             User? user = await dbContext.Users.Where(u => u.Username == username).FirstAsync();
             dbContext.Users.Remove(user);
             await dbContext.SaveChangesAsync();
-            return user;
+            return mapper.Map<UserDTO>(user);
         } catch {
-            throw new NotImplementedException("User not found");
+            throw new UserNotFoundException(username);
         }
     }
 
-    public async Task<User?> EditUser(string username, string? name, DateTime? birthDate, string? email, string? phone, string? password)
+    public async Task<UserDTO?> EditUser(string username, string? name, DateTime? birthDate, string? email, string? phone, string? password)
+
     {
         try {
             User? user = await dbContext.Users.Where(u => u.Username == username).FirstAsync();
@@ -70,9 +90,12 @@ public class UserService(AppDbContext dbContext) : PartyWebAppServer.Services.IU
             if (phone != null) user.Phone = phone;
             if (password != null) user.Password = password;
             await dbContext.SaveChangesAsync();
-            return user;
-        } catch {
-            throw new NotImplementedException("User not found");
+
+            return mapper.Map<UserDTO>(user);
+        } catch
+        {
+            throw new UserNotFoundException(username);
+
         }
     }
 }
