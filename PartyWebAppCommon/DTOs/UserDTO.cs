@@ -1,4 +1,4 @@
-namespace PartyWebAppCommon.DTOs;
+﻿namespace PartyWebAppCommon.DTOs;
 
 public class UserDTO
 {
