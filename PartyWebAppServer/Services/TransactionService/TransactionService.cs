@@ -1,4 +1,8 @@
-﻿using PartyWebAppCommon.enums;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.FluentUI.AspNetCore.Components;
+using PartyWebAppCommon.DTOs;
+using PartyWebAppCommon.enums;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
 using PartyWebAppServer.ErrorHandling.Exceptions;
@@ -8,23 +12,24 @@ namespace PartyWebAppServer.Services.TransactionService;
 public class TransactionService : ITransactionService
 {
     public AppDbContext DbContext { get; set; }
+    private IMapper Mapper { get; set; }
 
-    public List<Transaction> GetTransactions() => 
-        DbContext.Transactions.ToList();
+    public async Task<List<TransactionDto>> GetTransactions() => 
+        Mapper.Map<List<TransactionDto>>(await DbContext.Transactions.ToListAsync());
 
-    public List<Transaction> GetUserTransactions(string username) => 
-        DbContext.Transactions.Where(t => t.Wallet.Owner.Username == username).OrderBy(t => t.Date).ToList();
+    public async Task<List<TransactionDto>> GetUserTransactions(string username) => 
+        Mapper.Map<List<TransactionDto>>(await DbContext.Transactions.Where(t => t.Wallet.Owner.Username == username).OrderBy(t => t.Date).ToListAsync());
 
-    public List<Transaction> GetTransactionsByType(TransactionType transactionType) => 
-        DbContext.Transactions.Where(t => t.TransactionType == transactionType).OrderBy(t => t.Date).ToList();
+    public async Task<List<TransactionDto>> GetTransactionsByType(TransactionType transactionType) => 
+        Mapper.Map<List<TransactionDto>>(await DbContext.Transactions.Where(t => t.TransactionType == transactionType).OrderBy(t => t.Date).ToListAsync());
 
-    public Transaction NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
+    public async Task<Transaction> NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
         int locationId, int eventId, TransactionType transactionType, DateTime date)
     {
-        Location? location = DbContext.Locations.FirstOrDefault(l => l.Id == locationId);
-        Event? currentEvent = DbContext.Events.FirstOrDefault(e => e.Id == eventId);
-        Wallet? wallet = DbContext.Wallets.FirstOrDefault(w => w.Owner.Username == username && w.Currency == currencyType);
-        User? user = DbContext.Users.FirstOrDefault(u => u.Username == username);
+        Location? location = await DbContext.Locations.FirstOrDefaultAsync(l => l.Id == locationId);
+        Event? currentEvent = await DbContext.Events.FirstOrDefaultAsync(e => e.Id == eventId);
+        Wallet? wallet = await DbContext.Wallets.FirstOrDefaultAsync(w => w.Owner.Username == username && w.Currency == currencyType);
+        User? user = await DbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
         
         if (user == null) throw new UserNotExistsAppException(username);
         
@@ -66,7 +71,7 @@ public class TransactionService : ITransactionService
         return new Transaction{ Id = id, Wallet = wallet, SpentCurrency = spentCurrency, Count = count, Location = location, Event = currentEvent, TransactionType = transactionType, Date = date};
     }
     
-    public void AddTransactionToDb(Transaction transaction)
+    public async Task<TransactionDto> AddTransactionToDb(Transaction transaction)
     {
         switch (transaction.TransactionType)
         {
@@ -86,7 +91,8 @@ public class TransactionService : ITransactionService
                 throw new ArgumentOutOfRangeException();
         }
 
-        DbContext.SaveChanges();
+        await DbContext.SaveChangesAsync();
+        return Mapper.Map<TransactionDto>(transaction);
     }
     public void ChargeWallet(Wallet wallet, int spentCurrency) =>
         wallet.Amount -= spentCurrency;
