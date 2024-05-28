@@ -1,8 +1,8 @@
-﻿using PartyWebAppCommon.enums;
+﻿using PartyWebAppCommon.Enums;
 
 namespace PartyWebAppCommon.DTOs;
 
-public class TransactionDto
+public class TransactionDTO
 {
     public int SpentCurrency { get; set; }
     public int Count { get; set; }
