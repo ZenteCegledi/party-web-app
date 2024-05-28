@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorBootstrap;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Enums;
@@ -9,6 +10,13 @@ namespace PartyWebAppClient.Components.Dashboard;
 
 public partial class Wallets : ComponentBase
 {
+    private Modal DepositModal;
+    private Modal WithdrawModal;
+    private Modal CreateWalletModal;
+
+    public async Task ShowModal(Modal modal) => await modal?.ShowAsync();
+    public async Task HideModal(Modal modal) => await modal?.HideAsync();
+
     [CascadingParameter]
     private Task<AuthenticationState>? authenticationState { get; set; }
 

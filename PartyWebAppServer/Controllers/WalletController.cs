@@ -57,4 +57,12 @@ public class WalletController
 
         return WalletService.WithdrawFromWallet(_wallet, amount);
     }
+
+    [HttpPut("primary/{username}/{currency}")]
+    public async Task<WalletDto> SetPrimaryWallet(string username, CurrencyType currency)
+    {
+        var _wallet = WalletService.GetWallet(username, currency);
+
+        return WalletService.SetPrimaryWallet(_wallet);
+    }
 }

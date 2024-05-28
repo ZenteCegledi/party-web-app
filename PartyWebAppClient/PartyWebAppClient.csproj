@@ -28,6 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Components\Dashboard\Modals\" />
       <Folder Include="Shared\" />
       <Folder Include="wwwroot\css\Images\" />
       <Folder Include="wwwroot\Images\" />
