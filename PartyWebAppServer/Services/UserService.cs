@@ -12,7 +12,7 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
 {
     public async Task<List<UserDTO>> GetAllUsers()
     {
-        List<UserDTO?> users = new List<UserDTO?>();
+        List<UserDTO> users = new List<UserDTO>();
 
         mapper.Map<List<UserDTO>>(dbContext.Users.ToListAsync());
 
@@ -69,6 +69,10 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
 
     {
         User? user = await dbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
+        if (user == null)
+        {
+            throw new UserNotFoundException(username);
+        }
         dbContext.Users.Remove(user);
         await dbContext.SaveChangesAsync();
         return mapper.Map<UserDTO>(user);
@@ -79,6 +83,10 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
 
 
         User? user = await dbContext.Users.FirstOrDefaultAsync(u => u.Username == userRequest.Username);
+        if (user == null)
+        {
+            throw new UserNotFoundException(userRequest.Username);
+        }
         if (userRequest.Name != null) user.Name = userRequest.Name;
         user.BirthDate = (DateTime)userRequest.BirthDate;
         var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == userRequest.Email);
