@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Enums;
 using Microsoft.FluentUI.AspNetCore.Components;
+using PartyWebAppClient.Services;
 
 namespace PartyWebAppClient.Components.Dashboard;
 
