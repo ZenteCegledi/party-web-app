@@ -7,7 +7,7 @@ namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
 public class EventNotExistsAppException : AppException
 {
-    public EventNotExistsAppException(EventDto currentEvent)
+    public EventNotExistsAppException(EventDTO currentEvent)
     {
         Message = $"Event: '{currentEvent.Name}' does not exist in DB.";
         ErrorObject = new EventNotExistsErrorModel{Name = currentEvent.Name};
