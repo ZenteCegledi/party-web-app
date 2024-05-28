@@ -38,25 +38,13 @@ public class EventService(AppDbContext dbContext, IMapper mapper) : IEventServic
     //GetEventByLocationIds
     public async Task<List<EventDTO>> GetEventByLocationIds(EventsByLocationRequest request)
     {
-        List<Event> events;
+        List<Event> events = dbContext.Events.ToList();
         if (request.LocationIds.Count > 0)
         {
             events = await dbContext.Events
                 .Where(e => request.LocationIds.Contains(e.LocationId))
                 .ToListAsync();
-
-            List<EventDTO> eventsDto = events.Select(e => new EventDTO()
-            {
-                Id = e.Id,
-                Name = e.Name,
-                Type = e.Type,
-                LocationId = e.LocationId,
-                Price = e.Price
-            }).ToList();
-
-            return eventsDto;
         }
-        events = dbContext.Events.ToList();
         return mapper.Map<List<EventDTO>>(events);
     }
     
@@ -81,13 +69,13 @@ public class EventService(AppDbContext dbContext, IMapper mapper) : IEventServic
     }
     
     //EditEvent
-    public async Task<EventDTO> EditEvent(EditEventRequest request)
+    public async Task<EventDTO> EditEvent(EditEventRequest request, int id)
     {
-        Event eventToUpdate = await dbContext.Events.FirstOrDefaultAsync(e => e.Id == request.Id);
+        Event eventToUpdate = await dbContext.Events.FirstOrDefaultAsync(e => e.Id == id);
 
         if (eventToUpdate == null)
         {
-            throw new EventIdNotFoundAppException(request.Id);
+            throw new EventIdNotFoundAppException(id);
         }
 
         if (!Enum.IsDefined(typeof(EventType), request.Type))

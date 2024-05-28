@@ -12,7 +12,7 @@ public interface IEventService
     public Task<EventDTO> GetEventById(int id);
     public Task<List<EventDTO>> GetEventByLocationIds([FromQuery]EventsByLocationRequest request);
     public Task<EventDTO> CreateEvent(CreateEventRequest request);
-    public Task<EventDTO> EditEvent(EditEventRequest request);
+    public Task<EventDTO> EditEvent(EditEventRequest request, int id);
     public Task<EventDTO> DeleteEvent(int id);
 }
 

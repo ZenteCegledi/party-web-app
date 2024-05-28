@@ -35,9 +35,9 @@ public class EventController(IEventService eventService)
     }
     
     [HttpPut("{id}")]
-    public async Task<EventDTO> EditEvent(EditEventRequest request)
+    public async Task<EventDTO> EditEvent(EditEventRequest request, int id)
     {
-        return await eventService.EditEvent(request);
+        return await eventService.EditEvent(request, id);
     }
     
     [HttpDelete("{id}")]
