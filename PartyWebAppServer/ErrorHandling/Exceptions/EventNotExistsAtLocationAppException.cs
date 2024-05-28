@@ -9,7 +9,7 @@ public class EventNotExistsAtLocationAppException : AppException
 {
     public EventNotExistsAtLocationAppException(EventDto currentEvent, LocationDTO location)
     {
-        Message = $"Event: '{event.Name}' does not exist at location: {location.Name}, {location.Address}.";
+        Message = $"Event: '{currentEvent.Name}' does not exist at location: {location.Name}, {location.Address}.";
         ErrorObject = new EventNotExistsAtLocationErrorModel{EventName = currentEvent.Name, LocationName = location.Name, LocationAddress = location.Address};
         HttpStatusCode = HttpStatusCode.BadRequest;
     }
