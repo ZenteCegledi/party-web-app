@@ -2,5 +2,5 @@
 
 public class EventNotExistsErrorModel
 {
-    public int EventId { get; set; }
+    public string Name { get; set;}
 }
