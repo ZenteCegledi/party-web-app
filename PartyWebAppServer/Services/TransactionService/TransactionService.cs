@@ -59,7 +59,7 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
                 break;
             case TransactionType.Deposit:
                 if (location == null) throw new LocationNotExistsAppException(locationId);
-                if (location.Type != LocationType.ATM) throw new LocationNotAtmAppException(location.Type);
+                if (location.Type != LocationType.ATM) throw new LocationShouldBeAtmAppException(transactionType);
 
                 if (wallet == null)
                     wallet = new Wallet { Currency = currencyType, Owner = user, Amount = 0};
