@@ -111,6 +111,7 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
     }
     public async Task<TransactionDto> AddTransactionToDb(Transaction transaction)
     {
+        _dbContext.Transactions.Add(transaction);
         await _dbContext.SaveChangesAsync();
         return _mapper.Map<TransactionDto>(transaction);
     }
