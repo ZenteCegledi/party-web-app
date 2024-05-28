@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.enums;
+using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
 
@@ -13,7 +14,6 @@ public interface ITransactionService
     public Task<List<TransactionDto>> GetUserTransactions(string username);
     public Task<List<TransactionDto>> GetTransactionsByType(TransactionType transactionType);
     
-    public Transaction NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
-        int locationId, int eventId, TransactionType transactionType, DateTime date);
+    public Transaction CreateTransaction(NewTransactionRequest transactionRequest);
     public Task<TransactionDto> AddTransactionToDb(Transaction transaction);
 }
