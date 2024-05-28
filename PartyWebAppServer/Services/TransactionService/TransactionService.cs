@@ -12,20 +12,20 @@ namespace PartyWebAppServer.Services.TransactionService;
 
 public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITransactionService
 {
-    public async Task<List<TransactionDto>> GetTransactions() =>  
+    public async Task<List<TransactionDTO>> GetTransactions() =>  
         _mapper
-            .Map<List<TransactionDto>>(
+            .Map<List<TransactionDTO>>(
                 await 
                     _dbContext
                     .Transactions
                     .ToListAsync()
                 );
 
-    public async Task<List<TransactionDto>> GetUserTransactions(string username) => 
-        _mapper.Map<List<TransactionDto>>(await _dbContext.Transactions.Where(t => t.Wallet.Owner.Username == username).OrderBy(t => t.Date).ToListAsync());
+    public async Task<List<TransactionDTO>> GetUserTransactions(string username) => 
+        _mapper.Map<List<TransactionDTO>>(await _dbContext.Transactions.Where(t => t.Wallet.Owner.Username == username).OrderBy(t => t.Date).ToListAsync());
 
-    public async Task<List<TransactionDto>> GetTransactionsByType(TransactionType transactionType) => 
-        _mapper.Map<List<TransactionDto>>(await _dbContext.Transactions.Where(t => t.TransactionType == transactionType).OrderBy(t => t.Date).ToListAsync());
+    public async Task<List<TransactionDTO>> GetTransactionsByType(TransactionType transactionType) => 
+        _mapper.Map<List<TransactionDTO>>(await _dbContext.Transactions.Where(t => t.TransactionType == transactionType).OrderBy(t => t.Date).ToListAsync());
 
     public Transaction CreateTransaction(NewTransactionRequest newTransactionRequest)
     {
@@ -109,11 +109,11 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
 
         return transaction;
     }
-    public async Task<TransactionDto> AddTransactionToDb(Transaction transaction)
+    public async Task<TransactionDTO> AddTransactionToDb(Transaction transaction)
     {
         _dbContext.Transactions.Add(transaction);
         await _dbContext.SaveChangesAsync();
-        return _mapper.Map<TransactionDto>(transaction);
+        return _mapper.Map<TransactionDTO>(transaction);
     }
     private void ChargeWallet(Wallet wallet, int spentCurrency) =>
         wallet.Amount -= spentCurrency;
