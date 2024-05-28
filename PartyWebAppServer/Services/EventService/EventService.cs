@@ -38,12 +38,16 @@ public class EventService(AppDbContext dbContext, IMapper mapper) : IEventServic
     //GetEventByLocationIds
     public async Task<List<EventDTO>> GetEventByLocationIds(EventsByLocationRequest request)
     {
-        List<Event> events = dbContext.Events.ToList();
+        List<Event> events;
         if (request.LocationIds.Count > 0)
         {
             events = await dbContext.Events
                 .Where(e => request.LocationIds.Contains(e.LocationId))
                 .ToListAsync();
+        }
+        else
+        {
+            events = dbContext.Events.ToList();
         }
         return mapper.Map<List<EventDTO>>(events);
     }

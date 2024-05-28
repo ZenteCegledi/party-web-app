@@ -28,7 +28,7 @@ public class EventController(IEventService eventService)
         return await eventService.GetEventByLocationIds(request);
     }
     
-    [HttpPost("{id}")]
+    [HttpPost()]
     public async Task<EventDTO> CreateEvent(CreateEventRequest request)
     {
         return await eventService.CreateEvent(request);
