@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppCommon.DTOs;
@@ -11,34 +12,27 @@ namespace PartyWebAppServer.Controllers;
 
 [ApiController]
 [Route("/api/transactions")]
-public class TransactionController
+public class TransactionController(ITransactionService _transactionService)
 {
-    private AppDbContext DbContext { get; set; }
-    private TransactionService TransactionService { get; set; }
-
-    public TransactionController(AppDbContext dbContext)
-    {
-        DbContext = dbContext;
-        TransactionService = new TransactionService { DbContext = dbContext };
-    }
-
     [HttpGet()]
     public async Task<List<TransactionDto>> GetTransactions() => 
-        await TransactionService.GetTransactions();
+        await 
+            _transactionService
+            .GetTransactions();
 
-    [HttpGet("{username}")]
+    [HttpGet("/username/{username}")]
     public async Task<List<TransactionDto>> GetUserTransactions(string username) =>
-        await TransactionService.GetUserTransactions(username);
+        await _transactionService.GetUserTransactions(username);
 
-    [HttpGet("{transactionType}")]
+    [HttpGet("/transactionType/{transactionType}")]
     public async Task<List<TransactionDto>> GetTransactionsByType(TransactionType transactionType) =>
-        await TransactionService.GetTransactionsByType(transactionType);
+        await _transactionService.GetTransactionsByType(transactionType);
 
     [HttpPost("{id},{username},{spentCurrency},{count},{locationId},{eventId},{transactionType},{date}")]
     public async Task<TransactionDto> NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
         int locationId, int eventId, TransactionType transactionType, DateTime date)
     {
-        Transaction transaction = TransactionService.NewTransactionRequest(id, username, spentCurrency, currencyType, count, locationId, eventId, transactionType, date);
-        return await TransactionService.AddTransactionToDb(transaction);
+        Transaction transaction = _transactionService.NewTransactionRequest(id, username, spentCurrency, currencyType, count, locationId, eventId, transactionType, date);
+        return await _transactionService.AddTransactionToDb(transaction);
     }
 }
