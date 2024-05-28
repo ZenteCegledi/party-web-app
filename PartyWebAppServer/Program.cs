@@ -4,6 +4,7 @@ using BitzArt.Blazor.Auth;
 using PartyWebAppServer.Services;
 using PartyWebAppServer.Services.LocationService;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 var Configuration = builder.Configuration;
@@ -24,8 +25,11 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.AddScoped<JwtService>();
 builder.AddBlazorAuth<ServerSideAuthenticationService>();
+builder.Services.AddTransient<PartyWebAppServer.Services.IUserService, PartyWebAppServer.Services.UserService>();
+
 
 builder.Services.AddTransient<ILocationService, LocationService>();
 
@@ -54,7 +58,9 @@ app.UseRouting();
 app.UseAntiforgery();
 
 app.MapControllers();
+
 app.MapAuthEndpoints();
+
 
 app.UseEndpoints(endpoints =>
 {
