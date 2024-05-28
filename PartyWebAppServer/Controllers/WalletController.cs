@@ -9,13 +9,9 @@ namespace PartyWebAppServer.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class WalletController
+public class WalletController(IWalletService walletService)
 {
-    public WalletController(AppDbContext context)
-    {
-        WalletService = new ServerWalletService(context);
-    }
-    private ServerWalletService WalletService { get; set; }
+    private IWalletService WalletService { get; set; } = walletService;
 
     [HttpGet("{username}")]
     public async Task<List<WalletDto>> GetWallets(string username)
