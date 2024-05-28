@@ -36,9 +36,9 @@ public class UserController(IUserService userService)
     }
 
     [HttpPut("/{username}")]
-    public async Task<UserDTO> EditUser(EditUserRequest userRequest)
+    public async Task<UserDTO> EditUser(string username, EditUserRequest userRequest)
     {
-        return await userService.EditUser(userRequest);
+        return await userService.EditUser(username, userRequest);
 
     }
 }

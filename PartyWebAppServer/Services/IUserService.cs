@@ -16,7 +16,7 @@ namespace PartyWebAppServer.Services
         Task<UserDTO> GetUser(string username);
         Task<UserDTO> DeleteUser(string username);
 
-        Task<UserDTO> EditUser(EditUserRequest userRequest);
+        Task<UserDTO> EditUser(string username, EditUserRequest userRequest);
     }
 }
 

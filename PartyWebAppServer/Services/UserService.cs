@@ -78,17 +78,16 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
         return mapper.Map<UserDTO>(user);
     }
 
-    public async Task<UserDTO> EditUser(EditUserRequest userRequest)
+    public async Task<UserDTO> EditUser(string username, EditUserRequest userRequest)
     {
 
 
-        User? user = await dbContext.Users.FirstOrDefaultAsync(u => u.Username == userRequest.Username);
+        User? user = await dbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
         if (user == null)
         {
-            throw new UserNotFoundException(userRequest.Username);
+            throw new UserNotFoundException(username);
         }
-        if (userRequest.Name != null) user.Name = userRequest.Name;
-        user.BirthDate = (DateTime)userRequest.BirthDate;
+        if (userRequest.BirthDate != null) user.BirthDate = (DateTime)userRequest.BirthDate;
         var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == userRequest.Email);
         if (existingUser == null)
         {
