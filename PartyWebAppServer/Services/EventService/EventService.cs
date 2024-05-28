@@ -56,7 +56,7 @@ public class EventService(AppDbContext dbContext, IMapper mapper) : IEventServic
 
             return eventDto;
         }
-        events = dbContext.Events.ToList().Where(e => request.LocationIds.Contains(e.LocationId)).ToList();
+        events = dbContext.Events.Where(e => request.LocationIds.Contains(e.LocationId)).ToList();
         return mapper.Map<List<EventDTO>>(events);
     }
     
@@ -95,10 +95,22 @@ public class EventService(AppDbContext dbContext, IMapper mapper) : IEventServic
             throw new EventTypeDoesNotExistAppException(request.Type);
         }
 
-        eventToUpdate.Name = request.Name;
-        eventToUpdate.Type = (EventType)request.Type;
-        eventToUpdate.LocationId = (int)request.LocationId;
-        eventToUpdate.Price = (int)request.Price;
+        if (request.Name != null)
+        {
+            eventToUpdate.Name = request.Name;
+        }
+        if (request.Type != null)
+        {
+            eventToUpdate.Type = (EventType)request.Type;
+        }
+        if (request.LocationId != null)
+        {
+            eventToUpdate.LocationId = (int)request.LocationId;
+        }
+        if (request.Price != null)
+        {
+            eventToUpdate.Price = (int)request.Price;
+        }
 
         await dbContext.SaveChangesAsync();
 
@@ -112,12 +124,17 @@ public class EventService(AppDbContext dbContext, IMapper mapper) : IEventServic
         {
             throw new EventIdNotFoundAppException(id);
         }
-        Event eventToDelete = dbContext.Events.ToList().Where(e => e.Id == id).FirstOrDefault();
-        if (eventToDelete != null)
+        Event eventToDelete = await dbContext.Events.Where(e => e.Id == id).FirstOrDefaultAsync();
+        if (eventToDelete == null)
         {
-            dbContext.Events.Remove(eventToDelete);
-            dbContext.SaveChanges();
+            throw new EventIdNotFoundAppException(id);
         }
+        {
+            
+        }
+        dbContext.Events.Remove(eventToDelete);
+        dbContext.SaveChanges();
+        
         return mapper.Map<EventDTO>(eventToDelete);
     }
 }
