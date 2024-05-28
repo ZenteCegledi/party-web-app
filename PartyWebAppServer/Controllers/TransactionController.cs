@@ -5,6 +5,7 @@ using PartyWebAppCommon.DTOs;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
 using PartyWebAppCommon.enums;
+using PartyWebAppCommon.Requests;
 using PartyWebAppServer.ErrorHandling.Exceptions;
 using PartyWebAppServer.Services.TransactionService;
 
@@ -28,11 +29,11 @@ public class TransactionController(ITransactionService _transactionService)
     public async Task<List<TransactionDto>> GetTransactionsByType(TransactionType transactionType) =>
         await _transactionService.GetTransactionsByType(transactionType);
 
-    [HttpPost("{id},{username},{spentCurrency},{count},{locationId},{eventId},{transactionType},{date}")]
-    public async Task<TransactionDto> NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
-        int locationId, int eventId, TransactionType transactionType, DateTime date)
+    [HttpPost("{newTransactionRequest}")]
+    public async Task<TransactionDto> NewTransactionRequest(NewTransactionRequest newTransactionRequest)
     {
-        Transaction transaction = _transactionService.NewTransactionRequest(id, username, spentCurrency, currencyType, count, locationId, eventId, transactionType, date);
+        Transaction transaction = _transactionService.CreateTransaction(newTransactionRequest);
+        _transactionService.ExecuteTransaction(transaction);
         return await _transactionService.AddTransactionToDb(transaction);
     }
 }

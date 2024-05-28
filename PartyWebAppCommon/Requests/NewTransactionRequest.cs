@@ -1,5 +1,5 @@
 ﻿using PartyWebAppCommon.DTOs;
-using PartyWebAppCommon.Enums;
+using PartyWebAppCommon.enums;
 
 namespace PartyWebAppCommon.Requests;
 
@@ -10,7 +10,7 @@ public class NewTransactionRequest
     public int SpentCurrency { get; set; }
     public int Count { get; set; }
     
-    public LocationDto? Location { get; set; }
+    public LocationDTO? Location { get; set; }
     public EventDto? Event { get; set; }
     
     public TransactionType TransactionType { get; set; }
