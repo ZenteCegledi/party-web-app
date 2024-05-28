@@ -4,5 +4,6 @@ namespace PartyWebAppServer.ErrorHandling.ErrorModels;
 
 public class LocationShouldBeAtmErrorModel
 {
-    public LocationDTO Location { get; set; }
+    public string Name { get; set; }
+    public string Address { get; set; }
 }
