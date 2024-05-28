@@ -6,10 +6,10 @@ namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
 public class EventNotExistsAppException : AppException
 {
-    public EventNotExistsAppException(int eventId)
+    public EventNotExistsAppException(EventDto currentEvent)
     {
-        Message = $"Event with id: '{eventId}' does not exist.";
-        ErrorObject = new EventNotExistsErrorModel{EventId = eventId};
+        Message = $"Event: '{currentEvent.Name}' does not exist in DB.";
+        ErrorObject = new EventNotExistsErrorModel{Name = currentEvent.Name};
         HttpStatusCode = HttpStatusCode.BadRequest;
     }
     public override string Message { get; }
