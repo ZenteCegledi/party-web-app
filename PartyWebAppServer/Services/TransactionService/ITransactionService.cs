@@ -15,5 +15,6 @@ public interface ITransactionService
     public Task<List<TransactionDto>> GetTransactionsByType(TransactionType transactionType);
     
     public Transaction CreateTransaction(NewTransactionRequest transactionRequest);
+    public Transaction ExecuteTransaction(Transaction transaction);
     public Task<TransactionDto> AddTransactionToDb(Transaction transaction);
 }
