@@ -10,10 +10,10 @@ public class EventTypeDoesNotExistAppException : AppException
         
     public override HttpStatusCode HttpStatusCode { get; }
 
-    public EventTypeDoesNotExistAppException(EventType? type)
+    public EventTypeDoesNotExistAppException(int type)
     {
         Message = $"EventType {type} does not exist";
         HttpStatusCode = HttpStatusCode.BadRequest;
-        ErrorObject = new EventTypeDoesNotExistErrorModel() {Type = (EventType)type};
+        ErrorObject = new EventTypeDoesNotExistErrorModel() {Type = type};
     }
 }

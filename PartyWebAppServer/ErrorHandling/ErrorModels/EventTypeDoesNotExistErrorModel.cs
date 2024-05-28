@@ -4,5 +4,5 @@ namespace PartyWebAppServer.ErrorHandling.ErrorModels;
 
 public class EventTypeDoesNotExistErrorModel
 {
-    public EventType Type { get; set; }
+    public int Type { get; set; }
 }

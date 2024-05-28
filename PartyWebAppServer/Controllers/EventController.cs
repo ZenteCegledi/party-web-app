@@ -28,13 +28,13 @@ public class EventController(IEventService eventService)
         return await eventService.GetEventByLocationIds(request);
     }
     
-    [HttpPost()]
+    [HttpPost("{id}")]
     public async Task<EventDTO> CreateEvent(CreateEventRequest request)
     {
         return await eventService.CreateEvent(request);
     }
     
-    [HttpPut()]
+    [HttpPut("{id}")]
     public async Task<EventDTO> EditEvent(EditEventRequest request)
     {
         return await eventService.EditEvent(request);

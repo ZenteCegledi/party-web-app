@@ -26,17 +26,17 @@ public class EventService(AppDbContext dbContext, IMapper mapper) : IEventServic
     //GetEventById
     public async Task<EventDTO> GetEventById(int id)
     {
-        if (dbContext.Events.Where(e => e.Id == id).ToList().Count == 0)
+        Event eventItem = await dbContext.Events.FirstOrDefaultAsync(e => e.Id == id);
+        if (eventItem == null)
         {
             throw new EventIdNotFoundAppException(id);
         }
-        Event eventItem = await dbContext.Events.Where(e => e.Id == id).FirstOrDefaultAsync();
         
         return mapper.Map<EventDTO>(eventItem);
     }
     
     //GetEventByLocationIds
-    public async Task<List<EventDTO>> GetEventByLocationIds([FromQuery]EventsByLocationRequest request)
+    public async Task<List<EventDTO>> GetEventByLocationIds(EventsByLocationRequest request)
     {
         List<Event> events;
         if (request.LocationIds.Count > 0)
@@ -45,7 +45,7 @@ public class EventService(AppDbContext dbContext, IMapper mapper) : IEventServic
                 .Where(e => request.LocationIds.Contains(e.LocationId))
                 .ToListAsync();
 
-            List<EventDTO> eventDto = events.Select(e => new EventDTO()
+            List<EventDTO> eventsDto = events.Select(e => new EventDTO()
             {
                 Id = e.Id,
                 Name = e.Name,
@@ -54,26 +54,26 @@ public class EventService(AppDbContext dbContext, IMapper mapper) : IEventServic
                 Price = e.Price
             }).ToList();
 
-            return eventDto;
+            return eventsDto;
         }
-        events = dbContext.Events.Where(e => request.LocationIds.Contains(e.LocationId)).ToList();
+        events = dbContext.Events.ToList();
         return mapper.Map<List<EventDTO>>(events);
     }
     
     //CreateEvent
     public async Task<EventDTO> CreateEvent(CreateEventRequest request)
     {
+        if (!Enum.IsDefined(typeof(EventType), request.Type))
+        {
+            throw new EventTypeDoesNotExistAppException((int)request.Type);
+        }
         Event newEvent = new Event()
         {
             Name = request.Name,
-            Type = request.Type,
-            LocationId = request.LocationId,
-            Price = request.Price
+            Type = (EventType)request.Type,
+            LocationId = (int)request.LocationId,
+            Price = (int)request.Price
         };
-        if (!Enum.IsDefined(typeof(EventType), newEvent.Type))
-        {
-            throw new EventTypeDoesNotExistAppException(newEvent.Type);
-        }
         
         dbContext.Events.Add(newEvent);
         await dbContext.SaveChangesAsync();
@@ -92,7 +92,7 @@ public class EventService(AppDbContext dbContext, IMapper mapper) : IEventServic
 
         if (!Enum.IsDefined(typeof(EventType), request.Type))
         {
-            throw new EventTypeDoesNotExistAppException(request.Type);
+            throw new EventTypeDoesNotExistAppException((int)request.Type);
         }
 
         if (request.Name != null)
@@ -120,18 +120,12 @@ public class EventService(AppDbContext dbContext, IMapper mapper) : IEventServic
     //DeleteEvent
     public async Task<EventDTO> DeleteEvent(int id)
     {
-        if (dbContext.Events.ToList().Where(e => e.Id == id).ToList().Count == 0)
-        {
-            throw new EventIdNotFoundAppException(id);
-        }
-        Event eventToDelete = await dbContext.Events.Where(e => e.Id == id).FirstOrDefaultAsync();
+        Event eventToDelete = await dbContext.Events.FirstOrDefaultAsync(e => e.Id == id);
         if (eventToDelete == null)
         {
             throw new EventIdNotFoundAppException(id);
         }
-        {
-            
-        }
+        
         dbContext.Events.Remove(eventToDelete);
         dbContext.SaveChanges();
         
