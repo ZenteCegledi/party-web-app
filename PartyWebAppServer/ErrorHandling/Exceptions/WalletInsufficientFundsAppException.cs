@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using PartyWebAppCommon.DTOs;
-using PartyWebAppCommon.enums;
 using PartyWebAppServer.ErrorHandling.ErrorModels;
 
 namespace PartyWebAppServer.ErrorHandling.Exceptions;
