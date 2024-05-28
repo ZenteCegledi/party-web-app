@@ -36,7 +36,7 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
         Event? currentEvent = location != null ? _dbContext.Events.FirstOrDefault(e => e.Location == newTransactionRequest.Event.Location && e.Type == newTransactionRequest.Event.Type) : null;
 
         if (currentEvent.Location != location)
-            throw new NotImplementedException();
+            throw new EventNotExistsAtLocationAppException(newTransactionRequest.Event, newTransactionRequest.Location);
         
         switch (newTransactionRequest.TransactionType)
         {
@@ -86,8 +86,8 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
                 Date = newTransactionRequest.Date
             };
     }
-    
-    public async Task<TransactionDto> AddTransactionToDb(Transaction transaction)
+
+    public Transaction ExecuteTransaction(Transaction transaction)
     {
         switch (transaction.TransactionType)
         {
@@ -107,11 +107,15 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
                 throw new ArgumentOutOfRangeException();
         }
 
+        return transaction;
+    }
+    public async Task<TransactionDto> AddTransactionToDb(Transaction transaction)
+    {
         await _dbContext.SaveChangesAsync();
         return _mapper.Map<TransactionDto>(transaction);
     }
-    public void ChargeWallet(Wallet wallet, int spentCurrency) =>
+    private void ChargeWallet(Wallet wallet, int spentCurrency) =>
         wallet.Amount -= spentCurrency;
-    public void DepositToWallet(Wallet wallet, int spentCurrency) =>
+    private void DepositToWallet(Wallet wallet, int spentCurrency) =>
         wallet.Amount += spentCurrency;
 }
