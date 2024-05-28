@@ -1,16 +1,15 @@
 ﻿using System.Net;
 using PartyWebAppCommon.DTOs;
-using PartyWebAppCommon.Enums;
 using PartyWebAppServer.ErrorHandling.ErrorModels;
 
 namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
 public class LocationShouldBeAtmAppException : AppException
 {
-    public LocationShouldBeAtmAppException(TransactionType transactionType, LocationType? locationType)
+    public LocationShouldBeAtmAppException(LocationDTO location)
     {
-        Message = $"Can only complete transaction: '{transactionType}' from ATM and is: '{locationType}'";
-        ErrorObject = new  LocationShouldBeAtmErrorModel{TransactionTypeId = (int)transactionType, LocationTypeId = (int)locationType};
+        Message = $"Cannot Deposit from {location.Type}";
+        ErrorObject = new  LocationShouldBeAtmErrorModel{Location = location};
         HttpStatusCode = HttpStatusCode.BadRequest;
     }
     public override string Message { get; }
