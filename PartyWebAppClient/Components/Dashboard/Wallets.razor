@@ -6,19 +6,21 @@
 	<FluentCard>
 		<div class="w-100 d-flex justify-content-between">
 			<div>
-				<h3 class="font-monospace"><i>Your</i> Wallets</h3>	
-				
-				@foreach (WalletDto wallet in wallets) {
-					<FluentButton Appearance = "Appearance.Lightweight"
-					              Id="@wallet.Currency.ToString()"
-					              BackgroundColor="@( chosenWallet == wallet ? "var(--neutral-fill-stealth-hover)" : "" )"
-					              @onclick = "() => { chosenWallet = wallet; }">
-						<img alt = "@wallet.Currency"
-						     class = "rounded-circle"
-						     height = "20"
-						     src = "@currencyMap[wallet.Currency].image"
-						     style = "object-fit: cover"
-						     width = "20"/>
+				<h3 class="font-monospace"><i>Your</i> Wallets</h3>
+
+				@if (wallets.Count == 0)
+				{
+					<p class="text-black-50">You don't have any wallets yet, you need to create one to start using the app.
+					</p>
+				}
+
+				@foreach (WalletDto wallet in wallets)
+				{
+					<FluentButton Appearance="Appearance.Lightweight" Id="@wallet.Currency.ToString()"
+						BackgroundColor="@( chosenWallet == wallet ? "var(--neutral-fill-stealth-hover)" : "" )"
+						@onclick="() => { chosenWallet = wallet; }">
+						<img alt="@wallet.Currency" class="rounded-circle" height="20"
+							src="@currencyMap[wallet.Currency].image" style="object-fit: cover" width="20" />
 						@wallet.Currency
 					</FluentButton>
 				}
@@ -32,27 +34,30 @@
 		</div>
 	</FluentCard>
 
-	<FluentCard class="mt-4" Height="300px" Width="100%">
-		<div class="d-flex justify-content-between flex-column h-100">
-			<div class="w-100 d-flex justify-content-between">
-				<img alt="@chosenWallet.Currency" class="rounded-circle" height="75"
-					src="@currencyMap[chosenWallet.Currency].image" style="object-fit: cover" width="75" />
+	@if (chosenWallet != null)
+	{
+		<FluentCard class="mt-4" Height="300px" Width="100%">
+			<div class="d-flex justify-content-between flex-column h-100">
+				<div class="w-100 d-flex justify-content-between">
+					<img alt="@chosenWallet.Currency" class="rounded-circle" height="75"
+						src="@currencyMap[chosenWallet.Currency].image" style="object-fit: cover" width="75" />
 
-				<div class="d-flex gap-2">
-					<FluentButton Appearance="Appearance.Lightweight" IconStart="@(new Icons.Regular.Size24.ArrowUp())">
-					</FluentButton>
-					<FluentButton Appearance="Appearance.Lightweight"
-						IconStart="@(new Icons.Regular.Size24.ArrowDown())">
-					</FluentButton>
+					<div class="d-flex gap-2">
+						<FluentButton Appearance="Appearance.Lightweight" IconStart="@(new Icons.Regular.Size24.ArrowUp())">
+						</FluentButton>
+						<FluentButton Appearance="Appearance.Lightweight"
+							IconStart="@(new Icons.Regular.Size24.ArrowDown())">
+						</FluentButton>
+					</div>
 				</div>
-			</div>
 
-			<div>
-				<h1 class="mb-0 font-monospace">@chosenWallet.Amount</h1>
-				<h3 class="text-black-50 fw-lighter">@currencyMap[chosenWallet.Currency].symbol - @chosenWallet.Currency
-				</h3>
-			</div>
+				<div>
+					<h1 class="mb-0 font-monospace">@chosenWallet.Amount</h1>
+					<h3 class="text-black-50 fw-lighter">@currencyMap[chosenWallet.Currency].symbol - @chosenWallet.Currency
+					</h3>
+				</div>
 
-		</div>
-	</FluentCard>
+			</div>
+		</FluentCard>
+	}
 </AuthorizeView>

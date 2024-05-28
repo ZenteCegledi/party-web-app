@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Enums;
 using Microsoft.FluentUI.AspNetCore.Components;
+using PartyWebAppClient.Services;
 
 namespace PartyWebAppClient.Components.Dashboard;
 
@@ -12,7 +13,7 @@ public partial class Wallets : ComponentBase
     private Task<AuthenticationState>? authenticationState { get; set; }
 
     [Inject]
-    private HttpClient? Http { get; set; }
+    private IAppHttpClient? Http { get; set; }
 
     [Inject]
     private IToastService? ToastService { get; set; }
@@ -36,12 +37,11 @@ public partial class Wallets : ComponentBase
 
         var walletService = new ClientWalletService(Http!);
 
-        // var (_wallets, error) = await walletService.GetUserWallets(user.FindFirst("username")?.Value!);
-        // if (error is not null) ToastService?.ShowError(error.Message);
+        var (_wallets, error) = await walletService.GetUserWallets(user.FindFirst("username")?.Value!);
+        if (error is not null) ToastService?.ShowError(error.Message);
 
-        wallets = await walletService.GetUserWallets(user.FindFirst("username")?.Value!);
-
-        if (wallets.Count > 0) chosenWallet = wallets.Find(w => w.IsPrimary) ?? wallets[0];
+        if (_wallets!.Count > 0) chosenWallet = _wallets.Find(w => w.IsPrimary) ?? _wallets[0];
+        wallets = _wallets.OrderBy(w => w.IsPrimary ? 0 : 1).ToList();
 
         StateHasChanged();
     }

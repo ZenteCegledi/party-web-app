@@ -27,4 +27,34 @@ public class WalletController
     {
         return WalletService.GetWallet(username, currency);
     }
+
+    [HttpPost]
+    public async Task<WalletDto> CreateWallet(WalletDto wallet)
+    {
+        return WalletService.CreateWallet(wallet);
+    }
+
+    [HttpDelete("{username}/{currency}")]
+    public async Task<WalletDto> DeleteWallet(string username, CurrencyType currency)
+    {
+        var _wallet = WalletService.GetWallet(username, currency);
+
+        return WalletService.DeleteWallet(username, currency);
+    }
+
+    [HttpPut("deposit/{username}/{currency}/{amount}")]
+    public async Task<WalletDto> DepositToWallet(string username, CurrencyType currency, decimal amount)
+    {
+        var _wallet = WalletService.GetWallet(username, currency);
+
+        return WalletService.DepositToWallet(_wallet, amount);
+    }
+
+    [HttpPut("withdraw/{username}/{currency}/{amount}")]
+    public async Task<WalletDto> WithdrawFromWallet(string username, CurrencyType currency, decimal amount)
+    {
+        var _wallet = WalletService.GetWallet(username, currency);
+
+        return WalletService.WithdrawFromWallet(_wallet, amount);
+    }
 }
