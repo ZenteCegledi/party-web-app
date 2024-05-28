@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppCommon.DTOs;
-using PartyWebAppCommon.enums;
+using PartyWebAppCommon.Enums;
 using PartyWebAppServer.ErrorHandling.Exceptions;
 
 namespace PartyWebAppServer.Services.EventService;
@@ -30,7 +30,7 @@ public class EventService(AppDbContext dbContext, IMapper mapper) : IEventServic
         {
             throw new EventIdNotFoundAppException(id);
         }
-        Event eventItem = dbContext.Events.Where(e => e.Id == id).FirstOrDefault();
+        Event eventItem = await dbContext.Events.Where(e => e.Id == id).FirstOrDefaultAsync();
         
         return mapper.Map<EventDTO>(eventItem);
     }
