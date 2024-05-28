@@ -7,7 +7,7 @@ namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
 public class EventNotExistsAtLocationAppException : AppException
 {
-    public EventNotExistsAtLocationAppException(EventDto currentEvent, LocationDTO location)
+    public EventNotExistsAtLocationAppException(EventDTO currentEvent, LocationDTO location)
     {
         Message = $"Event: '{currentEvent.Name}' does not exist at location: {location.Name}, {location.Address}.";
         ErrorObject = new EventNotExistsAtLocationErrorModel{EventName = currentEvent.Name, LocationName = location.Name, LocationAddress = location.Address};

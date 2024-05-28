@@ -1,7 +1,7 @@
 ﻿using AutoMapper.Configuration;
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppCommon.DTOs;
-using PartyWebAppCommon.enums;
+using PartyWebAppCommon.Enums;
 using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
