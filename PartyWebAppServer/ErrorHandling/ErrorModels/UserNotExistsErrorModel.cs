@@ -1,6 +1,8 @@
-﻿namespace PartyWebAppServer.ErrorHandling.ErrorModels;
+﻿using PartyWebAppCommon.DTOs;
+
+namespace PartyWebAppServer.ErrorHandling.ErrorModels;
 
 public class UserNotExistsErrorModel
 {
-    public string Username { get; set; }
+    public UserDto User { get; set; }
 }
