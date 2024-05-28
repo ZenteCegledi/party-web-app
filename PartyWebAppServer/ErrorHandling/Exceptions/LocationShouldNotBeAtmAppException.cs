@@ -7,10 +7,10 @@ namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
 public class LocationShouldNotBeAtmAppException : AppException
 {
-    public LocationShouldNotBeAtmAppException(TransactionDto transaction)
+    public LocationShouldNotBeAtmAppException(TransactionType transactionType)
     {
-        Message = $"Cannot buy {transaction.TransactionType.ToString()} from ATM";
-        ErrorObject = new  LocationShouldNotBeAtmErrorModel{Type = transaction.TransactionType};
+        Message = $"Cannot buy {transactionType.ToString()} from ATM";
+        ErrorObject = new  LocationShouldNotBeAtmErrorModel{Type = transactionType};
         HttpStatusCode = HttpStatusCode.BadRequest;
     }
     public override string Message { get; }
