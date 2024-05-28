@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.enums;
+using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
 using PartyWebAppServer.ErrorHandling.Exceptions;
@@ -26,29 +27,30 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
     public async Task<List<TransactionDto>> GetTransactionsByType(TransactionType transactionType) => 
         _mapper.Map<List<TransactionDto>>(await _dbContext.Transactions.Where(t => t.TransactionType == transactionType).OrderBy(t => t.Date).ToListAsync());
 
-    public Transaction NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
-        int locationId, int eventId, TransactionType transactionType, DateTime date)
+    public Transaction CreateTransaction(NewTransactionRequest newTransactionRequest)
     {
-        Location? location = _dbContext.Locations.FirstOrDefault(l => l.Id == locationId);
-        Event? currentEvent = _dbContext.Events.FirstOrDefault(e => e.Id == eventId);
-        Wallet? wallet = _dbContext.Wallets.FirstOrDefault(w => w.Owner.Username == username && w.Currency == currencyType);
-        User? user = _dbContext.Users.FirstOrDefault(u => u.Username == username);
-        
-        if (user == null) throw new UserNotExistsAppException(username);
+        User user = _dbContext.Users.FirstOrDefault(u => u.Username == newTransactionRequest.User.Username) ?? throw new UserNotExistsAppException(newTransactionRequest.User.Username);
+        Wallet? wallet = _dbContext.Wallets.FirstOrDefault(w => w.Owner.Username == newTransactionRequest.Wallet.Username && w.Currency == newTransactionRequest.Wallet.Currency);
+
+        Location? location = _dbContext.Locations.FirstOrDefault(l => l.Name == newTransactionRequest.Location.Name && l.Address == newTransactionRequest.Location.Address);
+        Event? currentEvent = location != null ? _dbContext.Events.FirstOrDefault(e => e.Location == newTransactionRequest.Event.Location && e.Type == newTransactionRequest.Event.Type) : null;
+
+        if (currentEvent.Location != location)
+            throw new NotImplementedException();
         
         switch (transactionType)
         {
             case TransactionType.Food:
-                if (location == null) throw new LocationNotExistsAppException(locationId);
-                if (location.Type == LocationType.ATM) throw new LocationIsAtmAppException(transactionType);
-                if (wallet == null) throw new UserHasNoWalletAppException(username, currencyType);
+                if (location == null) throw new LocationNotExistsAppException(newTransactionRequest.Location);
+                if (location.Type == LocationType.ATM) throw new LocationShouldNotBeAtmAppException(newTransactionRequest.Location);
+                if (wallet == null) throw new UserHasNoWalletAppException(newTransactionRequest.User, newTransactionRequest.Wallet);
 
                 if (wallet.Amount < spentCurrency) 
-                    throw new WalletInsufficientFundsAppException(spentCurrency, currencyType);
+                    throw new WalletInsufficientFundsAppException(newTransactionRequest.Wallet, spentCurrency);
                 break;
             case TransactionType.Ticket:
                 if (location == null) throw new LocationNotExistsAppException(locationId);
-                if (location.Type == LocationType.ATM) throw new LocationIsAtmAppException(transactionType);
+                if (location.Type == LocationType.ATM) throw new LocationShouldNotBeAtmAppException(transactionType);
                 if (currentEvent == null) throw new EventNotExistsAppException(eventId);
                 if (wallet == null) throw new UserHasNoWalletAppException(username, currencyType);
                 
