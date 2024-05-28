@@ -7,6 +7,8 @@ using PartyWebAppServer.Services.AuthService;
 using PartyWebAppServer.Services.EventService;
 using PartyWebAppServer.Services.JwtService;
 using PartyWebAppServer.Services.LocationService;
+using PartyWebAppServer.Services.TransactionService;
+
 using PartyWebAppServer.Services.UserService;
 using IUserService = PartyWebAppServer.Services.UserService.IUserService;
 using IWalletService = PartyWebAppServer.Services.WalletService.IWalletService;
@@ -57,6 +59,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<ILocationService, LocationService>();
+builder.Services.AddTransient<ITransactionService, TransactionService>();
 builder.Services.AddTransient<IWalletService, WalletService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IEventService, EventService>();

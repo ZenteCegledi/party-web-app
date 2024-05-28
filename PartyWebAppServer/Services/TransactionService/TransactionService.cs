@@ -9,27 +9,30 @@ using PartyWebAppServer.ErrorHandling.Exceptions;
 
 namespace PartyWebAppServer.Services.TransactionService;
 
-public class TransactionService : ITransactionService
+public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITransactionService
 {
-    public AppDbContext DbContext { get; set; }
-    private IMapper Mapper { get; set; }
-
-    public async Task<List<TransactionDto>> GetTransactions() => 
-        Mapper.Map<List<TransactionDto>>(await DbContext.Transactions.ToListAsync());
+    public async Task<List<TransactionDto>> GetTransactions() =>  
+        _mapper
+            .Map<List<TransactionDto>>(
+                await 
+                    _dbContext
+                    .Transactions
+                    .ToListAsync()
+                );
 
     public async Task<List<TransactionDto>> GetUserTransactions(string username) => 
-        Mapper.Map<List<TransactionDto>>(await DbContext.Transactions.Where(t => t.Wallet.Owner.Username == username).OrderBy(t => t.Date).ToListAsync());
+        _mapper.Map<List<TransactionDto>>(await _dbContext.Transactions.Where(t => t.Wallet.Owner.Username == username).OrderBy(t => t.Date).ToListAsync());
 
     public async Task<List<TransactionDto>> GetTransactionsByType(TransactionType transactionType) => 
-        Mapper.Map<List<TransactionDto>>(await DbContext.Transactions.Where(t => t.TransactionType == transactionType).OrderBy(t => t.Date).ToListAsync());
+        _mapper.Map<List<TransactionDto>>(await _dbContext.Transactions.Where(t => t.TransactionType == transactionType).OrderBy(t => t.Date).ToListAsync());
 
     public Transaction NewTransactionRequest(int id, string username, int spentCurrency, CurrencyType currencyType, int count,
         int locationId, int eventId, TransactionType transactionType, DateTime date)
     {
-        Location? location = DbContext.Locations.FirstOrDefault(l => l.Id == locationId);
-        Event? currentEvent = DbContext.Events.FirstOrDefault(e => e.Id == eventId);
-        Wallet? wallet = DbContext.Wallets.FirstOrDefault(w => w.Owner.Username == username && w.Currency == currencyType);
-        User? user = DbContext.Users.FirstOrDefault(u => u.Username == username);
+        Location? location = _dbContext.Locations.FirstOrDefault(l => l.Id == locationId);
+        Event? currentEvent = _dbContext.Events.FirstOrDefault(e => e.Id == eventId);
+        Wallet? wallet = _dbContext.Wallets.FirstOrDefault(w => w.Owner.Username == username && w.Currency == currencyType);
+        User? user = _dbContext.Users.FirstOrDefault(u => u.Username == username);
         
         if (user == null) throw new UserNotExistsAppException(username);
         
@@ -91,8 +94,8 @@ public class TransactionService : ITransactionService
                 throw new ArgumentOutOfRangeException();
         }
 
-        await DbContext.SaveChangesAsync();
-        return Mapper.Map<TransactionDto>(transaction);
+        await _dbContext.SaveChangesAsync();
+        return _mapper.Map<TransactionDto>(transaction);
     }
     public void ChargeWallet(Wallet wallet, int spentCurrency) =>
         wallet.Amount -= spentCurrency;
