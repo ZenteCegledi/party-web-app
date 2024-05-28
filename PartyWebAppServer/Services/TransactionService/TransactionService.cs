@@ -2,7 +2,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
 using PartyWebAppCommon.DTOs;
-using PartyWebAppCommon.enums;
+using PartyWebAppCommon.Enums;
 using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
@@ -29,11 +29,11 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
 
     public Transaction CreateTransaction(NewTransactionRequest newTransactionRequest)
     {
-        User user = _dbContext.Users.FirstOrDefault(u => u.Username == newTransactionRequest.User.Username) ?? throw new UserNotExistsAppException(newTransactionRequest.User.Username);
+        User user = _dbContext.Users.FirstOrDefault(u => u.Username == newTransactionRequest.User.Username) ?? throw new UserNotExistsAppException(newTransactionRequest.User);
         Wallet? wallet = _dbContext.Wallets.FirstOrDefault(w => w.Owner.Username == newTransactionRequest.Wallet.Username && w.Currency == newTransactionRequest.Wallet.Currency);
 
         Location? location = _dbContext.Locations.FirstOrDefault(l => l.Name == newTransactionRequest.Location.Name && l.Address == newTransactionRequest.Location.Address);
-        Event? currentEvent = location != null ? _dbContext.Events.FirstOrDefault(e => e.Location == newTransactionRequest.Event.Location && e.Type == newTransactionRequest.Event.Type) : null;
+        Event? currentEvent = location != null ? _dbContext.Events.FirstOrDefault(e => e.Location.Id == newTransactionRequest.Event.LocationId && e.Type == newTransactionRequest.Event.Type) : null;
 
         if (currentEvent.Location != location)
             throw new EventNotExistsAtLocationAppException(newTransactionRequest.Event, newTransactionRequest.Location);
