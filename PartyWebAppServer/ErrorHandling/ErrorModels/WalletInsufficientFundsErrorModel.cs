@@ -1,4 +1,4 @@
-﻿using PartyWebAppCommon.enums;
+﻿using PartyWebAppCommon.Enums;
 
 namespace PartyWebAppServer.ErrorHandling.ErrorModels;
 
