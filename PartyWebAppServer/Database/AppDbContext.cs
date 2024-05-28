@@ -8,7 +8,7 @@ public class AppDbContext : DbContext
 {
 
     public DbSet<Wallet> Wallets { get; set; }
-    public DbSet<User?> Users { get; set; }
+    public DbSet<User> Users { get; set; }
 
     public DbSet<Location> Locations { get; set; }
     public DbSet<Event> Events { get; set; }

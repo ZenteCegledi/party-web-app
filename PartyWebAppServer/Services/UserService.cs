@@ -26,27 +26,27 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
             throw new EmailAlreadyInUseException(user.Email);
         }
 
-        try
+        if (await dbContext.Users.FirstOrDefaultAsync(u => u.Username == user.Username) != null)
         {
-            User? tmpUser = new User
-            {
-                Username = user.Username,
-                Name = user.Name,
-                BirthDate = user.BirthDate,
-                Email = user.Email,
-                Phone = user.Phone,
-                Password = user.Password
-            };
-            dbContext.Users.Add(tmpUser);
-            await dbContext.SaveChangesAsync();
-
-            return mapper.Map<UserDTO>(tmpUser);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
             throw new UserCreationException(user.Username);
         }
+
+
+        User? tmpUser = new User
+        {
+            Username = user.Username,
+            Name = user.Name,
+            BirthDate = user.BirthDate,
+            Email = user.Email,
+            Phone = user.Phone,
+            Password = BCrypt.Net.BCrypt.HashPassword(user.Password)
+        };
+        dbContext.Users.Add(tmpUser);
+        await dbContext.SaveChangesAsync();
+
+        return mapper.Map<UserDTO>(tmpUser);
+
+
     }
 
 
@@ -68,7 +68,7 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
     public async Task<UserDTO> DeleteUser(string username)
 
     {
-        User? user = await dbContext.Users.Where(u => u.Username == username).FirstAsync();
+        User? user = await dbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
         dbContext.Users.Remove(user);
         await dbContext.SaveChangesAsync();
         return mapper.Map<UserDTO>(user);
@@ -76,27 +76,23 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
 
     public async Task<UserDTO> EditUser(EditUserRequest userRequest)
     {
-        string username = userRequest.Username;
-        string? name = userRequest.Name;
-        DateTime? birthDate = userRequest.BirthDate;
-        string? email = userRequest.Email;
-        string? phone = userRequest.Phone;
-        string? password = userRequest.Password;
 
-        User? user = await dbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
-        if (name != null) user.Name = name;
-        if (birthDate != null) user.BirthDate = (DateTime)birthDate;
-        if (email != null && dbContext.Users.Count(u => u.Email == email) == 0)
+
+        User? user = await dbContext.Users.FirstOrDefaultAsync(u => u.Username == userRequest.Username);
+        if (userRequest.Name != null) user.Name = userRequest.Name;
+        user.BirthDate = (DateTime)userRequest.BirthDate;
+        var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == userRequest.Email);
+        if (existingUser == null)
         {
-            user.Email = email;
+            user.Email = userRequest.Email;
         }
         else
         {
-            throw new EmailAlreadyInUseException(email ?? "");
+            throw new EmailAlreadyInUseException(userRequest.Email);
         }
 
-        if (phone != null) user.Phone = phone;
-        if (password != null) user.Password = password;
+        if (userRequest.Phone != null) user.Phone = userRequest.Phone;
+        if (userRequest.Password != null) user.Password = userRequest.Password;
         await dbContext.SaveChangesAsync();
 
         return mapper.Map<UserDTO>(user);
