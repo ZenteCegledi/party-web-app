@@ -1,12 +1,9 @@
-namespace PartyWebAppServer.Services;
-
 using BitzArt.Blazor.Auth;
 using PartyWebAppCommon.Models;
-using BCrypt.Net;
-using PartyWebAppServer.Database.Models;
-using Microsoft.Extensions.Configuration;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
+
+namespace PartyWebAppServer.Services.AuthService;
 
 public class ServerSideAuthenticationService : ServerSideAuthenticationService<SignInRequest, SignUpRequest>
 {
@@ -27,7 +24,7 @@ public class ServerSideAuthenticationService : ServerSideAuthenticationService<S
 
         if (user == null) return Task.FromResult(AuthenticationResult.Failure("User not found"));
 
-        if (!BCrypt.Verify(signInRequest.Password, user.Password)) return Task.FromResult(AuthenticationResult.Failure("Invalid password"));
+        if (!BCrypt.Net.BCrypt.Verify(signInRequest.Password, user.Password)) return Task.FromResult(AuthenticationResult.Failure("Invalid password"));
 
         var authResult = AuthenticationResult.Success(jwtService.BuildJwtPair(user));
 
@@ -41,7 +38,7 @@ public class ServerSideAuthenticationService : ServerSideAuthenticationService<S
         var user = new User
         {
             Email = signUpRequest.Email,
-            Password = BCrypt.HashPassword(signUpRequest.Password),
+            Password = BCrypt.Net.BCrypt.HashPassword(signUpRequest.Password),
             Username = signUpRequest.Username,
             RoleId = signUpRequest.RoleId,
             Name = signUpRequest.Username,

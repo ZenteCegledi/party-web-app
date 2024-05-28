@@ -1,9 +1,6 @@
-using AutoMapper;
-using PartyWebAppServer.Database.Models;
 using Microsoft.AspNetCore.Mvc;
-using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Requests;
-using PartyWebAppServer.Services;
+using IUserService = PartyWebAppServer.Services.UserService.IUserService;
 
 namespace PartyWebAppServer.Controllers;
 

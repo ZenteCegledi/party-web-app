@@ -1,10 +1,6 @@
-
-using PartyWebAppCommon.DTOs;
-
 using PartyWebAppCommon.Requests;
-using PartyWebAppServer.Database.Models;
 
-namespace PartyWebAppServer.Services
+namespace PartyWebAppServer.Services.UserService
 {
     public interface IUserService
     {

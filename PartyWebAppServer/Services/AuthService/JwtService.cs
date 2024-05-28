@@ -1,11 +1,11 @@
-using BitzArt.Blazor.Auth;
-using Microsoft.IdentityModel.Tokens;
-using PartyWebAppServer.Database.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using BitzArt.Blazor.Auth;
+using Microsoft.IdentityModel.Tokens;
+using PartyWebAppServer.Database.Models;
 
-namespace PartyWebAppServer.Services;
+namespace PartyWebAppServer.Services.AuthService;
 
 public class JwtService
 {

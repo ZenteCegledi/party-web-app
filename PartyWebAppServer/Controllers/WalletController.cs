@@ -3,6 +3,7 @@ using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Enums;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Services;
+using PartyWebAppServer.Services.WalletService;
 
 namespace PartyWebAppServer.Controllers;
 

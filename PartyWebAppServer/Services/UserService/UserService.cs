@@ -1,12 +1,11 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
-using Microsoft.EntityFrameworkCore;
-using PartyWebAppCommon.DTOs;
-using PartyWebAppCommon.Requests;
 using PartyWebAppServer.ErrorHandling.Exceptions;
 
-namespace PartyWebAppServer.Services;
+namespace PartyWebAppServer.Services.UserService;
 
 public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
 {

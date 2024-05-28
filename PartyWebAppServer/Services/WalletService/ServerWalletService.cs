@@ -1,18 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PartyWebAppCommon.DTOs;
+﻿using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Enums;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.ErrorHandling.Exceptions;
 
-namespace PartyWebAppServer.Services;
+namespace PartyWebAppServer.Services.WalletService;
 
-public interface IWalletService
-{
-    List<WalletDto> GetWallets(string username);
-    WalletDto GetWallet(string username, CurrencyType currency);
-}
-
-public class ServerWalletService(AppDbContext context)
+public class ServerWalletService(AppDbContext context) : IWalletService
 {
     public List<WalletDto> GetWallets(string username)
     {

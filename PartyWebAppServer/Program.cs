@@ -1,9 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppServer.Database;
 using BitzArt.Blazor.Auth;
-using PartyWebAppServer.Services;
+using PartyWebAppServer.Services.AuthService;
+using PartyWebAppServer.Services.EventService;
 using PartyWebAppServer.Services.LocationService;
-
+using PartyWebAppServer.Services.WalletService;
+using UserService = PartyWebAppServer.Services.UserService.UserService;
+using IUserService = PartyWebAppServer.Services.UserService.IUserService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,10 +31,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<JwtService>();
 builder.AddBlazorAuth<ServerSideAuthenticationService>();
-builder.Services.AddTransient<PartyWebAppServer.Services.IUserService, PartyWebAppServer.Services.UserService>();
 
-
+builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ILocationService, LocationService>();
+builder.Services.AddTransient<IEventService, EventService>();
+builder.Services.AddTransient<IWalletService, ServerWalletService>();
 
 var app = builder.Build();
 
