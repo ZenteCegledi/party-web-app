@@ -1,16 +1,15 @@
 ﻿using System.Net;
 using PartyWebAppServer.ErrorHandling.ErrorModels;
 using PartyWebAppCommon.DTOs;
-using PartyWebAppServer.Database.Models;
 
 namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
 public class EventNotExistsAtLocationAppException : AppException
 {
-    public EventNotExistsAtLocationAppException(EventDto currentEvent, LocationDto location)
+    public EventNotExistsAtLocationAppException(int eventId, LocationDTO location)
     {
-        Message = $"Event: '{currentEvent.Name}' does not exist at location: {location.Name}, {location.Address}.";
-        ErrorObject = new EventNotExistsAtLocationErrorModel{EventName = currentEvent.Name, LocationName = location.Name, LocationAddress = location.Address};
+        Message = $"Event with id: '{eventId}' does not exist at location: {location.Name}, {location.Address}.";
+        ErrorObject = new EventNotExistsAtLocationErrorModel{EventId = eventId, Location = location};
         HttpStatusCode = HttpStatusCode.BadRequest;
     }
     public override string Message { get; }
