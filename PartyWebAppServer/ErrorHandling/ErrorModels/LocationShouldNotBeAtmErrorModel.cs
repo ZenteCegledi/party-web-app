@@ -1,8 +1,8 @@
-﻿using PartyWebAppCommon.DTOs;
+﻿using PartyWebAppCommon.enums;
 
 namespace PartyWebAppServer.ErrorHandling.ErrorModels;
 
 public class LocationShouldNotBeAtmErrorModel
 {
-    public TransactionDto Transaction { get; set; }
+    public TransactionType Type { get; set; }
 }
