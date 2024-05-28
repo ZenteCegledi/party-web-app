@@ -28,6 +28,8 @@ builder.Services.AddScoped<JwtService>();
 builder.AddBlazorAuth<ServerSideAuthenticationService>();
 builder.Services.AddTransient<IEventService, EventService>();
 
+builder.Services.AddTransient<IEventService, EventService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
