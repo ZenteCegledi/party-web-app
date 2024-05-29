@@ -13,12 +13,12 @@ public class EventController(IEventService eventService, IHttpContextAccessor ht
     private readonly HttpContext _httpContext = httpContextAccessor.HttpContext!;
 
     [HttpGet()]
-    public async Task<List<EventDTO>> GetAllEvents()
+    public async Task<List<EventDTO>> GetAllEventsWithLocations()
     {
         if (!jwtService.IsAuthorized(_httpContext.Request))
             throw new UnauthorizedAccessException("You need to be authorized.");
 
-        return await eventService.GetAllEvents();
+        return await eventService.GetAllEventsWithLocations();
     }
 
     [HttpGet("{id}")]
