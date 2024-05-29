@@ -12,7 +12,7 @@ using PartyWebAppServer.Services.TransactionService;
 namespace PartyWebAppServer.Controllers;
 
 [ApiController]
-[Route("/api/transactions")]
+[Route("/api/[controller]")]
 public class TransactionController(ITransactionService _transactionService)
 {
     [HttpGet()]
@@ -21,15 +21,15 @@ public class TransactionController(ITransactionService _transactionService)
             _transactionService
             .GetTransactions();
 
-    [HttpGet("/username/{username}")]
+    [HttpGet("user/{username}")]
     public async Task<List<TransactionDTO>> GetUserTransactions(string username) =>
         await _transactionService.GetUserTransactions(username);
 
-    [HttpGet("/transactionType/{transactionType}")]
+    [HttpGet("type/{transactionType}")]
     public async Task<List<TransactionDTO>> GetTransactionsByType(TransactionType transactionType) =>
         await _transactionService.GetTransactionsByType(transactionType);
 
-    [HttpPost("{newTransactionRequest}")]
+    [HttpPost()]
     public async Task<TransactionDTO> NewTransactionRequest(NewTransactionRequest newTransactionRequest)
     {
         Transaction transaction = _transactionService.CreateTransaction(newTransactionRequest);
