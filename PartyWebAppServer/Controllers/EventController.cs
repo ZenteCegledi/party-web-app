@@ -13,7 +13,7 @@ public class EventController(IEventService eventService, IHttpContextAccessor ht
     private readonly HttpContext _httpContext = httpContextAccessor.HttpContext!;
 
     [HttpGet()]
-    public async Task<List<EventDto>> GetAllEvents()
+    public async Task<List<EventDTO>> GetAllEvents()
     {
         if (!jwtService.IsAuthorized(_httpContext.Request))
             throw new UnauthorizedAccessException("You need to be authorized.");
@@ -22,16 +22,16 @@ public class EventController(IEventService eventService, IHttpContextAccessor ht
     }
 
     [HttpGet("{id}")]
-    public async Task<EventDto> GetEventById(int id)
+    public async Task<EventDTO> GetEventById(GetEventRequest request)
     {
         if (!jwtService.IsAuthorized(_httpContext.Request))
             throw new UnauthorizedAccessException("You need to be authorized.");
 
-        return await eventService.GetEventById(id);
+        return await eventService.GetEventById(request);
     }
 
     [HttpGet("bylocationids")]
-    public async Task<List<EventDto>> GetEventByLocationIds([FromQuery] EventsByLocationRequest request)
+    public async Task<List<EventDTO>> GetEventByLocationIds([FromQuery] EventsByLocationRequest request)
     {
         if (!jwtService.IsAuthorized(_httpContext.Request))
             throw new UnauthorizedAccessException("You need to be authorized.");
@@ -40,7 +40,7 @@ public class EventController(IEventService eventService, IHttpContextAccessor ht
     }
 
     [HttpPost()]
-    public async Task<EventDto> CreateEvent(CreateEventRequest request)
+    public async Task<EventDTO> CreateEvent(CreateEventRequest request)
     {
         if (!jwtService.IsUserAdmin(_httpContext.Request))
             throw new UnauthorizedAccessException("You need to be an admin to create an event.");
@@ -49,7 +49,7 @@ public class EventController(IEventService eventService, IHttpContextAccessor ht
     }
 
     [HttpPut("{id}")]
-    public async Task<EventDto> EditEvent(EditEventRequest request, int id)
+    public async Task<EventDTO> EditEvent(EditEventRequest request, int id)
     {
         if (!jwtService.IsUserAdmin(_httpContext.Request))
             throw new UnauthorizedAccessException("You need to be an admin to edit an event.");
@@ -58,7 +58,7 @@ public class EventController(IEventService eventService, IHttpContextAccessor ht
     }
 
     [HttpDelete("{id}")]
-    public async Task<EventDto> DeleteEvent(int id)
+    public async Task<EventDTO> DeleteEvent(int id)
     {
         if (!jwtService.IsUserAdmin(_httpContext.Request))
             throw new UnauthorizedAccessException("You need to be an admin to delete an event.");

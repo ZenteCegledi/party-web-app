@@ -1,0 +1,11 @@
+﻿@page "/dashboard/events"
+@using PartyWebAppCommon.DTOs
+
+
+<h3>EventIndex</h3>
+
+<EventCard/>
+@foreach(EventDTO eventItem in Events)
+{
+    <EventCard Event="@eventItem"/>
+}

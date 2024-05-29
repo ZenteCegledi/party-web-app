@@ -9,11 +9,11 @@ namespace PartyWebAppServer.Services.EventService;
 
 public interface IEventService
 {
-    public Task<List<EventDto>> GetAllEvents();
-    public Task<EventDto> GetEventById(int id);
-    public Task<List<EventDto>> GetEventByLocationIds(EventsByLocationRequest request);
-    public Task<EventDto> CreateEvent(CreateEventRequest request);
-    public Task<EventDto> EditEvent(EditEventRequest request, int id);
-    public Task<EventDto> DeleteEvent(int id);
+    public Task<List<EventDTO>> GetAllEvents();
+    public Task<EventDTO> GetEventById(GetEventRequest request);
+    public Task<List<EventDTO>> GetEventByLocationIds(EventsByLocationRequest request);
+    public Task<EventDTO> CreateEvent(CreateEventRequest request);
+    public Task<EventDTO> EditEvent(EditEventRequest request, int id);
+    public Task<EventDTO> DeleteEvent(int id);
 }
 
