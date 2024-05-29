@@ -12,26 +12,26 @@ namespace PartyWebAppServer.Services.EventService;
 public class EventService(AppDbContext dbContext, IMapper mapper) : IEventService
 {
     //GetAllEvents
-    public async Task<List<EventDto>> GetAllEvents()
+    public async Task<List<EventDTO>> GetAllEvents()
     {
         var events = dbContext.Events.ToList();
-        return mapper.Map<List<EventDto>>(events);
+        return mapper.Map<List<EventDTO>>(events);
     }
 
     //GetEventById
-    public async Task<EventDto> GetEventById(int id)
+    public async Task<EventDTO> GetEventById(GetEventRequest request)
     {
-        var eventItem = await dbContext.Events.FirstOrDefaultAsync(e => e.Id == id);
+        var eventItem = await dbContext.Events.FirstOrDefaultAsync(e => e.Id == request.Id);
         if (eventItem == null)
         {
-            throw new EventIdNotFoundAppException(id);
+            throw new EventIdNotFoundAppException(request.Id);
         }
 
-        return mapper.Map<EventDto>(eventItem);
+        return mapper.Map<EventDTO>(eventItem);
     }
 
     //GetEventByLocationIds
-    public async Task<List<EventDto>> GetEventByLocationIds(EventsByLocationRequest request)
+    public async Task<List<EventDTO>> GetEventByLocationIds(EventsByLocationRequest request)
     {
         List<Event> events;
         if (request.LocationIds.Count > 0)
@@ -44,11 +44,11 @@ public class EventService(AppDbContext dbContext, IMapper mapper) : IEventServic
         {
             events = dbContext.Events.ToList();
         }
-        return mapper.Map<List<EventDto>>(events);
+        return mapper.Map<List<EventDTO>>(events);
     }
 
     //CreateEvent
-    public async Task<EventDto> CreateEvent(CreateEventRequest request)
+    public async Task<EventDTO> CreateEvent(CreateEventRequest request)
     {
         if (!Enum.IsDefined(typeof(EventType), request.Type))
         {
@@ -64,11 +64,11 @@ public class EventService(AppDbContext dbContext, IMapper mapper) : IEventServic
 
         dbContext.Events.Add(newEvent);
         await dbContext.SaveChangesAsync();
-        return mapper.Map<EventDto>(newEvent);
+        return mapper.Map<EventDTO>(newEvent);
     }
 
     //EditEvent
-    public async Task<EventDto> EditEvent(EditEventRequest request, int id)
+    public async Task<EventDTO> EditEvent(EditEventRequest request, int id)
     {
         var eventToUpdate = await dbContext.Events.FirstOrDefaultAsync(e => e.Id == id);
 
@@ -100,11 +100,11 @@ public class EventService(AppDbContext dbContext, IMapper mapper) : IEventServic
         }
 
         await dbContext.SaveChangesAsync();
-        return mapper.Map<EventDto>(eventToUpdate);
+        return mapper.Map<EventDTO>(eventToUpdate);
     }
 
     //DeleteEvent
-    public async Task<EventDto> DeleteEvent(int id)
+    public async Task<EventDTO> DeleteEvent(int id)
     {
         var eventToDelete = await dbContext.Events.FirstOrDefaultAsync(e => e.Id == id);
         if (eventToDelete == null)
@@ -115,6 +115,6 @@ public class EventService(AppDbContext dbContext, IMapper mapper) : IEventServic
         dbContext.Events.Remove(eventToDelete);
         await dbContext.SaveChangesAsync();
 
-        return mapper.Map<EventDto>(eventToDelete);
+        return mapper.Map<EventDTO>(eventToDelete);
     }
 }
