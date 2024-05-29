@@ -13,5 +13,8 @@ public class Event
     [ForeignKey("Location")]
     public int LocationId { get; set; }
     public Location? Location { get; set; }
+    public DateTime StartDateTime { get; set; }
+    public DateTime EndDateTime { get; set; }
+    public string Description { get; set; }
     public int Price { get; set; }
 }

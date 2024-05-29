@@ -8,6 +8,6 @@ public class LocationProfile : Profile
 {
     public LocationProfile()
     {
-        CreateMap<Location, LocationDTO>();
+        CreateMap<Location, LocationDto>();
     }
 }

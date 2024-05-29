@@ -3,9 +3,10 @@ using PartyWebAppServer.Database;
 using BitzArt.Blazor.Auth;
 using PartyWebAppServer.Services.AuthService;
 using PartyWebAppServer.Services.EventService;
+using PartyWebAppServer.Services.JwtService;
 using PartyWebAppServer.Services.LocationService;
+using PartyWebAppServer.Services.UserService;
 using PartyWebAppServer.Services.WalletService;
-using UserService = PartyWebAppServer.Services.UserService.UserService;
 using IUserService = PartyWebAppServer.Services.UserService.IUserService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,14 +29,25 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddSwaggerGen();
 
+builder.AddBlazorAuth<AuthService>();
 
-builder.Services.AddScoped<JwtService>();
-builder.AddBlazorAuth<ServerSideAuthenticationService>();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAdminRole",
+        policy => policy.RequireAssertion(context =>
+            context.User.IsInRole("Admin") ||
+            context.User.HasClaim(claim => claim.Type == "IsAdmin" && claim.Value == "true")
+        )
+    );
+});
 
-builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<ILocationService, LocationService>();
+builder.Services.AddTransient<IWalletService, WalletService>();
+builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IEventService, EventService>();
-builder.Services.AddTransient<IWalletService, ServerWalletService>();
 
 var app = builder.Build();
 
@@ -62,9 +74,10 @@ app.UseRouting();
 app.UseAntiforgery();
 
 app.MapControllers();
-
 app.MapAuthEndpoints();
 
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {

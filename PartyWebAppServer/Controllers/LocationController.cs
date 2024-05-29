@@ -1,45 +1,60 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Requests;
-using PartyWebAppServer.Database.Models;
-using PartyWebAppServer.Services;
+using PartyWebAppServer.Services.JwtService;
 using PartyWebAppServer.Services.LocationService;
 
 namespace PartyWebAppServer.Controllers;
 
 [ApiController]
-[Route("api/locations")]
-public class LocationController(ILocationService _locationService)
+[Route("api/[controller]")]
+public class LocationController(ILocationService locationService, IHttpContextAccessor httpContextAccessor, IJwtService jwtService)
 {
+    private readonly HttpContext _httpContext = httpContextAccessor.HttpContext!;
 
     [HttpGet("{id}")]
-    public async Task<LocationDTO> GetLocation(int id)
+    public async Task<LocationDto> GetLocation(int id)
     {
-        return await _locationService.GetLocation(id);
+        if (!jwtService.IsAuthorized(_httpContext.Request))
+            throw new UnauthorizedAccessException("You need to be authorized.");
+
+        return await locationService.GetLocation(id);
     }
-    
-    
+
+
     [HttpGet()]
-    public async Task<List<LocationDTO>> GetLocations()
+    public async Task<List<LocationDto>> GetLocations()
     {
-        return await _locationService.GetLocations();
+        if (!jwtService.IsAuthorized(_httpContext.Request))
+            throw new UnauthorizedAccessException("You need to be authorized.");
+
+        return await locationService.GetLocations();
     }
 
     [HttpPost()]
-    public async Task<LocationDTO> CreateLocation(CreateLocationRequest request)
+    public async Task<LocationDto> CreateLocation(CreateLocationRequest request)
     {
-        return await _locationService.CreateLocation(request);
+        if (!jwtService.IsUserAdmin(_httpContext.Request))
+            throw new UnauthorizedAccessException("You need to be an admin.");
+
+        return await locationService.CreateLocation(request);
     }
 
     [HttpDelete("{id}")]
-    public async Task<LocationDTO> DeleteLocation(int id)
+    public async Task<LocationDto> DeleteLocation(int id)
     {
-        return await _locationService.DeleteLocation(id);
+        if (!jwtService.IsUserAdmin(_httpContext.Request))
+            throw new UnauthorizedAccessException("You need to be an admin.");
+
+        return await locationService.DeleteLocation(id);
     }
 
     [HttpPut("{id}")]
-    public async Task<LocationDTO> EditLocation(int id, EditLocationRequest request)
+    public async Task<LocationDto> EditLocation(int id, EditLocationRequest request)
     {
-        return await _locationService.EditLocation(id, request);
+        if (!jwtService.IsUserAdmin(_httpContext.Request))
+            throw new UnauthorizedAccessException("You need to be an admin.");
+
+        return await locationService.EditLocation(id, request);
     }
 }

@@ -1,8 +1,8 @@
-﻿using PartyWebAppCommon.Enums;
+using PartyWebAppCommon.Enums;
 
 namespace PartyWebAppCommon.DTOs;
 
-public class EventDTO
+public class EventDto
 {
     public int Id { get; set; }
     public string Name { get; set; }

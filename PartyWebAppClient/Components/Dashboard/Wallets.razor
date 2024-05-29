@@ -1,51 +1,157 @@
 ﻿@attribute [Authorize]
 
+@using PartyWebAppClient.Components.Dashboard
 @using PartyWebAppCommon.DTOs
+@using PartyWebAppCommon.Enums
 
 <AuthorizeView>
+	<Modal @ref="DepositModal">
+		<HeaderTemplate>
+			<div class="d-flex align-items-center gap-2">
+				<img alt="@chosenWallet.Currency" class="rounded-circle" height="30"
+					src="@currencyMap[chosenWallet.Currency].image" style="object-fit: cover" width="30" />
+				<h4 class="font-monospace m-0">Deposit</h4>
+			</div>
+		</HeaderTemplate>
+		<BodyTemplate>
+			<p class="mb-1"><b><i>@currencyMap[chosenWallet.Currency].symbol</i></b> - Amount:</p>
+			<FluentNumberField @bind-Value="depositAmount" Min="1" class="w-100" />
+		</BodyTemplate>
+		<FooterTemplate>
+			<FluentButton IconStart="@(new Icons.Regular.Size20.Delete())" @onclick="() => HideModal(DepositModal)"
+				Loading="@modalSubmitting">
+				Close</FluentButton>
+			<FluentButton IconStart="@(new Icons.Regular.Size20.ArrowUp())" @onclick="Deposit"
+				Loading="@modalSubmitting">
+				Deposit</FluentButton>
+		</FooterTemplate>
+	</Modal>
+
+	<Modal @ref="WithdrawModal">
+		<HeaderTemplate>
+			<div class="d-flex align-items-center gap-2">
+				<img alt="@chosenWallet.Currency" class="rounded-circle" height="30"
+					src="@currencyMap[chosenWallet.Currency].image" style="object-fit: cover" width="30" />
+				<h4 class="font-monospace m-0">Withdraw</h4>
+			</div>
+		</HeaderTemplate>
+		<BodyTemplate>
+			<p class="mb-1"><b><i>@currencyMap[chosenWallet.Currency].symbol</i></b> - Amount:</p>
+			<FluentNumberField @bind-Value="withdrawAmount" Min="1" class="w-100" />
+		</BodyTemplate>
+		<FooterTemplate>
+			<FluentButton IconStart="@(new Icons.Regular.Size20.Delete())" @onclick="() => HideModal(WithdrawModal)"
+				Loading="@modalSubmitting">
+				Close</FluentButton>
+			<FluentButton IconStart="@(new Icons.Regular.Size20.ArrowDown())" @onclick="Withdraw"
+				Loading="@modalSubmitting">
+				Withdraw</FluentButton>
+		</FooterTemplate>
+	</Modal>
+
+	<Modal @ref="CreateWalletModal">
+		<HeaderTemplate>
+			<div class="d-flex align-items-center gap-2">
+				<FluentIcon Value="@(new Icons.Regular.Size28.AddCircle())" />
+				<h4 class="font-monospace m-0">Create Wallet</h4>
+			</div>
+		</HeaderTemplate>
+		<BodyTemplate>
+			<FluentStack Orientation="Orientation.Vertical" Width="100%">
+				<div class="w-100">
+					<p class="mb-1">Currency:</p>
+					<FluentSelect Style="width: 100%;" name="class" Id="currency" @bind-Value="@CreateWalletCurrency"
+						TOption="CurrencyType">
+						<FluentOption Value="">Select Currency ...</FluentOption>
+
+						@foreach (CurrencyType currency in CreateWalletCurrencyOptions)
+						{
+							<FluentOption Value="@currency.ToString()">
+								<img alt="@currency" class="rounded-circle" height="20" src="@currencyMap[currency].image"
+									style="object-fit: cover" width="20" />
+
+								<b><i>@currency</i></b>
+							</FluentOption>
+						}
+					</FluentSelect>
+				</div>
+				<div class="w-100">
+					<p class="mb-1">Amount:</p>
+
+					<FluentNumberField class="w-100" Name="amount" @bind-Value="@CreateWalletAmount" Min="1" />
+				</div>
+			</FluentStack>
+		</BodyTemplate>
+		<FooterTemplate>
+			<FluentButton @onclick="() => HideModal(CreateWalletModal)" IconStart="@(new Icons.Regular.Size20.Delete())"
+				Loading="@modalSubmitting">Cancel</FluentButton>
+			<FluentButton @onclick="CreateWallet" IconStart="@(new Icons.Regular.Size20.Save())"
+				Loading="@modalSubmitting">
+				Create Wallet
+			</FluentButton>
+		</FooterTemplate>
+	</Modal>
+
 	<FluentCard>
 		<div class="w-100 d-flex justify-content-between">
-
 			<div>
+				<h3 class="font-monospace">
+					<i>Your</i> Wallets
+				</h3>
+
+				@if (wallets.Count == 0)
+				{
+					<p class="text-black-50">You don't have any wallets yet, you need to create one to start using the app.
+					</p>
+				}
+
 				@foreach (WalletDto wallet in wallets)
 				{
-						<FluentButton Appearance="Appearance.Lightweight" @onclick="() => chosenWallet = wallet">
-							<img alt="@wallet.Currency" class="rounded-circle" height="20"
-								src="@currencyMap[wallet.Currency].image" style="object-fit: cover" width="20" />
+					<FluentButton Appearance="Appearance.Lightweight" Id="@wallet.Currency.ToString()"
+						BackgroundColor="@(chosenWallet == wallet ? "var(--neutral-fill-stealth-hover)" : "")"
+						@onclick="() => { chosenWallet = wallet; }">
+						<img alt="@wallet.Currency" class="rounded-circle" height="20"
+							src="@currencyMap[wallet.Currency].image" style="object-fit: cover" width="20" />
 						@wallet.Currency
-						</FluentButton>
+					</FluentButton>
 				}
 			</div>
 
 			<div>
-				<FluentButton Appearance="Appearance.Lightweight" IconStart="@(new Icons.Regular.Size24.Wallet())">
+				<FluentButton IconStart="@(new Icons.Regular.Size20.Wallet())" OnClick='() =>
+					{
+						if (wallets.Count == 4) ToastService.ShowError("You already have all the available wallets!");
+						else ShowModal(CreateWalletModal);
+					}'>
 					Add Wallet
 				</FluentButton>
 			</div>
 		</div>
 	</FluentCard>
 
-	<FluentCard class="mt-4" Height="300px" Width="100%">
-		<div class="d-flex justify-content-between flex-column h-100">
-			<div class="w-100 d-flex justify-content-between">
-				<img alt="@chosenWallet.Currency" class="rounded-circle" height="75"
-					src="@currencyMap[chosenWallet.Currency].image" style="object-fit: cover" width="75" />
+	@if (chosenWallet != null && wallets.Count > 0)
+	{
+		<FluentCard class="mt-4" Height="300px" Width="100%">
+			<div class="d-flex justify-content-between flex-column h-100">
+				<div class="w-100 d-flex justify-content-between">
+					<img alt="@chosenWallet.Currency" class="rounded-circle" height="75"
+						src="@currencyMap[chosenWallet.Currency].image" style="object-fit: cover" width="75" />
 
-				<div class="d-flex gap-2">
-					<FluentButton Appearance="Appearance.Lightweight" IconStart="@(new Icons.Regular.Size24.ArrowUp())">
-					</FluentButton>
-					<FluentButton Appearance="Appearance.Lightweight"
-						IconStart="@(new Icons.Regular.Size24.ArrowDown())">
-					</FluentButton>
+					<div class="d-flex gap-2">
+						<FluentButton Appearance="Appearance.Lightweight" IconStart="@(new Icons.Regular.Size24.ArrowUp())"
+							@onclick="() => ShowModal(DepositModal)" />
+						<FluentButton Appearance="Appearance.Lightweight"
+							IconStart="@(new Icons.Regular.Size24.ArrowDown())" @onclick="() => ShowModal(WithdrawModal)" />
+					</div>
 				</div>
-			</div>
 
-			<div>
-				<h1 class="mb-0 font-monospace">@chosenWallet.Amount</h1>
-				<h3 class="text-black-50 fw-lighter">@currencyMap[chosenWallet.Currency].symbol - @chosenWallet.Currency
-				</h3>
-			</div>
+				<div>
+					<h1 class="mb-0 font-monospace">@chosenWallet.Amount</h1>
+					<h3 class="text-black-50 fw-lighter">@currencyMap[chosenWallet.Currency].symbol - @chosenWallet.Currency
+					</h3>
+				</div>
 
-		</div>
-	</FluentCard>
+			</div>
+		</FluentCard>
+	}
 </AuthorizeView>

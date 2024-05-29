@@ -1,4 +1,4 @@
-﻿namespace PartyWebAppCommon.Requests;
+namespace PartyWebAppCommon.Requests;
 
 public class EventsByLocationRequest
 {

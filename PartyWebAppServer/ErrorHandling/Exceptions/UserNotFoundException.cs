@@ -11,7 +11,7 @@ public class UserNotFoundException : AppException
     public UserNotFoundException(string username)
     {
         Message = $"{username} not found.";
-        ErrorObject = new UserNotFoundModel() { Username = username};
+        ErrorObject = new UserNotFoundModel { Username = username };
         HttpStatusCode = HttpStatusCode.BadRequest;
     }
 }

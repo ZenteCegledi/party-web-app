@@ -11,7 +11,7 @@ public class EmailAlreadyInUseException : AppException
     public EmailAlreadyInUseException(string email)
     {
         Message = $"{email} already in use.";
-        ErrorObject = new EmailAlreadyInUseModel() { Email = email};
+        ErrorObject = new EmailAlreadyInUseModel { Email = email };
         HttpStatusCode = HttpStatusCode.BadRequest;
     }
 }

@@ -30,6 +30,13 @@ namespace PartyWebAppServer.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("EndDateTime")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("LocationId")
                         .HasColumnType("integer");
 
@@ -40,6 +47,9 @@ namespace PartyWebAppServer.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("StartDateTime")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
@@ -48,6 +58,30 @@ namespace PartyWebAppServer.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("Events");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "This is the description of Event 1. It is a very cool event in the club.",
+                            EndDateTime = new DateTime(2024, 6, 1, 4, 0, 0, 0, DateTimeKind.Utc),
+                            LocationId = 1,
+                            Name = "Event 1",
+                            Price = 1000,
+                            StartDateTime = new DateTime(2024, 5, 31, 18, 0, 0, 0, DateTimeKind.Utc),
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "This is the description of Event 2. It is a very cool event in the pub.",
+                            EndDateTime = new DateTime(2024, 6, 2, 4, 0, 0, 0, DateTimeKind.Utc),
+                            LocationId = 2,
+                            Name = "Event 2",
+                            Price = 2000,
+                            StartDateTime = new DateTime(2024, 6, 1, 18, 0, 0, 0, DateTimeKind.Utc),
+                            Type = 0
+                        });
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Location", b =>
@@ -72,6 +106,43 @@ namespace PartyWebAppServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Locations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Budapest, Váci út 1",
+                            Name = "Club event 1",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "Budapest, Váci út 2",
+                            Name = "Pub event 1",
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Budapest, Váci út 3",
+                            Name = "ATM event 1",
+                            Type = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "Budapest, Váci út 4",
+                            Name = "Theater event 1",
+                            Type = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Address = "Budapest, Váci út 5",
+                            Name = "Museum event 1",
+                            Type = 4
+                        });
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Role", b =>
@@ -184,22 +255,33 @@ namespace PartyWebAppServer.Migrations
                         new
                         {
                             Username = "admin",
-                            BirthDate = new DateTime(1994, 5, 27, 12, 50, 10, 312, DateTimeKind.Utc).AddTicks(9759),
+                            BirthDate = new DateTime(1994, 5, 28, 20, 25, 45, 207, DateTimeKind.Utc).AddTicks(8575),
                             Email = "admin@admin.com",
                             Name = "Admin User",
-                            Password = "$2a$11$b3z3nkEivp6BmIc2oaFyuuuJlyaua76/97WGBBD0Dkv2kbSciyEhC",
-                            PasswordUpdated = new DateTime(2024, 5, 27, 12, 50, 10, 312, DateTimeKind.Utc).AddTicks(9780),
+                            Password = "$2a$11$xLm.YFMmYdDQd9.8vwsd7uyGN/RAtNSFtx/JvYAHhRNjooP/8eC3u",
+                            PasswordUpdated = new DateTime(2024, 5, 28, 20, 25, 45, 207, DateTimeKind.Utc).AddTicks(8588),
                             Phone = "1234567890",
                             RoleId = 1
                         },
                         new
                         {
                             Username = "user",
-                            BirthDate = new DateTime(2004, 5, 27, 12, 50, 10, 514, DateTimeKind.Utc).AddTicks(1216),
+                            BirthDate = new DateTime(2004, 5, 28, 20, 25, 45, 330, DateTimeKind.Utc).AddTicks(8494),
                             Email = "user@gmail.com",
                             Name = "User",
-                            Password = "$2a$11$PSGj9IGXlAROAxx4yBK3Y.eFmwMeqkmcPaNnYy2iSxgaSDhaCgKHW",
-                            PasswordUpdated = new DateTime(2024, 5, 27, 12, 50, 10, 514, DateTimeKind.Utc).AddTicks(1236),
+                            Password = "$2a$11$G3ItHLT1hp8kBQBA3/G3Z.wPgyqQNze8HR/vPUq0nOMjGislF04mW",
+                            PasswordUpdated = new DateTime(2024, 5, 28, 20, 25, 45, 330, DateTimeKind.Utc).AddTicks(8503),
+                            Phone = "0987654321",
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Username = "user2",
+                            BirthDate = new DateTime(2004, 5, 28, 20, 25, 45, 455, DateTimeKind.Utc).AddTicks(3006),
+                            Email = "user2@gmail.com",
+                            Name = "User2",
+                            Password = "$2a$11$7hV6H5cKJHBjBZ5ExEb8UeK7BVQ7tdY74IianGLnji/llBznsQMQS",
+                            PasswordUpdated = new DateTime(2024, 5, 28, 20, 25, 45, 455, DateTimeKind.Utc).AddTicks(3022),
                             Phone = "0987654321",
                             RoleId = 2
                         });
@@ -253,6 +335,13 @@ namespace PartyWebAppServer.Migrations
                             Username = "user",
                             Amount = 10000m,
                             IsPrimary = false
+                        },
+                        new
+                        {
+                            Currency = 0,
+                            Username = "user2",
+                            Amount = 10000m,
+                            IsPrimary = true
                         });
                 });
 

@@ -11,7 +11,7 @@
                 <FluentAnchor Href="/signin" IconStart="@(new Icons.Regular.Size16.PersonArrowRight())">
                     Sign In
                 </FluentAnchor>
-            </NotAuthorized>            
+            </NotAuthorized>
             <Authorized>
                 <FluentAnchor Href="/dashboard" IconStart="@(new Icons.Regular.Size16.Home())">
                     Dashboard
@@ -28,5 +28,4 @@
     @* </FluentStack> *@
 
     <FluentToastProvider MaxToastCount="6" />
-    <FluentDialogProvider @rendermode="InteractiveWebAssembly" />
 </FluentLayout>

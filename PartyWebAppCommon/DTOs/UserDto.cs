@@ -1,6 +1,6 @@
-using PartyWebAppCommon.DTOs;
+namespace PartyWebAppCommon.DTOs;
 
-public class UserDTO
+public class UserDto
 {
     public string Username { get; set; }
 
