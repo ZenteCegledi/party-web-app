@@ -6,6 +6,7 @@ using PartyWebAppClient;
 using PartyWebAppClient.Services;
 using BitzArt.Blazor.Auth;
 using BitzArt.Blazor.Cookies;
+using PartyWebAppClient.Services.WalletService;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 var baseUri = new Uri(builder.HostEnvironment.BaseAddress);

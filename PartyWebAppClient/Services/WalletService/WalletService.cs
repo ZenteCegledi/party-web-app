@@ -1,10 +1,10 @@
-using System.Net.Http.Json;
 using PartyWebAppClient.Models;
-using PartyWebAppClient.Services;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Requests;
 
-public class WalletService(IAppHttpClient http) : IWalletService, IWalletService {
+namespace PartyWebAppClient.Services.WalletService;
+
+public class WalletService(IAppHttpClient http) : IWalletService {
     public async Task<(List<WalletDto>?, AppErrorModel?)> GetUserWallets(GetWalletRequest _req) =>
         await http.GetAsync<List<WalletDto>>("http://localhost:5259/api/wallet/" + _req.Username);
 

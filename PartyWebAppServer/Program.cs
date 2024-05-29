@@ -8,7 +8,7 @@ using PartyWebAppServer.Services.LocationService;
 using PartyWebAppServer.Services.UserService;
 using IUserService = PartyWebAppServer.Services.UserService.IUserService;
 using IWalletService = PartyWebAppServer.Services.WalletService.IWalletService;
-using PartyWebAppServer.Services.WalletService;
+using WalletService = PartyWebAppServer.Services.WalletService.WalletService;
 
 var builder = WebApplication.CreateBuilder(args);
 

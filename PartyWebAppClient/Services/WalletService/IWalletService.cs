@@ -2,6 +2,8 @@ using PartyWebAppClient.Models;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Requests;
 
+namespace PartyWebAppClient.Services.WalletService;
+
 public interface IWalletService
 {
     Task<(List<WalletDto>?, AppErrorModel?)> GetUserWallets(GetWalletRequest _req);

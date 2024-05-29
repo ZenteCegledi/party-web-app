@@ -1,16 +1,14 @@
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Enums;
-using PartyWebAppCommon.Requests;
 
 namespace PartyWebAppServer.Services.WalletService;
 
 public interface IWalletService
 {
-    public Task<List<WalletDto>> GetWallets(GetWalletRequests _req);
-    public Task<WalletDto> GetWallet(GetWalletRequest _req);
-    public Task<WalletDto> CreateWallet(CreateWalletRequest _req);
-    public Task<WalletDto> DeleteWallet(DeleteWalletRequest _req);
-    public Task<WalletDto> SetPrimaryWallet(SetPrimaryWalletRequest _req);
-    public Task<WalletDto> DepositToWallet(DepositToWalletRequest _req);
-    public Task<WalletDto> WithdrawFromWallet(WithdrawFromWalletRequest _req);
+    public Task<List<WalletDto>> GetWallets(string username);
+    public Task<WalletDto> CreateWallet(WalletDto wallet);
+    public Task<WalletDto> DeleteWallet(string username, CurrencyType currency);
+    public Task<WalletDto> DepositToWallet(WalletDto wallet, decimal amount);
+    public Task<WalletDto> WithdrawFromWallet(WalletDto wallet, decimal amount);
+    public Task<WalletDto> SetPrimaryWallet(WalletDto wallet);
 }

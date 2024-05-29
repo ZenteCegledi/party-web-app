@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PartyWebAppCommon.DTOs;
-using PartyWebAppCommon.Enums;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Services.JwtService;
-using PartyWebAppServer.Services.WalletService;
 using PartyWebAppCommon.Requests;
+using PartyWebAppServer.Services.WalletService;
 
 namespace PartyWebAppServer.Controllers;
 
