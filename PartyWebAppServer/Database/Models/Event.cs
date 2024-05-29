@@ -17,4 +17,5 @@ public class Event
     public DateTime EndDateTime { get; set; }
     public string Description { get; set; }
     public int Price { get; set; }
+    public List<Transaction> Transactions { get; set; }
 }
