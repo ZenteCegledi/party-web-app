@@ -38,7 +38,6 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Location>().HasKey(l => l.Id);
 
         modelBuilder.Entity<Transaction>().HasKey(t => t.Id);
-        modelBuilder.Entity<Transaction>().
         
         #region RoleSeed
 

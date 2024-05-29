@@ -10,4 +10,5 @@ public class Location
     public string Name { get; set; }
     public string Address { get; set; }
     public LocationType? Type { get; set; }
+    public List<Transaction> Transactions { get; set; }
 }
