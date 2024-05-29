@@ -7,6 +7,6 @@ public class RoleProfile : Profile
 {
     public RoleProfile()
     {
-        CreateMap<Database.Models.Role, RoleDto>();
+        CreateMap<Database.Models.Role, RoleDTO>();
     }
 }

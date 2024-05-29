@@ -6,8 +6,7 @@
 @inject IUserService UserService
 
 <FluentLayout class="container" Style="max-width: 800px; max-height: 200px">
-	<FluentCard class="navbar navbar-expand-lg rounded-4 mt-3"
-		>
+	<FluentCard class="navbar navbar-expand-lg rounded-4 mt-3">
 		<div class="container-fluid">
 			<div class="d-flex w-100 justify-content-between">
 				<!-- Left group: Brand link -->
@@ -16,21 +15,15 @@
 				<!-- Center group: Navigation links -->
 				<div class="collapse navbar-collapse justify-content-center" id="navbarNav">
 					<ul class="navbar-nav">
-						<li class = "nav-item">
-							<FluentAnchor
-								Appearance="Appearance.Lightweight"
-								IconStart="@(new Icons.Regular.Size20.Wallet())"
-								Href="/dashboard"
-							>
-								Wallets	
+						<li class="nav-item">
+							<FluentAnchor Appearance="Appearance.Lightweight"
+								IconStart="@(new Icons.Regular.Size20.Wallet())" Href="/dashboard">
+								Wallets
 							</FluentAnchor>
 						</li>
-						<li class = "nav-item">
-							<FluentAnchor
-								Appearance="Appearance.Lightweight"
-								IconStart="@(new Icons.Regular.Size20.Location())"
-								Href="/dashboard/locations"
-							>
+						<li class="nav-item">
+							<FluentAnchor Appearance="Appearance.Lightweight"
+								IconStart="@(new Icons.Regular.Size20.Location())" Href="/dashboard/locations">
 								Events
 							</FluentAnchor>
 						</li>
@@ -60,4 +53,6 @@
 			</div>
 		</FluentBodyContent>
 	</FluentStack>
+
+	<FluentToastProvider MaxToastCount="6" />
 </FluentLayout>

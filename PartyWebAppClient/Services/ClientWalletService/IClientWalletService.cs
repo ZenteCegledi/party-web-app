@@ -3,13 +3,13 @@ using PartyWebAppCommon.DTOs;
 
 public interface IClientWalletService
 {
-    Task<(List<WalletDto>?, AppErrorModel?)> GetUserWallets(string username);
-    Task<(WalletDto, AppErrorModel?)> CreateWallet(WalletDto wallet);
-    Task<(WalletDto, AppErrorModel?)> UpdateWallet(WalletDto wallet);
-    Task<(WalletDto, AppErrorModel?)> DeleteWallet(WalletDto wallet);
-    Task<(WalletDto, AppErrorModel?)> SetPrimaryWallet(WalletDto wallet);
-    Task<(WalletDto, AppErrorModel?)> DepositToWallet(WalletDto wallet, decimal amount);
-    Task<(WalletDto, AppErrorModel?)> WithdrawFromWallet(WalletDto wallet, decimal amount);
+    Task<(List<WalletDTO>?, AppErrorModel?)> GetUserWallets(string username);
+    Task<(WalletDTO, AppErrorModel?)> CreateWallet(WalletDTO wallet);
+    Task<(WalletDTO, AppErrorModel?)> UpdateWallet(WalletDTO wallet);
+    Task<(WalletDTO, AppErrorModel?)> DeleteWallet(WalletDTO wallet);
+    Task<(WalletDTO, AppErrorModel?)> SetPrimaryWallet(WalletDTO wallet);
+    Task<(WalletDTO, AppErrorModel?)> DepositToWallet(WalletDTO wallet, decimal amount);
+    Task<(WalletDTO, AppErrorModel?)> WithdrawFromWallet(WalletDTO wallet, decimal amount);
 
-    // Task<(WalletDto, AppErrorModel?)> TransferBetweenWallets(WalletDto fromWallet, WalletDto toWallet, decimal amount);
+    // Task<(WalletDTO, AppErrorModel?)> TransferBetweenWallets(WalletDTO fromWallet, WalletDTO toWallet, decimal amount);
 }

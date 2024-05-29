@@ -7,7 +7,7 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
-        CreateMap<Database.Models.User, UserDto>();
-        
+        CreateMap<Database.Models.User, UserDTO>();
+
     }
 }

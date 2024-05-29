@@ -2,7 +2,7 @@ using PartyWebAppCommon.Enums;
 
 namespace PartyWebAppCommon.DTOs
 {
-    public class WalletDto
+    public class WalletDTO
     {
         public CurrencyType Currency { get; set; }
         public string Username { get; set; }

@@ -7,6 +7,6 @@ public class WalletProfile : Profile
 {
     public WalletProfile()
     {
-        CreateMap<Database.Models.Wallet, WalletDto>();
+        CreateMap<Database.Models.Wallet, WalletDTO>();
     }
 }

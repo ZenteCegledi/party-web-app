@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace PartyWebAppCommon.Models;
+namespace PartyWebAppCommon.Requests;
 
 public class SignUpRequest
 {
