@@ -31,14 +31,18 @@ public class AppDbContext : DbContext
         modelBuilder.UseSerialColumns();
 
         modelBuilder.Entity<User>().HasKey(u => u.Username);
-        
+
         modelBuilder.Entity<Wallet>().HasKey(w => new { w.Currency, w.Username });
         modelBuilder.Entity<Wallet>().HasOne(w => w.Owner).WithMany(u => u.Wallets).HasForeignKey(w => w.Username);
 
         modelBuilder.Entity<Location>().HasKey(l => l.Id);
 
         modelBuilder.Entity<Transaction>().HasKey(t => t.Id);
-        
+
+        modelBuilder.Entity<Transaction>().HasOne(t => t.Location).WithMany(l => l.Transactions).HasForeignKey(t => t.LocationId);
+        modelBuilder.Entity<Transaction>().HasOne(t => t.Event).WithMany(e => e.Transactions).HasForeignKey(t => t.EventId);
+        modelBuilder.Entity<Transaction>().HasOne(t => t.Wallet).WithMany(w => w.Transactions).HasForeignKey(t => t.Wallet);
+
         #region RoleSeed
 
         modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Name = RoleType.Admin });
