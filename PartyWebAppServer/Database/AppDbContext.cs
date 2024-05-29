@@ -32,7 +32,7 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<User>().HasKey(u => u.Username);
 
-        modelBuilder.Entity<Wallet>().HasKey(w => new { w.Currency, w.Username });
+        modelBuilder.Entity<Wallet>().HasKey(w => w.Id);
         modelBuilder.Entity<Wallet>().HasOne(w => w.Owner).WithMany(u => u.Wallets).HasForeignKey(w => w.Username);
 
         modelBuilder.Entity<Location>().HasKey(l => l.Id);
@@ -102,6 +102,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Wallet>().HasData(
             new Wallet
             {
+                Id = 1,
                 Currency = CurrencyType.EUR,
                 Username = "user",
                 Amount = 100
@@ -111,6 +112,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Wallet>().HasData(
             new Wallet
             {
+                Id = 2,
                 Currency = CurrencyType.USD,
                 Username = "user",
                 Amount = 400
@@ -120,6 +122,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Wallet>().HasData(
             new Wallet
             {
+                Id = 3,
                 Currency = CurrencyType.HUF,
                 Username = "user",
                 Amount = 5000,
@@ -130,6 +133,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Wallet>().HasData(
             new Wallet
             {
+                Id = 4,
                 Currency = CurrencyType.CREDIT,
                 Username = "user",
                 Amount = 10000
@@ -139,6 +143,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Wallet>().HasData(
             new Wallet
             {
+                Id = 5,
                 Currency = CurrencyType.HUF,
                 Username = "user2",
                 Amount = 10000,
