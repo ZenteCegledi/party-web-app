@@ -11,10 +11,10 @@ public class Transaction
     [ForeignKey("Wallet")] public int WalletId { get; set; }
     public Wallet Wallet { get; set; }
 
-    [ForeignKey("Location")] public int LocationId { get; set; }
+    [ForeignKey("Location")] public int? LocationId { get; set; }
     public Location? Location { get; set; }
 
-    [ForeignKey("Event")] public int EventId { get; set; }
+    [ForeignKey("Event")] public int? EventId { get; set; }
     public Event? Event { get; set; }
 
     public int SpentCurrency { get; set; }

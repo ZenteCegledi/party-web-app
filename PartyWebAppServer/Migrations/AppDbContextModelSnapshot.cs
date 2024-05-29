@@ -187,10 +187,10 @@ namespace PartyWebAppServer.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("EventId")
+                    b.Property<int?>("EventId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("LocationId")
+                    b.Property<int?>("LocationId")
                         .HasColumnType("integer");
 
                     b.Property<int>("SpentCurrency")
@@ -251,33 +251,33 @@ namespace PartyWebAppServer.Migrations
                         new
                         {
                             Username = "admin",
-                            BirthDate = new DateTime(1994, 5, 29, 16, 13, 23, 50, DateTimeKind.Utc).AddTicks(7942),
+                            BirthDate = new DateTime(1994, 5, 29, 17, 52, 4, 883, DateTimeKind.Utc).AddTicks(2557),
                             Email = "admin@admin.com",
                             Name = "Admin User",
-                            Password = "$2a$11$H1oaK6.CPyOTWLFG1XYmq.hBnFGYe0/.XsC7HVc7Twc7aWQktVDQe",
-                            PasswordUpdated = new DateTime(2024, 5, 29, 16, 13, 23, 50, DateTimeKind.Utc).AddTicks(7950),
+                            Password = "$2a$11$YRSVX1UIiy/ck8XTJ8IaA.CeU9VCbkgKxNbF1OeO0mT5GpAsbu0yK",
+                            PasswordUpdated = new DateTime(2024, 5, 29, 17, 52, 4, 883, DateTimeKind.Utc).AddTicks(2570),
                             Phone = "1234567890",
                             RoleId = 1
                         },
                         new
                         {
                             Username = "user",
-                            BirthDate = new DateTime(2004, 5, 29, 16, 13, 23, 173, DateTimeKind.Utc).AddTicks(7476),
+                            BirthDate = new DateTime(2004, 5, 29, 17, 52, 5, 9, DateTimeKind.Utc).AddTicks(2471),
                             Email = "user@gmail.com",
                             Name = "User",
-                            Password = "$2a$11$dB2ywnE8txDM4WW09jBlmOkvrz0hs60/rg25IKzeMIZv/R87NtXw2",
-                            PasswordUpdated = new DateTime(2024, 5, 29, 16, 13, 23, 173, DateTimeKind.Utc).AddTicks(7484),
+                            Password = "$2a$11$aZWkkH0IyPboaXIiImyDaufJOyHc5dlsXlcKKTlbjN0XyqBVG8SkW",
+                            PasswordUpdated = new DateTime(2024, 5, 29, 17, 52, 5, 9, DateTimeKind.Utc).AddTicks(2480),
                             Phone = "0987654321",
                             RoleId = 2
                         },
                         new
                         {
                             Username = "user2",
-                            BirthDate = new DateTime(2004, 5, 29, 16, 13, 23, 294, DateTimeKind.Utc).AddTicks(4439),
+                            BirthDate = new DateTime(2004, 5, 29, 17, 52, 5, 133, DateTimeKind.Utc).AddTicks(5020),
                             Email = "user2@gmail.com",
                             Name = "User2",
-                            Password = "$2a$11$O6iyU8.DGssosqwJuwPVn.lBC3ZgRMLfEG6GNYJfc/Gh/pldo3voy",
-                            PasswordUpdated = new DateTime(2024, 5, 29, 16, 13, 23, 294, DateTimeKind.Utc).AddTicks(4447),
+                            Password = "$2a$11$e9.F.PrfoBz3oJLUEUcl/OtMd9N61IgDhJ.HzDUhX8C8WnBRtBtMy",
+                            PasswordUpdated = new DateTime(2024, 5, 29, 17, 52, 5, 133, DateTimeKind.Utc).AddTicks(5029),
                             Phone = "0987654321",
                             RoleId = 2
                         });
@@ -368,15 +368,11 @@ namespace PartyWebAppServer.Migrations
                 {
                     b.HasOne("PartyWebAppServer.Database.Models.Event", "Event")
                         .WithMany("Transactions")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EventId");
 
                     b.HasOne("PartyWebAppServer.Database.Models.Location", "Location")
                         .WithMany("Transactions")
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LocationId");
 
                     b.HasOne("PartyWebAppServer.Database.Models.Wallet", "Wallet")
                         .WithMany("Transactions")

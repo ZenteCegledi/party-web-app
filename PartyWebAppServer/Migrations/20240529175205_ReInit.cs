@@ -114,8 +114,8 @@ namespace PartyWebAppServer.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     WalletId = table.Column<int>(type: "integer", nullable: false),
-                    LocationId = table.Column<int>(type: "integer", nullable: false),
-                    EventId = table.Column<int>(type: "integer", nullable: false),
+                    LocationId = table.Column<int>(type: "integer", nullable: true),
+                    EventId = table.Column<int>(type: "integer", nullable: true),
                     SpentCurrency = table.Column<int>(type: "integer", nullable: false),
                     Count = table.Column<int>(type: "integer", nullable: false),
                     TransactionType = table.Column<int>(type: "integer", nullable: false),
@@ -128,14 +128,12 @@ namespace PartyWebAppServer.Migrations
                         name: "FK_Transactions_Events_EventId",
                         column: x => x.EventId,
                         principalTable: "Events",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Transactions_Locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Locations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Transactions_Wallets_WalletId",
                         column: x => x.WalletId,
@@ -170,9 +168,9 @@ namespace PartyWebAppServer.Migrations
                 columns: new[] { "Username", "BirthDate", "Email", "Name", "Password", "PasswordUpdated", "Phone", "RoleId" },
                 values: new object[,]
                 {
-                    { "admin", new DateTime(1994, 5, 29, 16, 13, 23, 50, DateTimeKind.Utc).AddTicks(7942), "admin@admin.com", "Admin User", "$2a$11$H1oaK6.CPyOTWLFG1XYmq.hBnFGYe0/.XsC7HVc7Twc7aWQktVDQe", new DateTime(2024, 5, 29, 16, 13, 23, 50, DateTimeKind.Utc).AddTicks(7950), "1234567890", 1 },
-                    { "user", new DateTime(2004, 5, 29, 16, 13, 23, 173, DateTimeKind.Utc).AddTicks(7476), "user@gmail.com", "User", "$2a$11$dB2ywnE8txDM4WW09jBlmOkvrz0hs60/rg25IKzeMIZv/R87NtXw2", new DateTime(2024, 5, 29, 16, 13, 23, 173, DateTimeKind.Utc).AddTicks(7484), "0987654321", 2 },
-                    { "user2", new DateTime(2004, 5, 29, 16, 13, 23, 294, DateTimeKind.Utc).AddTicks(4439), "user2@gmail.com", "User2", "$2a$11$O6iyU8.DGssosqwJuwPVn.lBC3ZgRMLfEG6GNYJfc/Gh/pldo3voy", new DateTime(2024, 5, 29, 16, 13, 23, 294, DateTimeKind.Utc).AddTicks(4447), "0987654321", 2 }
+                    { "admin", new DateTime(1994, 5, 29, 17, 52, 4, 883, DateTimeKind.Utc).AddTicks(2557), "admin@admin.com", "Admin User", "$2a$11$YRSVX1UIiy/ck8XTJ8IaA.CeU9VCbkgKxNbF1OeO0mT5GpAsbu0yK", new DateTime(2024, 5, 29, 17, 52, 4, 883, DateTimeKind.Utc).AddTicks(2570), "1234567890", 1 },
+                    { "user", new DateTime(2004, 5, 29, 17, 52, 5, 9, DateTimeKind.Utc).AddTicks(2471), "user@gmail.com", "User", "$2a$11$aZWkkH0IyPboaXIiImyDaufJOyHc5dlsXlcKKTlbjN0XyqBVG8SkW", new DateTime(2024, 5, 29, 17, 52, 5, 9, DateTimeKind.Utc).AddTicks(2480), "0987654321", 2 },
+                    { "user2", new DateTime(2004, 5, 29, 17, 52, 5, 133, DateTimeKind.Utc).AddTicks(5020), "user2@gmail.com", "User2", "$2a$11$e9.F.PrfoBz3oJLUEUcl/OtMd9N61IgDhJ.HzDUhX8C8WnBRtBtMy", new DateTime(2024, 5, 29, 17, 52, 5, 133, DateTimeKind.Utc).AddTicks(5029), "0987654321", 2 }
                 });
 
             migrationBuilder.InsertData(

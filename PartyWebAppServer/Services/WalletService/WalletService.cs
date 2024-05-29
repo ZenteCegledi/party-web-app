@@ -68,6 +68,18 @@ public class WalletService(AppDbContext context, IMapper mapper) : IWalletServic
         if (walletEntity == null) throw new WalletNotExistsAppException();
 
         walletEntity.Amount += _req.Amount;
+        
+        // TEMPORARY - create a deposit transaction for the wallet
+        var transaction = new Transaction
+        {
+            SpentCurrency = (int)_req.Amount,
+            Count = 1,
+            Date = DateTime.Now.ToUniversalTime(),
+            WalletId = walletEntity.Id,
+            TransactionType = TransactionType.Deposit,
+        };
+        context.Transactions.Add(transaction);
+        
         context.SaveChanges();
 
         return mapper.Map<WalletDto>(walletEntity);
