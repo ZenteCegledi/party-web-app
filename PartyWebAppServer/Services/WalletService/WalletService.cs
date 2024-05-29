@@ -9,21 +9,21 @@ namespace PartyWebAppServer.Services.WalletService;
 
 public class WalletService(AppDbContext context, IMapper mapper) : IWalletService
 {
-    public async Task<List<WalletDto>> GetWallets(GetWalletRequests _req)
+    public async Task<List<WalletDto>> GetWallets(string username)
     {
-        var user = context.Users.FirstOrDefault(u => u.Username == _req.Username);
+        var user = context.Users.FirstOrDefault(u => u.Username == username);
         if (user == null) throw new UserNotFoundException("User not found");
 
-        var wallets = context.Wallets.Where(w => w.Username == _req.Username).ToList();
+        var wallets = context.Wallets.Where(w => w.Username == username).ToList();
 
         return mapper.Map<List<WalletDto>>(wallets);
     }
-    public async Task<WalletDto> GetWallet(GetWalletRequest _req)
+    public async Task<WalletDto> GetWallet(string username, CurrencyType currency)
     {
-        var user = context.Users.FirstOrDefault(u => u.Username == _req.Username);
-        if (user == null) throw new UserNotFoundException("No user found with that username: " + _req.Username);
+        var user = context.Users.FirstOrDefault(u => u.Username == username);
+        if (user == null) throw new UserNotFoundException("No user found with that username: " + username);
 
-        var wallet = context.Wallets.FirstOrDefault(w => w.Username == _req.Username && w.Currency == _req.Currency);
+        var wallet = context.Wallets.FirstOrDefault(w => w.Username == username && w.Currency == currency);
         if (wallet == null) throw new WalletNotExistsAppException();
 
         return mapper.Map<WalletDto>(wallet);
@@ -46,12 +46,12 @@ public class WalletService(AppDbContext context, IMapper mapper) : IWalletServic
 
         return mapper.Map<WalletDto>(newWallet);
     }
-    public async Task<WalletDto> DeleteWallet(DeleteWalletRequest _req)
+    public async Task<WalletDto> DeleteWallet(string username, CurrencyType currency)
     {
-        var user = context.Users.FirstOrDefault(u => u.Username == _req.Username);
-        if (user == null) throw new UserNotFoundException("No user found with that username: " + _req.Username);
+        var user = context.Users.FirstOrDefault(u => u.Username == username);
+        if (user == null) throw new UserNotFoundException("No user found with that username: " + username);
 
-        var wallet = context.Wallets.FirstOrDefault(w => w.Username == _req.Username && w.Currency == _req.Currency);
+        var wallet = context.Wallets.FirstOrDefault(w => w.Username == username && w.Currency == currency);
         if (wallet == null) throw new WalletNotExistsAppException();
 
         context.Wallets.Remove(wallet);

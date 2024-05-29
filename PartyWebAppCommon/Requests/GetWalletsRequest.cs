@@ -1,9 +1,6 @@
-using PartyWebAppCommon.Enums;
-
 namespace PartyWebAppCommon.Requests;
 
-public class GetWalletRequests
+public class GetWalletsRequest
 {
     public string Username { get; set; }
-    public CurrencyType Currency { get; set; }
 }

@@ -11,13 +11,11 @@ public class AuthService : ServerSideAuthenticationService<SignInRequest, SignUp
 {
     private readonly IJwtService jwtService;
     private readonly AppDbContext dbContext;
-    private readonly IConfiguration config;
 
     public AuthService(IJwtService jwtService, AppDbContext dbContext)
     {
         this.jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
         this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        this.config = config ?? throw new ArgumentNullException(nameof(config));
     }
 
     protected override Task<AuthenticationResult> GetSignInResultAsync(SignInRequest signInRequest)

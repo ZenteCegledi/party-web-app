@@ -53,7 +53,7 @@ public partial class Wallets : ComponentBase
 
         if (user == null) return;
 
-        var (_wallets, error) = await walletService.GetUserWallets(new GetWalletRequest { Username = user.FindFirst("username")?.Value! });
+        var (_wallets, error) = await walletService.GetUserWallets(user.FindFirst("Username")?.Value!);
         if (error is not null)
         {
             ToastService?.ShowError(error.Message);
