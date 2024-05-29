@@ -1,0 +1,44 @@
+﻿@page "/admin/locations/edit/{id:int}"
+@using PartyWebAppClient.Layout.AdminLayout
+@using PartyWebAppCommon.Enums
+@using ButtonType = Microsoft.FluentUI.AspNetCore.Components.ButtonType
+@inject NavigationManager Navigation
+@inject Microsoft.FluentUI.AspNetCore.Components.ToastService ToastService
+
+@layout AdminLayout
+
+    @if (_location != null)
+    {
+        <h1 class="text-center mt-2">Edit Location</h1>
+        <div class="d-flex justify-content-center">
+            <EditForm Model="_location" OnValidSubmit="EditLocation">
+                <FluentNumberField class="w-100" TValue="int" Value="_location.Id" Label="Id" ReadOnly="true" Required Name="Id"></FluentNumberField>
+                <FluentTextField class="w-100" @bind-Value="_location.Name" Label="Name" Required Name="Name"></FluentTextField>
+                <FluentTextField class="w-100" @bind-Value="_location.Address" Label="Address" Required Name="Address"></FluentTextField>
+                <FluentSelect class="w-100" name="Type" Id="type" @bind-Value="_selectedType" TOption="LocationType" Label="Type">
+                    @foreach (var type in Enum.GetValues(typeof(LocationType)))
+                    {
+                    <FluentOption Value="@type.ToString()">@type</FluentOption>
+                    }
+                </FluentSelect>
+                <div class="d-flex justify-content-center mt-3">
+                    <FluentButton class="w-100" IconStart="@(new Icons.Filled.Size16.Save().WithColor("#fff"))" Type="ButtonType.Submit" Appearance="Appearance.Accent">
+                        Save changes
+                    </FluentButton>
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                    <FluentButton class="w-100" IconStart="@(new Icons.Filled.Size16.ArrowLeft().WithColor("#000"))" Type="ButtonType.Button" Appearance="Appearance.Outline" OnClick="NavigateToIndex">
+                        Back
+                    </FluentButton>
+                </div>
+            </EditForm>
+        </div>
+    }
+    else
+    {
+        <div class="position-fixed top-50 start-50 translate-middle">
+            <h1>Location not found</h1>
+        </div>
+    }
+
+

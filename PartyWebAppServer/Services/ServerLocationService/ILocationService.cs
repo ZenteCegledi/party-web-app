@@ -3,7 +3,7 @@ using PartyWebAppCommon.Requests;
 
 namespace PartyWebAppServer.Services.LocationService;
 
-public interface IServerLocationService
+public interface ILocationService
 {
     public Task<LocationDto> GetLocation(int id);
     public Task<List<LocationDto>> GetLocations();

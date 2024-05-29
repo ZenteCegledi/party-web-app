@@ -6,15 +6,20 @@
 
 @using PartyWebAppClient.Layout.AdminLayout
 
-<!--<FluentDataGrid Items="@locations">
+<h1 class="text-center mt-3">Locations</h1>
+
+<div class="w-100 mt-3 mb-3 d-flex justify-content-between">
+    <FluentSearch @bind-Value="_searchValue" @oninput="SearchLocations" Placeholder="Search for a location" Size="50" />
+    <FluentButton BackgroundColor="#28a745" aria-label="Add location" OnClick="@(() => NavigateToAddLocation())" IconStart="@(new Icons.Filled.Size16.Add().WithColor("#fff"))" Style="color: white; font-weight: bold;">Create</FluentButton>
+</div>
+
+<FluentDataGrid Items="@_locations">
    <PropertyColumn Property="@(l => l.Id)" Sortable="true" />
    <PropertyColumn Property="@(l => l.Name)" Sortable="true" />
    <PropertyColumn Property="@(l => l.Address)" Sortable="true" />
    <PropertyColumn Property="@(l => l.Type)" Sortable="true" />
    <TemplateColumn Title="Actions" Align="@Align.End">
-       <FluentButton aria-label="Edit item" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => {})" />
-      <FluentButton aria-label="Delete item" IconEnd="@(new Icons.Regular.Size16.Delete())" OnClick="@(() => DeleteLocation(context.Id))" />
-    </TemplateColumn>
-</FluentDataGrid>-->
-
-<h1>A</h1>
+       <FluentButton BackgroundColor="#087cfc" aria-label="Edit location" IconEnd="@(new Icons.Filled.Size16.Edit().WithColor("#fff"))" OnClick="@(() => NavigateToEditLocation(context.Id))"/>
+       <FluentButton BackgroundColor="#e03444" aria-label="Delete location" IconEnd="@(new Icons.Filled.Size16.Delete().WithColor("#fff"))" OnClick="@(() => DeleteLocation(context.Id))"/>
+   </TemplateColumn>
+</FluentDataGrid>
