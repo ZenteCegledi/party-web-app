@@ -115,7 +115,7 @@ public partial class Wallets : ComponentBase
         var index = wallets.FindIndex(w => w.Currency == wallet.Currency);
         wallets[index] = wallet;
         chosenWallet = wallet;
-
+        
         ToastService?.ShowSuccess("Withdrawal successful!");
 
         modalSubmitting = false;
@@ -145,6 +145,8 @@ public partial class Wallets : ComponentBase
         wallets[index] = wallet;
         chosenWallet = wallet;
 
+        wallets = wallets.OrderBy(w => w.IsPrimary ? 0 : 1).ToList();
+        
         ToastService?.ShowSuccess("Primary wallet set successfully");
 
         modalSubmitting = false;
