@@ -7,8 +7,8 @@ namespace PartyWebAppServer.Database.Models;
 public class Transaction
 {
     [Key] public int Id { get; set; }
-
-    [ForeignKey("Username, Currency")]
+    
+    [ForeignKey("Wallet")] public int WalletId { get; set; }
     public Wallet Wallet { get; set; }
 
     [ForeignKey("Location")] public int LocationId { get; set; }

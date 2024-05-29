@@ -41,7 +41,7 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<Transaction>().HasOne(t => t.Location).WithMany(l => l.Transactions).HasForeignKey(t => t.LocationId);
         modelBuilder.Entity<Transaction>().HasOne(t => t.Event).WithMany(e => e.Transactions).HasForeignKey(t => t.EventId);
-        modelBuilder.Entity<Transaction>().HasOne(t => t.Wallet).WithMany(w => w.Transactions).HasForeignKey(t => t.Wallet);
+        modelBuilder.Entity<Transaction>().HasOne(t => t.Wallet).WithMany(w => w.Transactions).HasForeignKey(t => t.WalletId);
 
         #region RoleSeed
 
