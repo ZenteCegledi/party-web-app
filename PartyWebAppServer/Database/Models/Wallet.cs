@@ -16,6 +16,7 @@ public class Wallet
     public User Owner { get; set; }
     public decimal Amount { get; set; }
     public bool IsPrimary { get; set; } = false;
+
     public List<Transaction> Transactions { get; set; }
 
     public override string ToString()
