@@ -1,0 +1,28 @@
+﻿@attribute [Authorize]
+
+<AuthorizeView>
+    <FluentCard class="mt-4" Width="100%">
+        <h3 class="font-monospace">Transactions</h3>
+        
+        @if (transactions.Count == 0)
+        {
+            <p>No transactions found.</p>
+        }
+        
+        @foreach (var transaction in transactions)
+        {
+            <FluentCard class="mt-2" Width="100%">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5>@transaction.TransactionType</h5>
+                        <h6>@transaction.Date</h6>
+                    </div>
+                    <div>
+                        <h5>@transaction.SpentCurrency</h5>
+                        <h6>@transaction.WalletId</h6>
+                    </div>
+                </div>
+            </FluentCard>
+        }
+    </FluentCard>
+</AuthorizeView>
