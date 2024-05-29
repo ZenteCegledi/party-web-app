@@ -5,5 +5,6 @@ public enum TransactionType
     Food,
     Ticket,
     Deposit,
+    Withdraw,
     Credit
 }

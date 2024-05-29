@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace PartyWebAppServer.Migrations
 {
     /// <inheritdoc />
-    public partial class Reinit : Migration
+    public partial class ReInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -89,14 +89,16 @@ namespace PartyWebAppServer.Migrations
                 name: "Wallets",
                 columns: table => new
                 {
-                    Currency = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Username = table.Column<string>(type: "text", nullable: false),
                     Amount = table.Column<decimal>(type: "numeric", nullable: false),
+                    Currency = table.Column<int>(type: "integer", nullable: false),
                     IsPrimary = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Wallets", x => new { x.Currency, x.Username });
+                    table.PrimaryKey("PK_Wallets", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Wallets_Users_Username",
                         column: x => x.Username,
@@ -111,12 +113,11 @@ namespace PartyWebAppServer.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    WalletCurrency = table.Column<int>(type: "integer", nullable: false),
-                    WalletUsername = table.Column<string>(type: "text", nullable: false),
+                    WalletId = table.Column<int>(type: "integer", nullable: false),
+                    LocationId = table.Column<int>(type: "integer", nullable: false),
+                    EventId = table.Column<int>(type: "integer", nullable: false),
                     SpentCurrency = table.Column<int>(type: "integer", nullable: false),
                     Count = table.Column<int>(type: "integer", nullable: false),
-                    LocationId = table.Column<int>(type: "integer", nullable: true),
-                    EventId = table.Column<int>(type: "integer", nullable: true),
                     TransactionType = table.Column<int>(type: "integer", nullable: false),
                     Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -127,17 +128,19 @@ namespace PartyWebAppServer.Migrations
                         name: "FK_Transactions_Events_EventId",
                         column: x => x.EventId,
                         principalTable: "Events",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Transactions_Locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Locations",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Transactions_Wallets_WalletCurrency_WalletUsername",
-                        columns: x => new { x.WalletCurrency, x.WalletUsername },
+                        name: "FK_Transactions_Wallets_WalletId",
+                        column: x => x.WalletId,
                         principalTable: "Wallets",
-                        principalColumns: new[] { "Currency", "Username" },
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -167,9 +170,9 @@ namespace PartyWebAppServer.Migrations
                 columns: new[] { "Username", "BirthDate", "Email", "Name", "Password", "PasswordUpdated", "Phone", "RoleId" },
                 values: new object[,]
                 {
-                    { "admin", new DateTime(1994, 5, 28, 20, 25, 45, 207, DateTimeKind.Utc).AddTicks(8575), "admin@admin.com", "Admin User", "$2a$11$xLm.YFMmYdDQd9.8vwsd7uyGN/RAtNSFtx/JvYAHhRNjooP/8eC3u", new DateTime(2024, 5, 28, 20, 25, 45, 207, DateTimeKind.Utc).AddTicks(8588), "1234567890", 1 },
-                    { "user", new DateTime(2004, 5, 28, 20, 25, 45, 330, DateTimeKind.Utc).AddTicks(8494), "user@gmail.com", "User", "$2a$11$G3ItHLT1hp8kBQBA3/G3Z.wPgyqQNze8HR/vPUq0nOMjGislF04mW", new DateTime(2024, 5, 28, 20, 25, 45, 330, DateTimeKind.Utc).AddTicks(8503), "0987654321", 2 },
-                    { "user2", new DateTime(2004, 5, 28, 20, 25, 45, 455, DateTimeKind.Utc).AddTicks(3006), "user2@gmail.com", "User2", "$2a$11$7hV6H5cKJHBjBZ5ExEb8UeK7BVQ7tdY74IianGLnji/llBznsQMQS", new DateTime(2024, 5, 28, 20, 25, 45, 455, DateTimeKind.Utc).AddTicks(3022), "0987654321", 2 }
+                    { "admin", new DateTime(1994, 5, 29, 16, 13, 23, 50, DateTimeKind.Utc).AddTicks(7942), "admin@admin.com", "Admin User", "$2a$11$H1oaK6.CPyOTWLFG1XYmq.hBnFGYe0/.XsC7HVc7Twc7aWQktVDQe", new DateTime(2024, 5, 29, 16, 13, 23, 50, DateTimeKind.Utc).AddTicks(7950), "1234567890", 1 },
+                    { "user", new DateTime(2004, 5, 29, 16, 13, 23, 173, DateTimeKind.Utc).AddTicks(7476), "user@gmail.com", "User", "$2a$11$dB2ywnE8txDM4WW09jBlmOkvrz0hs60/rg25IKzeMIZv/R87NtXw2", new DateTime(2024, 5, 29, 16, 13, 23, 173, DateTimeKind.Utc).AddTicks(7484), "0987654321", 2 },
+                    { "user2", new DateTime(2004, 5, 29, 16, 13, 23, 294, DateTimeKind.Utc).AddTicks(4439), "user2@gmail.com", "User2", "$2a$11$O6iyU8.DGssosqwJuwPVn.lBC3ZgRMLfEG6GNYJfc/Gh/pldo3voy", new DateTime(2024, 5, 29, 16, 13, 23, 294, DateTimeKind.Utc).AddTicks(4447), "0987654321", 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -183,14 +186,14 @@ namespace PartyWebAppServer.Migrations
 
             migrationBuilder.InsertData(
                 table: "Wallets",
-                columns: new[] { "Currency", "Username", "Amount", "IsPrimary" },
+                columns: new[] { "Id", "Amount", "Currency", "IsPrimary", "Username" },
                 values: new object[,]
                 {
-                    { 0, "user", 5000m, true },
-                    { 0, "user2", 10000m, true },
-                    { 1, "user", 100m, false },
-                    { 2, "user", 400m, false },
-                    { 3, "user", 10000m, false }
+                    { 1, 100m, 1, false, "user" },
+                    { 2, 400m, 2, false, "user" },
+                    { 3, 5000m, 0, true, "user" },
+                    { 4, 10000m, 3, false, "user" },
+                    { 5, 10000m, 0, true, "user2" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -209,9 +212,9 @@ namespace PartyWebAppServer.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transactions_WalletCurrency_WalletUsername",
+                name: "IX_Transactions_WalletId",
                 table: "Transactions",
-                columns: new[] { "WalletCurrency", "WalletUsername" });
+                column: "WalletId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Wallets_Username",
