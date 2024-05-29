@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PartyWebAppCommon.DTOs;
-using PartyWebAppCommon.Enums;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Services.JwtService;
+using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Services.WalletService;
+using PartyWebAppCommon.Enums;
 
 namespace PartyWebAppServer.Controllers;
 
@@ -32,12 +33,12 @@ public class WalletController(IWalletService walletService, AppDbContext dbConte
     }
 
     [HttpPost]
-    public async Task<WalletDto> CreateWallet(WalletDto wallet)
+    public async Task<WalletDto> CreateWallet(CreateWalletRequest _req)
     {
         if (!jwtService.IsAuthorized(_httpContext.Request))
             throw new UnauthorizedAccessException("You need to be authorized.");
 
-        return await walletService.CreateWallet(wallet);
+        return await walletService.CreateWallet(_req);
     }
 
     [HttpDelete("{username}/{currency}")]
@@ -49,30 +50,30 @@ public class WalletController(IWalletService walletService, AppDbContext dbConte
         return await walletService.DeleteWallet(username, currency);
     }
 
-    [HttpPut("deposit/{username}/{currency}/{amount}")]
-    public async Task<WalletDto> DepositToWallet(string username, CurrencyType currency, decimal amount)
+    [HttpPut("deposit")]
+    public async Task<WalletDto> DepositToWallet(DepositToWalletRequest _req)
     {
-        if (!jwtService.IsUserTheUser(_httpContext.Request, username) && !jwtService.IsUserAdmin(_httpContext.Request))
+        if (!jwtService.IsUserTheUser(_httpContext.Request, _req.Username) && !jwtService.IsUserAdmin(_httpContext.Request))
             throw new UnauthorizedAccessException("You can only deposit to your own wallets.");
 
-        return await walletService.DepositToWallet(_wallet, amount);
+        return await walletService.DepositToWallet(_req);
     }
 
-    [HttpPut("withdraw/{username}/{currency}/{amount}")]
-    public async Task<WalletDto> WithdrawFromWallet(string username, CurrencyType currency, decimal amount)
+    [HttpPut("withdraw")]
+    public async Task<WalletDto> WithdrawFromWallet(WithdrawFromWalletRequest _req)
     {
-        if (!jwtService.IsUserTheUser(_httpContext.Request, username) && !jwtService.IsUserAdmin(_httpContext.Request))
+        if (!jwtService.IsUserTheUser(_httpContext.Request, _req.Username) && !jwtService.IsUserAdmin(_httpContext.Request))
             throw new UnauthorizedAccessException("You can only withdraw from your own wallets.");
 
-        return await walletService.WithdrawFromWallet(_wallet, amount);
+        return await walletService.WithdrawFromWallet(_req);
     }
 
-    [HttpPut("primary/{username}/{currency}")]
-    public async Task<WalletDto> SetPrimaryWallet(string username, CurrencyType currency)
+    [HttpPut("primary")]
+    public async Task<WalletDto> SetPrimaryWallet(SetPrimaryWalletRequest _req)
     {
-        if (!jwtService.IsUserTheUser(_httpContext.Request, username) && !jwtService.IsUserAdmin(_httpContext.Request))
+        if (!jwtService.IsUserTheUser(_httpContext.Request, _req.Username) && !jwtService.IsUserAdmin(_httpContext.Request))
             throw new UnauthorizedAccessException("You can only set your own primary wallets.");
 
-        return await walletService.SetPrimaryWallet(_wallet);
+        return await walletService.SetPrimaryWallet(_req);
     }
 }

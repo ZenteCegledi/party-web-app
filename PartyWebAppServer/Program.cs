@@ -6,8 +6,9 @@ using PartyWebAppServer.Services.EventService;
 using PartyWebAppServer.Services.JwtService;
 using PartyWebAppServer.Services.LocationService;
 using PartyWebAppServer.Services.UserService;
-using PartyWebAppServer.Services.WalletService;
 using IUserService = PartyWebAppServer.Services.UserService.IUserService;
+using IWalletService = PartyWebAppServer.Services.WalletService.IWalletService;
+using WalletService = PartyWebAppServer.Services.WalletService.WalletService;
 
 var builder = WebApplication.CreateBuilder(args);
 

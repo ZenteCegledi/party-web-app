@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Components.Authorization;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Enums;
 using Microsoft.FluentUI.AspNetCore.Components;
+using PartyWebAppClient.Services.WalletService;
+using PartyWebAppCommon.Requests;
 
 namespace PartyWebAppClient.Components.Dashboard;
 
@@ -32,7 +34,7 @@ public partial class Wallets : ComponentBase
     private IToastService? ToastService { get; set; }
 
     [Inject]
-    private IClientWalletService walletService { get; set; }
+    private IWalletService walletService { get; set; }
 
     private List<WalletDto> wallets = new List<WalletDto>();
     private readonly Dictionary<CurrencyType, (string symbol, string image)> currencyMap = Enum.GetValues<CurrencyType>().ToDictionary(c => c, c => c switch
@@ -51,7 +53,7 @@ public partial class Wallets : ComponentBase
 
         if (user == null) return;
 
-        var (_wallets, error) = await walletService.GetUserWallets(user.FindFirst("username")?.Value!);
+        var (_wallets, error) = await walletService.GetUserWallets(user.FindFirst("Username")?.Value!);
         if (error is not null)
         {
             ToastService?.ShowError(error.Message);
@@ -71,7 +73,12 @@ public partial class Wallets : ComponentBase
     {
         modalSubmitting = true;
 
-        var (wallet, error) = await walletService.DepositToWallet(chosenWallet, depositAmount);
+        var (wallet, error) = await walletService.DepositToWallet(new DepositToWalletRequest
+        {
+            Username = chosenWallet.Username,
+            Currency = chosenWallet.Currency,
+            Amount = depositAmount
+        });
         if (error is not null) ToastService?.ShowError(error.Message);
 
         var index = wallets.FindIndex(w => w.Currency == wallet.Currency);
@@ -91,7 +98,12 @@ public partial class Wallets : ComponentBase
     {
         modalSubmitting = true;
 
-        var (wallet, error) = await walletService.WithdrawFromWallet(chosenWallet, withdrawAmount);
+        var (wallet, error) = await walletService.WithdrawFromWallet(new WithdrawFromWalletRequest
+        {
+            Username = chosenWallet.Username,
+            Currency = chosenWallet.Currency,
+            Amount = withdrawAmount
+        });
         if (error is not null)
         {
             ToastService?.ShowError(error.Message);
@@ -126,7 +138,7 @@ public partial class Wallets : ComponentBase
             IsPrimary = wallets.Count == 0
         };
 
-        var (wallet, error) = await walletService.CreateWallet(newWallet);
+        var (wallet, error) = await walletService.CreateWallet(new CreateWalletRequest { Username = newWallet.Username, Currency = newWallet.Currency, Amount = newWallet.Amount, IsPrimary = newWallet.IsPrimary });
         if (error is not null)
         {
             ToastService?.ShowError(error.Message);
