@@ -6,7 +6,7 @@ namespace PartyWebAppServer.Database.Models;
 
 public class Wallet
 {
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
     
     [ForeignKey("User")] public string Username { get; set; }
     public User Owner { get; set; }
