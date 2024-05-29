@@ -6,7 +6,6 @@ using PartyWebAppClient;
 using PartyWebAppClient.Services;
 using BitzArt.Blazor.Auth;
 using BitzArt.Blazor.Cookies;
-using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 var baseUri = new Uri(builder.HostEnvironment.BaseAddress);
@@ -16,7 +15,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 builder.Services.AddTransient<IAppHttpClient, AppHttpClient>();
-builder.Services.AddTransient<IClientWalletService, ClientWalletService>();
+builder.Services.AddTransient<IWalletService, WalletService>();
 
 builder.Services.AddBlazorBootstrap();
 

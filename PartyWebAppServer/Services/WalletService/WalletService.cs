@@ -3,116 +3,104 @@ using PartyWebAppCommon.Enums;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.ErrorHandling.Exceptions;
 using PartyWebAppServer.Database.Models;
+using PartyWebAppCommon.Requests;
+using AutoMapper;
 namespace PartyWebAppServer.Services.WalletService;
-public class WalletService(AppDbContext context) : IWalletService
+
+public class WalletService(AppDbContext context, IMapper mapper) : IWalletService
 {
-    public List<WalletDto> GetWallets(string username)
+    public async Task<List<WalletDto>> GetWallets(GetWalletRequests _req)
     {
-        var user = context.Users.FirstOrDefault(u => u.Username == username);
-        if (user == null) throw new Exception("User not found");
-        var wallets = context.Wallets.Where(w => w.Username == username).ToList();
-        return wallets.Select(w => new WalletDto
-        {
-            Currency = w.Currency,
-            Username = w.Username,
-            Amount = w.Amount,
-            IsPrimary = w.IsPrimary
-        }).ToList();
+        var user = context.Users.FirstOrDefault(u => u.Username == _req.Username);
+        if (user == null) throw new UserNotFoundException("User not found");
+
+        var wallets = context.Wallets.Where(w => w.Username == _req.Username).ToList();
+
+        return mapper.Map<List<WalletDto>>(wallets);
     }
-    public Task<WalletDto> GetWallet(string username, CurrencyType currency)
+    public async Task<WalletDto> GetWallet(GetWalletRequest _req)
     {
-        var user = context.Users.FirstOrDefault(u => u.Username == username);
-        if (user == null) throw new Exception("No user found with that username: " + username);
-        var wallet = context.Wallets.FirstOrDefault(w => w.Username == username && w.Currency == currency);
+        var user = context.Users.FirstOrDefault(u => u.Username == _req.Username);
+        if (user == null) throw new UserNotFoundException("No user found with that username: " + _req.Username);
+
+        var wallet = context.Wallets.FirstOrDefault(w => w.Username == _req.Username && w.Currency == _req.Currency);
         if (wallet == null) throw new WalletNotExistsAppException();
-        return new WalletDto
-        {
-            Currency = wallet.Currency,
-            Username = wallet.Username,
-            Amount = wallet.Amount,
-            IsPrimary = wallet.IsPrimary
-        };
+
+        return mapper.Map<WalletDto>(wallet);
     }
-    public Task<WalletDto> CreateWallet(WalletDto wallet)
+    public async Task<WalletDto> CreateWallet(CreateWalletRequest _req)
     {
-        var user = context.Users.FirstOrDefault(u => u.Username == wallet.Username);
-        if (user == null) throw new Exception("No user found with that username: " + wallet.Username);
+        var user = context.Users.FirstOrDefault(u => u.Username == _req.Username);
+        if (user == null) throw new UserNotFoundException("No user found with that username: " + _req.Username);
+
         var newWallet = new Wallet
         {
-            Currency = wallet.Currency,
-            Username = wallet.Username,
-            Amount = wallet.Amount,
-            IsPrimary = wallet.IsPrimary
+            Currency = _req.Currency,
+            Username = _req.Username,
+            Amount = _req.Amount,
+            IsPrimary = _req.IsPrimary
         };
+
         context.Wallets.Add(newWallet);
         context.SaveChanges();
-        return wallet;
+
+        return mapper.Map<WalletDto>(newWallet);
     }
-    public Task<WalletDto> DeleteWallet(string username, CurrencyType currency)
+    public async Task<WalletDto> DeleteWallet(DeleteWalletRequest _req)
     {
-        var user = context.Users.FirstOrDefault(u => u.Username == username);
-        if (user == null) throw new Exception("No user found with that username: " + username);
-        var wallet = context.Wallets.FirstOrDefault(w => w.Username == username && w.Currency == currency);
+        var user = context.Users.FirstOrDefault(u => u.Username == _req.Username);
+        if (user == null) throw new UserNotFoundException("No user found with that username: " + _req.Username);
+
+        var wallet = context.Wallets.FirstOrDefault(w => w.Username == _req.Username && w.Currency == _req.Currency);
         if (wallet == null) throw new WalletNotExistsAppException();
+
         context.Wallets.Remove(wallet);
         context.SaveChanges();
-        return new WalletDto
-        {
-            Currency = wallet.Currency,
-            Username = wallet.Username,
-            Amount = wallet.Amount,
-            IsPrimary = wallet.IsPrimary
-        };
+
+        return mapper.Map<WalletDto>(wallet);
     }
-    public Task<WalletDto> DepositToWallet(WalletDto wallet, decimal amount)
+    public async Task<WalletDto> DepositToWallet(DepositToWalletRequest _req)
     {
-        var user = context.Users.FirstOrDefault(u => u.Username == wallet.Username);
-        if (user == null) throw new Exception("No user found with that username: " + wallet.Username);
-        var walletEntity = context.Wallets.FirstOrDefault(w => w.Username == wallet.Username && w.Currency == wallet.Currency);
+        var user = context.Users.FirstOrDefault(u => u.Username == _req.Username);
+        if (user == null) throw new UserNotFoundException("No user found with that username: " + _req.Username);
+
+        var walletEntity = context.Wallets.FirstOrDefault(w => w.Username == _req.Username && w.Currency == _req.Currency);
         if (walletEntity == null) throw new WalletNotExistsAppException();
-        walletEntity.Amount += amount;
+
+        walletEntity.Amount += _req.Amount;
         context.SaveChanges();
-        return new WalletDto
-        {
-            Currency = walletEntity.Currency,
-            Username = walletEntity.Username,
-            Amount = walletEntity.Amount,
-            IsPrimary = walletEntity.IsPrimary
-        };
+
+        return mapper.Map<WalletDto>(walletEntity);
     }
-    public Task<WalletDto> WithdrawFromWallet(WalletDto wallet, decimal amount)
+    public async Task<WalletDto> WithdrawFromWallet(WithdrawFromWalletRequest _req)
     {
-        var user = context.Users.FirstOrDefault(u => u.Username == wallet.Username);
-        if (user == null) throw new Exception("No user found with that username: " + wallet.Username);
-        var walletEntity = context.Wallets.FirstOrDefault(w => w.Username == wallet.Username && w.Currency == wallet.Currency);
+        var user = context.Users.FirstOrDefault(u => u.Username == _req.Username);
+        if (user == null) throw new UserNotFoundException("No user found with that username: " + _req.Username);
+
+        var walletEntity = context.Wallets.FirstOrDefault(w => w.Username == _req.Username && w.Currency == _req.Currency);
         if (walletEntity == null) throw new WalletNotExistsAppException();
-        if (walletEntity.Amount < amount) throw new Exception("Not enough money in the wallet");
-        walletEntity.Amount -= amount;
+
+        if (walletEntity.Amount < _req.Amount) throw new NotEnoughMoneyInWalletException(_req.Username, _req.Currency);
+
+        walletEntity.Amount -= _req.Amount;
         context.SaveChanges();
-        return new WalletDto
-        {
-            Currency = walletEntity.Currency,
-            Username = walletEntity.Username,
-            Amount = walletEntity.Amount,
-            IsPrimary = walletEntity.IsPrimary
-        };
+
+        return mapper.Map<WalletDto>(walletEntity);
     }
-    public Task<WalletDto> SetPrimaryWallet(WalletDto wallet)
+    public async Task<WalletDto> SetPrimaryWallet(SetPrimaryWalletRequest _req)
     {
-        var user = context.Users.FirstOrDefault(u => u.Username == wallet.Username);
-        if (user == null) throw new Exception("No user found with that username: " + wallet.Username);
-        var walletEntity = context.Wallets.FirstOrDefault(w => w.Username == wallet.Username && w.Currency == wallet.Currency);
+        var user = context.Users.FirstOrDefault(u => u.Username == _req.Username);
+        if (user == null) throw new UserNotFoundException("No user found with that username: " + _req.Username);
+
+        var walletEntity = context.Wallets.FirstOrDefault(w => w.Username == _req.Username && w.Currency == _req.Currency);
         if (walletEntity == null) throw new WalletNotExistsAppException();
-        var primaryWallet = context.Wallets.FirstOrDefault(w => w.Username == wallet.Username && w.IsPrimary);
+
+        var primaryWallet = context.Wallets.FirstOrDefault(w => w.Username == _req.Username && w.IsPrimary);
         if (primaryWallet != null) primaryWallet.IsPrimary = false;
+
         walletEntity.IsPrimary = true;
         context.SaveChanges();
-        return new WalletDto
-        {
-            Currency = walletEntity.Currency,
-            Username = walletEntity.Username,
-            Amount = walletEntity.Amount,
-            IsPrimary = walletEntity.IsPrimary
-        };
+
+        return mapper.Map<WalletDto>(walletEntity);
     }
 }
