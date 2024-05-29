@@ -109,14 +109,15 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
 
         return transaction;
     }
+    private void ChargeWallet(Wallet wallet, int spentCurrency) =>
+        wallet.Amount -= spentCurrency;
+    private void DepositToWallet(Wallet wallet, int spentCurrency) =>
+        wallet.Amount += spentCurrency;
+    
     public async Task<TransactionDTO> AddTransactionToDb(Transaction transaction)
     {
         _dbContext.Transactions.Add(transaction);
         await _dbContext.SaveChangesAsync();
         return _mapper.Map<TransactionDTO>(transaction);
     }
-    private void ChargeWallet(Wallet wallet, int spentCurrency) =>
-        wallet.Amount -= spentCurrency;
-    private void DepositToWallet(Wallet wallet, int spentCurrency) =>
-        wallet.Amount += spentCurrency;
 }
