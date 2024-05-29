@@ -4,9 +4,9 @@
 @using PartyWebAppCommon.DTOs
 @using PartyWebAppCommon.Enums
 
-<AuthorizeView>
-	<Modal @ref="DepositModal">
-		<HeaderTemplate>
+<AuthorizeView>	
+	<Modal>
+	<HeaderTemplate>
 			<div class="d-flex align-items-center gap-2">
 				<img alt="@chosenWallet.Currency" class="rounded-circle" height="30"
 					src="@currencyMap[chosenWallet.Currency].image" style="object-fit: cover" width="30" />
