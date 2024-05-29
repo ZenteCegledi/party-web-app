@@ -4,10 +4,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace PartyWebAppServer.Migrations
 {
     /// <inheritdoc />
-    public partial class reinit : Migration
+    public partial class Reinit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +22,7 @@ namespace PartyWebAppServer.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: false),
-                    Type = table.Column<int>(type: "integer", nullable: false)
+                    Type = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -67,6 +69,9 @@ namespace PartyWebAppServer.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
                     LocationId = table.Column<int>(type: "integer", nullable: false),
+                    StartDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
                     Price = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -86,7 +91,8 @@ namespace PartyWebAppServer.Migrations
                 {
                     Currency = table.Column<int>(type: "integer", nullable: false),
                     Username = table.Column<string>(type: "text", nullable: false),
-                    Amount = table.Column<decimal>(type: "numeric", nullable: false)
+                    Amount = table.Column<decimal>(type: "numeric", nullable: false),
+                    IsPrimary = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -133,6 +139,58 @@ namespace PartyWebAppServer.Migrations
                         principalTable: "Wallets",
                         principalColumns: new[] { "Currency", "Username" },
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Locations",
+                columns: new[] { "Id", "Address", "Name", "Type" },
+                values: new object[,]
+                {
+                    { 1, "Budapest, Váci út 1", "Club event 1", 0 },
+                    { 2, "Budapest, Váci út 2", "Pub event 1", 1 },
+                    { 3, "Budapest, Váci út 3", "ATM event 1", 2 },
+                    { 4, "Budapest, Váci út 4", "Theater event 1", 3 },
+                    { 5, "Budapest, Váci út 5", "Museum event 1", 4 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, 0 },
+                    { 2, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Username", "BirthDate", "Email", "Name", "Password", "PasswordUpdated", "Phone", "RoleId" },
+                values: new object[,]
+                {
+                    { "admin", new DateTime(1994, 5, 28, 20, 25, 45, 207, DateTimeKind.Utc).AddTicks(8575), "admin@admin.com", "Admin User", "$2a$11$xLm.YFMmYdDQd9.8vwsd7uyGN/RAtNSFtx/JvYAHhRNjooP/8eC3u", new DateTime(2024, 5, 28, 20, 25, 45, 207, DateTimeKind.Utc).AddTicks(8588), "1234567890", 1 },
+                    { "user", new DateTime(2004, 5, 28, 20, 25, 45, 330, DateTimeKind.Utc).AddTicks(8494), "user@gmail.com", "User", "$2a$11$G3ItHLT1hp8kBQBA3/G3Z.wPgyqQNze8HR/vPUq0nOMjGislF04mW", new DateTime(2024, 5, 28, 20, 25, 45, 330, DateTimeKind.Utc).AddTicks(8503), "0987654321", 2 },
+                    { "user2", new DateTime(2004, 5, 28, 20, 25, 45, 455, DateTimeKind.Utc).AddTicks(3006), "user2@gmail.com", "User2", "$2a$11$7hV6H5cKJHBjBZ5ExEb8UeK7BVQ7tdY74IianGLnji/llBznsQMQS", new DateTime(2024, 5, 28, 20, 25, 45, 455, DateTimeKind.Utc).AddTicks(3022), "0987654321", 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Events",
+                columns: new[] { "Id", "Description", "EndDateTime", "LocationId", "Name", "Price", "StartDateTime", "Type" },
+                values: new object[,]
+                {
+                    { 1, "This is the description of Event 1. It is a very cool event in the club.", new DateTime(2024, 6, 1, 4, 0, 0, 0, DateTimeKind.Utc), 1, "Event 1", 1000, new DateTime(2024, 5, 31, 18, 0, 0, 0, DateTimeKind.Utc), 0 },
+                    { 2, "This is the description of Event 2. It is a very cool event in the pub.", new DateTime(2024, 6, 2, 4, 0, 0, 0, DateTimeKind.Utc), 2, "Event 2", 2000, new DateTime(2024, 6, 1, 18, 0, 0, 0, DateTimeKind.Utc), 0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Wallets",
+                columns: new[] { "Currency", "Username", "Amount", "IsPrimary" },
+                values: new object[,]
+                {
+                    { 0, "user", 5000m, true },
+                    { 0, "user2", 10000m, true },
+                    { 1, "user", 100m, false },
+                    { 2, "user", 400m, false },
+                    { 3, "user", 10000m, false }
                 });
 
             migrationBuilder.CreateIndex(

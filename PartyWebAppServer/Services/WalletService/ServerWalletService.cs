@@ -1,29 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PartyWebAppCommon.DTOs;
+﻿using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Enums;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.ErrorHandling.Exceptions;
 using PartyWebAppServer.Database.Models;
-using System.ComponentModel;
 
-namespace PartyWebAppServer.Services;
+namespace PartyWebAppServer.Services.WalletService;
 
-public interface IWalletService
+public class ServerWalletService(AppDbContext context) : IServerWalletService
 {
-    List<WalletDto> GetWallets(string username);
-    WalletDto GetWallet(string username, CurrencyType currency);
-}
-
-public class ServerWalletService(AppDbContext context)
-{
-    public List<WalletDto> GetWallets(string username)
+    public List<WalletDTO> GetWallets(string username)
     {
         var user = context.Users.FirstOrDefault(u => u.Username == username);
         if (user == null) throw new Exception("User not found");
 
         var wallets = context.Wallets.Where(w => w.Username == username).ToList();
 
-        return wallets.Select(w => new WalletDto
+        return wallets.Select(w => new WalletDTO
         {
             Currency = w.Currency,
             Username = w.Username,
@@ -32,7 +24,7 @@ public class ServerWalletService(AppDbContext context)
         }).ToList();
     }
 
-    public WalletDto GetWallet(string username, CurrencyType currency)
+    public WalletDTO GetWallet(string username, CurrencyType currency)
     {
         var user = context.Users.FirstOrDefault(u => u.Username == username);
         if (user == null) throw new Exception("No user found with that username: " + username);
@@ -40,7 +32,7 @@ public class ServerWalletService(AppDbContext context)
         var wallet = context.Wallets.FirstOrDefault(w => w.Username == username && w.Currency == currency);
         if (wallet == null) throw new WalletNotExistsAppException();
 
-        return new WalletDto
+        return new WalletDTO
         {
             Currency = wallet.Currency,
             Username = wallet.Username,
@@ -49,7 +41,7 @@ public class ServerWalletService(AppDbContext context)
         };
     }
 
-    public WalletDto CreateWallet(WalletDto wallet)
+    public WalletDTO CreateWallet(WalletDTO wallet)
     {
         var user = context.Users.FirstOrDefault(u => u.Username == wallet.Username);
         if (user == null) throw new Exception("No user found with that username: " + wallet.Username);
@@ -68,7 +60,7 @@ public class ServerWalletService(AppDbContext context)
         return wallet;
     }
 
-    public WalletDto DeleteWallet(string username, CurrencyType currency)
+    public WalletDTO DeleteWallet(string username, CurrencyType currency)
     {
         var user = context.Users.FirstOrDefault(u => u.Username == username);
         if (user == null) throw new Exception("No user found with that username: " + username);
@@ -79,7 +71,7 @@ public class ServerWalletService(AppDbContext context)
         context.Wallets.Remove(wallet);
         context.SaveChanges();
 
-        return new WalletDto
+        return new WalletDTO
         {
             Currency = wallet.Currency,
             Username = wallet.Username,
@@ -88,7 +80,7 @@ public class ServerWalletService(AppDbContext context)
         };
     }
 
-    public WalletDto DepositToWallet(WalletDto wallet, decimal amount)
+    public WalletDTO DepositToWallet(WalletDTO wallet, decimal amount)
     {
         var user = context.Users.FirstOrDefault(u => u.Username == wallet.Username);
         if (user == null) throw new Exception("No user found with that username: " + wallet.Username);
@@ -99,7 +91,7 @@ public class ServerWalletService(AppDbContext context)
         walletEntity.Amount += amount;
         context.SaveChanges();
 
-        return new WalletDto
+        return new WalletDTO
         {
             Currency = walletEntity.Currency,
             Username = walletEntity.Username,
@@ -108,7 +100,7 @@ public class ServerWalletService(AppDbContext context)
         };
     }
 
-    public WalletDto WithdrawFromWallet(WalletDto wallet, decimal amount)
+    public WalletDTO WithdrawFromWallet(WalletDTO wallet, decimal amount)
     {
         var user = context.Users.FirstOrDefault(u => u.Username == wallet.Username);
         if (user == null) throw new Exception("No user found with that username: " + wallet.Username);
@@ -119,9 +111,10 @@ public class ServerWalletService(AppDbContext context)
         if (walletEntity.Amount < amount) throw new Exception("Not enough money in the wallet");
 
         walletEntity.Amount -= amount;
+
         context.SaveChanges();
 
-        return new WalletDto
+        return new WalletDTO
         {
             Currency = walletEntity.Currency,
             Username = walletEntity.Username,
@@ -130,7 +123,7 @@ public class ServerWalletService(AppDbContext context)
         };
     }
 
-    public WalletDto SetPrimaryWallet(WalletDto wallet)
+    public WalletDTO SetPrimaryWallet(WalletDTO wallet)
     {
         var user = context.Users.FirstOrDefault(u => u.Username == wallet.Username);
         if (user == null) throw new Exception("No user found with that username: " + wallet.Username);
@@ -144,7 +137,7 @@ public class ServerWalletService(AppDbContext context)
         walletEntity.IsPrimary = true;
         context.SaveChanges();
 
-        return new WalletDto
+        return new WalletDTO
         {
             Currency = walletEntity.Currency,
             Username = walletEntity.Username,

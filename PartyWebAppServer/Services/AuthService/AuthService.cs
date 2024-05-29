@@ -1,24 +1,21 @@
 namespace PartyWebAppServer.Services;
 
 using BitzArt.Blazor.Auth;
-using PartyWebAppCommon.Models;
 using BCrypt.Net;
 using PartyWebAppServer.Database.Models;
-using Microsoft.Extensions.Configuration;
 using PartyWebAppServer.Database;
-using PartyWebAppServer.Database.Models;
+using PartyWebAppServer.Services.JwtService;
+using PartyWebAppCommon.Requests;
 
-public class ServerSideAuthenticationService : ServerSideAuthenticationService<SignInRequest, SignUpRequest>
+public class AuthService : ServerSideAuthenticationService<SignInRequest, SignUpRequest>, IAuthService
 {
-    private readonly JwtService jwtService;
+    private readonly IJwtService jwtService;
     private readonly AppDbContext dbContext;
-    private readonly IConfiguration config;
 
-    public ServerSideAuthenticationService(JwtService jwtService, AppDbContext dbContext, IConfiguration config)
+    public AuthService(IJwtService jwtService, AppDbContext dbContext)
     {
         this.jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
         this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        this.config = config ?? throw new ArgumentNullException(nameof(config));
     }
 
     protected override Task<AuthenticationResult> GetSignInResultAsync(SignInRequest signInRequest)

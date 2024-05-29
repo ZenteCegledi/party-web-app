@@ -74,6 +74,20 @@ public class AppDbContext : DbContext
             }
         );
 
+        modelBuilder.Entity<User>().HasData(
+            new User
+            {
+                Password = BCrypt.Net.BCrypt.HashPassword("user2"),
+                Username = "user2",
+                RoleId = 2,
+                Email = "user2@gmail.com",
+                Name = "User2",
+                BirthDate = DateTime.UtcNow.AddYears(-20),
+                Phone = "0987654321",
+                PasswordUpdated = DateTime.UtcNow,
+            }
+        );
+
         #endregion
 
         #region WalletSeed
@@ -112,6 +126,102 @@ public class AppDbContext : DbContext
                 Currency = CurrencyType.CREDIT,
                 Username = "user",
                 Amount = 10000
+            }
+        );
+
+        modelBuilder.Entity<Wallet>().HasData(
+            new Wallet
+            {
+                Currency = CurrencyType.HUF,
+                Username = "user2",
+                Amount = 10000,
+                IsPrimary = true
+            }
+        );
+
+        #endregion
+
+        #region LocationSeed
+
+        modelBuilder.Entity<Location>().HasData(
+            new Location
+            {
+                Id = 1,
+                Name = "Club event 1",
+                Type = LocationType.Club,
+                Address = "Budapest, Váci út 1"
+            }
+        );
+
+        modelBuilder.Entity<Location>().HasData(
+            new Location
+            {
+                Id = 2,
+                Name = "Pub event 1",
+                Type = LocationType.Pub,
+                Address = "Budapest, Váci út 2"
+            }
+        );
+
+        modelBuilder.Entity<Location>().HasData(
+            new Location
+            {
+                Id = 3,
+                Name = "ATM event 1",
+                Type = LocationType.ATM,
+                Address = "Budapest, Váci út 3"
+            }
+        );
+
+        modelBuilder.Entity<Location>().HasData(
+            new Location
+            {
+                Id = 4,
+                Name = "Theater event 1",
+                Type = LocationType.Theater,
+                Address = "Budapest, Váci út 4"
+            }
+        );
+
+        modelBuilder.Entity<Location>().HasData(
+            new Location
+            {
+                Id = 5,
+                Name = "Museum event 1",
+                Type = LocationType.Museum,
+                Address = "Budapest, Váci út 5"
+            }
+        );
+
+        #endregion
+
+        #region EventSeed
+
+        modelBuilder.Entity<Event>().HasData(
+            new Event
+            {
+                Id = 1,
+                Name = "Event 1",
+                StartDateTime = new DateTime(2024, 5, 31, 20, 0, 0).ToUniversalTime(),
+                EndDateTime = new DateTime(2024, 6, 1, 6, 0, 0).ToUniversalTime(),
+
+                LocationId = 1,
+                Description = "This is the description of Event 1. It is a very cool event in the club.",
+                Price = 1000
+            }
+        );
+
+        modelBuilder.Entity<Event>().HasData(
+            new Event
+            {
+                Id = 2,
+                Name = "Event 2",
+                StartDateTime = new DateTime(2024, 6, 1, 20, 0, 0).ToUniversalTime(),
+                EndDateTime = new DateTime(2024, 6, 2, 6, 0, 0).ToUniversalTime(),
+
+                LocationId = 2,
+                Description = "This is the description of Event 2. It is a very cool event in the pub.",
+                Price = 2000
             }
         );
 

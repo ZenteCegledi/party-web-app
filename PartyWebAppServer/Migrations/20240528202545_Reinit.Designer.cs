@@ -12,8 +12,8 @@ using PartyWebAppServer.Database;
 namespace PartyWebAppServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240526145125_Seed_NormalUser_AND_Wallets")]
-    partial class Seed_NormalUser_AND_Wallets
+    [Migration("20240528202545_Reinit")]
+    partial class Reinit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,13 @@ namespace PartyWebAppServer.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("EndDateTime")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("LocationId")
                         .HasColumnType("integer");
 
@@ -43,6 +50,9 @@ namespace PartyWebAppServer.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("StartDateTime")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
@@ -51,6 +61,30 @@ namespace PartyWebAppServer.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("Events");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "This is the description of Event 1. It is a very cool event in the club.",
+                            EndDateTime = new DateTime(2024, 6, 1, 4, 0, 0, 0, DateTimeKind.Utc),
+                            LocationId = 1,
+                            Name = "Event 1",
+                            Price = 1000,
+                            StartDateTime = new DateTime(2024, 5, 31, 18, 0, 0, 0, DateTimeKind.Utc),
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "This is the description of Event 2. It is a very cool event in the pub.",
+                            EndDateTime = new DateTime(2024, 6, 2, 4, 0, 0, 0, DateTimeKind.Utc),
+                            LocationId = 2,
+                            Name = "Event 2",
+                            Price = 2000,
+                            StartDateTime = new DateTime(2024, 6, 1, 18, 0, 0, 0, DateTimeKind.Utc),
+                            Type = 0
+                        });
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Location", b =>
@@ -69,12 +103,49 @@ namespace PartyWebAppServer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Type")
+                    b.Property<int?>("Type")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.ToTable("Locations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Budapest, Váci út 1",
+                            Name = "Club event 1",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "Budapest, Váci út 2",
+                            Name = "Pub event 1",
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Budapest, Váci út 3",
+                            Name = "ATM event 1",
+                            Type = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "Budapest, Váci út 4",
+                            Name = "Theater event 1",
+                            Type = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Address = "Budapest, Váci út 5",
+                            Name = "Museum event 1",
+                            Type = 4
+                        });
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Role", b =>
@@ -187,22 +258,33 @@ namespace PartyWebAppServer.Migrations
                         new
                         {
                             Username = "admin",
-                            BirthDate = new DateTime(1994, 5, 26, 14, 51, 24, 718, DateTimeKind.Utc).AddTicks(2377),
+                            BirthDate = new DateTime(1994, 5, 28, 20, 25, 45, 207, DateTimeKind.Utc).AddTicks(8575),
                             Email = "admin@admin.com",
                             Name = "Admin User",
-                            Password = "admin",
-                            PasswordUpdated = new DateTime(2024, 5, 26, 14, 51, 24, 718, DateTimeKind.Utc).AddTicks(2384),
+                            Password = "$2a$11$xLm.YFMmYdDQd9.8vwsd7uyGN/RAtNSFtx/JvYAHhRNjooP/8eC3u",
+                            PasswordUpdated = new DateTime(2024, 5, 28, 20, 25, 45, 207, DateTimeKind.Utc).AddTicks(8588),
                             Phone = "1234567890",
                             RoleId = 1
                         },
                         new
                         {
                             Username = "user",
-                            BirthDate = new DateTime(2004, 5, 26, 14, 51, 24, 718, DateTimeKind.Utc).AddTicks(2397),
+                            BirthDate = new DateTime(2004, 5, 28, 20, 25, 45, 330, DateTimeKind.Utc).AddTicks(8494),
                             Email = "user@gmail.com",
                             Name = "User",
-                            Password = "user",
-                            PasswordUpdated = new DateTime(2024, 5, 26, 14, 51, 24, 718, DateTimeKind.Utc).AddTicks(2399),
+                            Password = "$2a$11$G3ItHLT1hp8kBQBA3/G3Z.wPgyqQNze8HR/vPUq0nOMjGislF04mW",
+                            PasswordUpdated = new DateTime(2024, 5, 28, 20, 25, 45, 330, DateTimeKind.Utc).AddTicks(8503),
+                            Phone = "0987654321",
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Username = "user2",
+                            BirthDate = new DateTime(2004, 5, 28, 20, 25, 45, 455, DateTimeKind.Utc).AddTicks(3006),
+                            Email = "user2@gmail.com",
+                            Name = "User2",
+                            Password = "$2a$11$7hV6H5cKJHBjBZ5ExEb8UeK7BVQ7tdY74IianGLnji/llBznsQMQS",
+                            PasswordUpdated = new DateTime(2024, 5, 28, 20, 25, 45, 455, DateTimeKind.Utc).AddTicks(3022),
                             Phone = "0987654321",
                             RoleId = 2
                         });
@@ -219,6 +301,9 @@ namespace PartyWebAppServer.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Currency", "Username");
 
                     b.HasIndex("Username");
@@ -230,13 +315,36 @@ namespace PartyWebAppServer.Migrations
                         {
                             Currency = 1,
                             Username = "user",
-                            Amount = 1000m
+                            Amount = 100m,
+                            IsPrimary = false
                         },
                         new
                         {
                             Currency = 2,
                             Username = "user",
-                            Amount = 2000m
+                            Amount = 400m,
+                            IsPrimary = false
+                        },
+                        new
+                        {
+                            Currency = 0,
+                            Username = "user",
+                            Amount = 5000m,
+                            IsPrimary = true
+                        },
+                        new
+                        {
+                            Currency = 3,
+                            Username = "user",
+                            Amount = 10000m,
+                            IsPrimary = false
+                        },
+                        new
+                        {
+                            Currency = 0,
+                            Username = "user2",
+                            Amount = 10000m,
+                            IsPrimary = true
                         });
                 });
 

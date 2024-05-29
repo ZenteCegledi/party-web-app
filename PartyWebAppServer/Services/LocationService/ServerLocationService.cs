@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Enums;
@@ -8,7 +9,8 @@ using PartyWebAppServer.Database.Models;
 using PartyWebAppServer.ErrorHandling.Exceptions;
 
 namespace PartyWebAppServer.Services.LocationService;
-public class LocationService(AppDbContext _dbContext, IMapper _mapper) : ILocationService
+
+public class ServerLocationService(AppDbContext _dbContext, IMapper _mapper) : IServerLocationService
 {
     public async Task<LocationDTO> GetLocation(int id)
     {

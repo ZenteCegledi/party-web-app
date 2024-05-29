@@ -1,3 +1,4 @@
+
 using BitzArt.Blazor.Auth;
 using Microsoft.IdentityModel.Tokens;
 using PartyWebAppServer.Database.Models;
@@ -5,9 +6,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 
-namespace PartyWebAppServer.Services;
+namespace PartyWebAppServer.Services.JwtService;
 
-public class JwtService
+public class JwtService : IJwtService
 {
     private readonly JwtSecurityTokenHandler _tokenHandler;
     private readonly SigningCredentials _signingCredentials;
@@ -46,6 +47,8 @@ public class JwtService
         _refreshTokenDuration = options.RefreshTokenDuration;
     }
 
+    public string? GetTokenFromRequest(HttpRequest request) => request.Headers["Cookie"].ToString().Split(";").Where(x => x.Contains("AccessToken")).FirstOrDefault().Split("=")[1];
+
     public JwtPair BuildJwtPair(User? user)
     {
         var issuedAt = DateTime.UtcNow;
@@ -58,7 +61,7 @@ public class JwtService
             {
                 new Claim("tt", "a"),
                 new Claim("Username", user.Username),
-                new Claim("RoleID", user.RoleId.ToString()),
+                new Claim("IsAdmin", user.RoleId == 1 ? "true" : "false"),
             },
             notBefore: issuedAt,
             expires: accessTokenExpiresAt,
@@ -72,7 +75,7 @@ public class JwtService
             {
                 new Claim("tt", "r"),
                 new Claim("Username", user.Username),
-                new Claim("RoleID", user.RoleId.ToString()),
+                new Claim("IsAdmin", user.RoleId == 1 ? "true" : "false"),
             },
             notBefore: issuedAt,
             expires: refreshTokenExpiresAt,
@@ -88,7 +91,7 @@ public class JwtService
         };
     }
 
-    public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+    public ClaimsPrincipal GetPrincipalFromToken(string token)
     {
         var tokenValidationParameters = new TokenValidationParameters
         {
@@ -116,18 +119,72 @@ public class JwtService
         }
     }
 
+    public bool IsAuthorized(HttpRequest request)
+    {
+        try
+        {
+            var principal = GetPrincipalFromToken(GetTokenFromRequest(request));
+
+            if (principal.FindFirst("tt")?.Value != "a") throw new JwtException("Invalid token type");
+
+            return principal.FindFirst("Username")?.Value != null;
+        }
+        catch (JwtException ex)
+        {
+            Console.WriteLine(ex.Message);
+
+            return false;
+        }
+    }
+
+    public bool IsUserAdmin(HttpRequest request)
+    {
+        try
+        {
+            var principal = GetPrincipalFromToken(GetTokenFromRequest(request));
+
+            if (principal.FindFirst("tt")?.Value != "a") throw new JwtException("Invalid token type");
+
+            return principal.FindFirst("IsAdmin").Value == "true";
+        }
+        catch (JwtException ex)
+        {
+            Console.WriteLine(ex.Message);
+
+            return false;
+        }
+    }
+
+    public bool IsUserTheUser(HttpRequest request, string username)
+    {
+        try
+        {
+            var principal = GetPrincipalFromToken(GetTokenFromRequest(request));
+
+            if (principal.FindFirst("tt")?.Value != "a") throw new JwtException("Invalid token type");
+
+            return principal.FindFirst("Username").Value == username;
+        }
+        catch (JwtException ex)
+        {
+            Console.WriteLine(ex.Message);
+
+            return false;
+        }
+    }
+
     public JwtPair RefreshJwtPair(string refreshToken)
     {
         try
         {
-            var principal = GetPrincipalFromExpiredToken(refreshToken);
+            var principal = GetPrincipalFromToken(refreshToken);
 
             if (principal.FindFirst("tt")?.Value != "r") throw new JwtException("Invalid token type");
 
             var user = new User
             {
                 Username = principal.FindFirst("Username")?.Value!,
-                RoleId = int.Parse(principal.FindFirst("RoleID")?.Value!),
+                RoleId = int.Parse(bool.Parse(principal.FindFirst("IsAdmin")?.Value) ? "1" : "2"),
             };
 
             return BuildJwtPair(user);
