@@ -135,7 +135,7 @@
 			<div>
 				<FluentButton IconStart="@(new Icons.Regular.Size20.Wallet())" OnClick=@(() =>
 					{
-						if (wallets.Count == 4) ToastService.ShowError(@Localize["YouAlreadyHaveAllWallets"]);
+						if (wallets.Count == 4) ToastService?.ShowError(@Localize["YouAlreadyHaveAllWallets"]);
 						else ShowModal(CreateWalletModal);
 					})>
 					@Localize["AddWallet"]
@@ -166,11 +166,21 @@
 						<h3 class="text-black-50 fw-lighter">@currencyMap[chosenWallet.Currency].symbol -
 							@chosenWallet.Currency</h3>
 					</div>
-					<div class="d-flex flex-column gap-2">
-						<FluentButton IconStart="@(new Icons.Regular.Size20.Star())"
-							@onclick="() => ShowModal(PrimaryModal)">
-							Make Default
-						</FluentButton>
+					<div>
+						@if (chosenWallet.IsPrimary)
+						{
+							<div class="m-2 d-flex gap-2">
+								<FluentIcon Value="@(new Icons.Regular.Size20.StarCheckmark())" />
+								<span>Primary Wallet</span>
+							</div>
+						}
+						else
+						{
+							<FluentButton IconStart="@(new Icons.Regular.Size20.StarAdd())"
+								@onclick="() => ShowModal(PrimaryModal)">
+								Make Default
+							</FluentButton>
+						}
 					</div>
 				</div>
 			</div>
