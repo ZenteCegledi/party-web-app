@@ -10,6 +10,7 @@ namespace PartyWebAppServer.Services.EventService;
 public interface IEventService
 {
     public Task<List<EventDTO>> GetAllEvents();
+    public Task<List<EventDTO>> GetAllEventsWithLocations();
     public Task<EventDTO> GetEventById(GetEventRequest request);
     public Task<List<EventDTO>> GetEventByLocationIds(EventsByLocationRequest request);
     public Task<EventDTO> CreateEvent(CreateEventRequest request);
