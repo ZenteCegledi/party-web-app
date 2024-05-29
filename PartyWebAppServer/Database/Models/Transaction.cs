@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using PartyWebAppCommon.Enums;
 
 namespace PartyWebAppServer.Database.Models;
@@ -6,11 +7,19 @@ namespace PartyWebAppServer.Database.Models;
 public class Transaction
 {
     [Key] public int Id { get; set; }
+    
+    [ForeignKey("Wallet")] public int WalletId { get; set; }
     public Wallet Wallet { get; set; }
+
+    [ForeignKey("Location")] public int LocationId { get; set; }
+    public Location? Location { get; set; }
+
+    [ForeignKey("Event")] public int EventId { get; set; }
+    public Event? Event { get; set; }
+
     public int SpentCurrency { get; set; }
     public int Count { get; set; }
-    public Location? Location { get; set; }
-    public Event? Event { get; set; }
+
     public TransactionType TransactionType { get; set; }
     public DateTime Date { get; set; }
 }
