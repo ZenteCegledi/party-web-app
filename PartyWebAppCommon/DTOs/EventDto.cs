@@ -7,7 +7,8 @@ public class EventDTO
     public int Id { get; set; }
     public string Name { get; set; }
     public EventType Type { get; set; }
-    public LocationDto Location { get; set; }
+    public int? LocationId { get; set; }
+    public LocationDto? Location { get; set; }
     public int Price { get; set; }
     public string Description { get; set; }
     public DateTime StartDate { get; set; }
