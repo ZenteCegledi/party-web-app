@@ -25,29 +25,29 @@ namespace PartyWebAppServer.Migrations
                 table: "Transactions",
                 keyColumn: "Id",
                 keyValue: 1,
-                columns: new[] { "Amount", "Date", "ItemCount" },
-                values: new object[] { 10, new DateTime(2024, 5, 30, 12, 42, 41, 819, DateTimeKind.Utc).AddTicks(5145), 1 });
+                columns: new[] { "Amount", "Date", "ItemCount", "WalletId" },
+                values: new object[] { 10, new DateTime(2024, 5, 30, 12, 55, 48, 588, DateTimeKind.Utc).AddTicks(3749), 1, 2 });
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Username",
                 keyValue: "admin",
                 columns: new[] { "BirthDate", "Password", "PasswordUpdated" },
-                values: new object[] { new DateTime(1994, 5, 30, 12, 42, 41, 368, DateTimeKind.Utc).AddTicks(7626), "$2a$11$yga8yNe5CR.3Su8McbTnE.SmYDmFgUbUatVMRisu/5wet3yzhft1S", new DateTime(2024, 5, 30, 12, 42, 41, 368, DateTimeKind.Utc).AddTicks(7639) });
+                values: new object[] { new DateTime(1994, 5, 30, 12, 55, 48, 242, DateTimeKind.Utc).AddTicks(6203), "$2a$11$JwzROVTDbgoAr4kh5yKh6uuYtpb6SugJLQG77MfkO811KMnyEZzWa", new DateTime(2024, 5, 30, 12, 55, 48, 242, DateTimeKind.Utc).AddTicks(6227) });
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Username",
                 keyValue: "user",
                 columns: new[] { "BirthDate", "Password", "PasswordUpdated" },
-                values: new object[] { new DateTime(2004, 5, 30, 12, 42, 41, 575, DateTimeKind.Utc).AddTicks(8017), "$2a$11$EEgSAQid2duEhGAMV81lquijYnK2BHDuZoSqPUZXUqdQLOqpjzPp2", new DateTime(2024, 5, 30, 12, 42, 41, 575, DateTimeKind.Utc).AddTicks(8042) });
+                values: new object[] { new DateTime(2004, 5, 30, 12, 55, 48, 414, DateTimeKind.Utc).AddTicks(3905), "$2a$11$ZeykoWgoFJq0Usxgm1H52eu7NPwUpSbLH0733aNyhZhCwsE6//TrG", new DateTime(2024, 5, 30, 12, 55, 48, 414, DateTimeKind.Utc).AddTicks(3918) });
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Username",
                 keyValue: "user2",
                 columns: new[] { "BirthDate", "Password", "PasswordUpdated" },
-                values: new object[] { new DateTime(2004, 5, 30, 12, 42, 41, 819, DateTimeKind.Utc).AddTicks(3432), "$2a$11$6NpaPqz.qQnLnun81NZMpO7bARRRoz6pgMsNhiPWD9TOZjCojPlQ6", new DateTime(2024, 5, 30, 12, 42, 41, 819, DateTimeKind.Utc).AddTicks(3445) });
+                values: new object[] { new DateTime(2004, 5, 30, 12, 55, 48, 588, DateTimeKind.Utc).AddTicks(2528), "$2a$11$rhNgNnfYgdyIT1YiAGzABuuvFrkNd3FoZIvk17jclxU.dTda54voi", new DateTime(2024, 5, 30, 12, 55, 48, 588, DateTimeKind.Utc).AddTicks(2542) });
         }
 
         /// <inheritdoc />
@@ -67,8 +67,8 @@ namespace PartyWebAppServer.Migrations
                 table: "Transactions",
                 keyColumn: "Id",
                 keyValue: 1,
-                columns: new[] { "Count", "Date", "SpentCurrency" },
-                values: new object[] { 1, new DateTime(2024, 5, 30, 8, 32, 43, 415, DateTimeKind.Utc).AddTicks(1927), 10 });
+                columns: new[] { "Count", "Date", "SpentCurrency", "WalletId" },
+                values: new object[] { 1, new DateTime(2024, 5, 30, 8, 32, 43, 415, DateTimeKind.Utc).AddTicks(1927), 10, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Users",

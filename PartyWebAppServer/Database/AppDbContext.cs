@@ -246,7 +246,7 @@ public class AppDbContext : DbContext
             new Transaction()
             {
                 Id = 1,
-                WalletId = 1,
+                WalletId = 2,
                 LocationId = 1,
                 EventId = 1,
                 ItemCount = 1,
