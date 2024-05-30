@@ -1,7 +1,6 @@
 ﻿@attribute [Authorize]
 @inject IStringLocalizer<Resources> Localize;
 
-@using PartyWebAppClient.Components.Dashboard
 @using PartyWebAppCommon.DTOs
 @using PartyWebAppCommon.Enums
 
@@ -119,11 +118,11 @@
 			</div>
 
 			<div>
-				<FluentButton IconStart="@(new Icons.Regular.Size20.Wallet())" OnClick='() =>
+				<FluentButton IconStart="@(new Icons.Regular.Size20.Wallet())" OnClick=@(() =>
 					{
 						if (wallets.Count == 4) ToastService.ShowError(@Localize["YouAlreadyHaveAllWallets"]);
 						else ShowModal(CreateWalletModal);
-					}'>
+					})>
 					Add Wallet
 				</FluentButton>
 			</div>
