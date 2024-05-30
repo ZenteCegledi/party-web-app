@@ -9,8 +9,8 @@ public class LocationShouldNotBeAtmAppException : AppException
 {
     public LocationShouldNotBeAtmAppException(TransactionType transactionType)
     {
-        Message = $"Cannot buy {transactionType.ToString()} from ATM";
-        ErrorObject = new  LocationShouldNotBeAtmErrorModel{Type = transactionType};
+        Message = $"Cannot complete transaction: '{transactionType.ToString()}' from ATM";
+        ErrorObject = new  LocationShouldNotBeAtmErrorModel{TransactionTypeId = (int)transactionType};
         HttpStatusCode = HttpStatusCode.BadRequest;
     }
     public override string Message { get; }

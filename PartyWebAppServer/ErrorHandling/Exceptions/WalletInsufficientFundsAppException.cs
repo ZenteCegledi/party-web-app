@@ -1,15 +1,16 @@
 ﻿using System.Net;
 using PartyWebAppCommon.DTOs;
+using PartyWebAppCommon.Enums;
 using PartyWebAppServer.ErrorHandling.ErrorModels;
 
 namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
 public class WalletInsufficientFundsAppException : AppException
 {
-    public WalletInsufficientFundsAppException(WalletDto wallet, int amount)
+    public WalletInsufficientFundsAppException(int walletId, int amount, CurrencyType currency)
     {
-        Message = $"{wallet.Username}'s wallet has insufficient funds: {amount} {wallet.Currency}";
-        ErrorObject = new WalletInsufficientFundsErrorModel{Username = wallet.Username, Amount = amount, Currency = wallet.Currency};
+        Message = $"wallet with id: {walletId} has insufficient funds: {amount} {currency}";
+        ErrorObject = new WalletInsufficientFundsErrorModel{WalletId = walletId, Amount = amount, Currency = (int)currency};
         HttpStatusCode = HttpStatusCode.BadRequest;
     }
     public override string Message { get; }
