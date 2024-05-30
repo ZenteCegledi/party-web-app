@@ -41,4 +41,6 @@ builder.Services.AddAuthorizationCore(options =>
     );
 });
 
+builder.Services.AddLocalization();
+
 await builder.Build().RunAsync();
