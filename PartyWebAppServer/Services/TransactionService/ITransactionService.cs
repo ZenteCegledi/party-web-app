@@ -10,12 +10,12 @@ namespace PartyWebAppServer.Services.TransactionService;
 
 public interface ITransactionService
 {
-    public Task<List<TransactionDTO>> GetTransactions();
-    public Task<List<TransactionDTO>> GetUserTransactions(string username);
-    public Task<List<TransactionDTO>> GetWalletTransactions(string username, CurrencyType currencyType);
-    public Task<List<TransactionDTO>> GetTransactionsByType(TransactionType transactionType);
+    public Task<List<TransactionDto>> GetTransactions();
+    public Task<List<TransactionDto>> GetUserTransactions(string username);
+    public Task<List<TransactionDto>> GetWalletTransactions(string username, CurrencyType currencyType);
+    public Task<List<TransactionDto>> GetTransactionsByType(TransactionType transactionType);
     
     public Transaction CreateTransaction(NewTransactionRequest transactionRequest);
     public Transaction ExecuteTransaction(Transaction transaction);
-    public Task<TransactionDTO> AddTransactionToDb(Transaction transaction);
+    public Task<TransactionDto> AddTransactionToDb(Transaction transaction);
 }
