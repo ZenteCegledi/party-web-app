@@ -1,3 +1,5 @@
+using PartyWebAppCommon.Enums;
+
 namespace PartyWebAppCommon.Requests;
 
 public class CreateUserRequest(
@@ -6,7 +8,8 @@ public class CreateUserRequest(
     DateTime birthDate,
     string email,
     string phone,
-    string password)
+    string password,
+    LanguageType language)
 {
     public string Username { get; set; } = username;
     public string Name { get; set; } = name;
@@ -14,4 +17,6 @@ public class CreateUserRequest(
     public string Email { get; set; } = email;
     public string Phone { get; set; } = phone;
     public string Password { get; set; } = password;
+    
+    public LanguageType Language { get; set; } = language;
 }

@@ -1,3 +1,5 @@
+using PartyWebAppCommon.Enums;
+
 namespace PartyWebAppCommon.DTOs;
 
 public class UserDto
@@ -10,4 +12,5 @@ public class UserDto
     public string Phone { get; set; }
 
     public List<WalletDto> Wallets { get; set; }
+    public LanguageType Language { get; set; }
 }
