@@ -16,25 +16,25 @@ namespace PartyWebAppServer.Controllers;
 public class TransactionController(ITransactionService _transactionService)
 {
     [HttpGet()]
-    public async Task<List<TransactionDTO>> GetTransactions() => 
+    public async Task<List<TransactionDto>> GetTransactions() => 
         await 
             _transactionService
             .GetTransactions();
 
-    [HttpGet("user/{username}")]
-    public async Task<List<TransactionDTO>> GetUserTransactions(string username) =>
+    [HttpGet("{username}")]
+    public async Task<List<TransactionDto>> GetUserTransactions(string username) =>
         await _transactionService.GetUserTransactions(username);
     
     [HttpGet("wallet/{username}/{currency}")]
-    public async Task<List<TransactionDTO>> GetUserTransactions(string username, CurrencyType currency) =>
+    public async Task<List<TransactionDto>> GetUserTransactions(string username, CurrencyType currency) =>
         await _transactionService.GetWalletTransactions(username, currency);
 
     [HttpGet("type/{transactionType}")]
-    public async Task<List<TransactionDTO>> GetTransactionsByType(TransactionType transactionType) =>
+    public async Task<List<TransactionDto>> GetTransactionsByType(TransactionType transactionType) =>
         await _transactionService.GetTransactionsByType(transactionType);
 
     [HttpPost()]
-    public async Task<TransactionDTO> NewTransactionRequest(NewTransactionRequest newTransactionRequest)
+    public async Task<TransactionDto> NewTransactionRequest(NewTransactionRequest newTransactionRequest)
     {
         Transaction transaction = _transactionService.CreateTransaction(newTransactionRequest);
         _transactionService.ExecuteTransaction(transaction);
