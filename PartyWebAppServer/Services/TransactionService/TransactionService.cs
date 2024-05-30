@@ -53,14 +53,8 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
                         .OrderByDescending(t => t.Date)
                         .ToListAsync()
                     );
-
+    
     public async Task<TransactionDto> NewTransaction(NewTransactionRequest transactionRequest)
-    {
-        Transaction transaction = CreateTransaction(transactionRequest);
-        ExecuteTransaction(transaction);
-        return await AddTransactionToDb(transaction);
-    }
-    private Transaction CreateTransaction(NewTransactionRequest transactionRequest)
     {
         Wallet? wallet = _dbContext.Wallets.FirstOrDefault(w => w.Id == transactionRequest.WalletId);
 
@@ -115,48 +109,41 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
                 throw new ArgumentOutOfRangeException(nameof(transactionRequest.TransactionType), transactionRequest.TransactionType, "Transaction type does not exist.");
         }
         
-        return new 
-            Transaction
-            {
-                Wallet = wallet, 
-                Amount = transactionRequest.Amount, 
-                ItemCount = transactionRequest.ItemCount, 
-                Location = location, 
-                Event = currentEvent, 
-                TransactionType = transactionRequest.TransactionType, 
-                Date = transactionRequest.Date
-            };
+        return await ExecuteTransaction(
+                new Transaction
+                {
+                    Wallet = wallet, 
+                    Amount = transactionRequest.Amount, 
+                    ItemCount = transactionRequest.ItemCount, 
+                    Location = location, 
+                    Event = currentEvent, 
+                    TransactionType = transactionRequest.TransactionType, 
+                    Date = transactionRequest.Date
+                }
+            );
     }
 
-    private Transaction ExecuteTransaction(Transaction transaction)
+    private async Task<TransactionDto> ExecuteTransaction(Transaction transaction)
     {
         switch (transaction.TransactionType)
         {
-            case TransactionType.Food:
-                ChargeWallet(transaction.Wallet, transaction.Amount );
-                break;
-            case TransactionType.Ticket:
-                ChargeWallet(transaction.Wallet, transaction.Amount);
-                break;
             case TransactionType.Deposit:
                 DepositToWallet(transaction.Wallet, transaction.Amount);
-                break;
-            case TransactionType.Withdraw:
-                ChargeWallet(transaction.Wallet, transaction.Amount);
                 break;
             case TransactionType.Credit:
                 throw new NotImplementedException();
                 break;
             default:
-                throw new ArgumentOutOfRangeException();
+                ChargeWallet(transaction.Wallet, transaction.Amount);
+                break;
         }
 
-        return transaction;
+        return await AddTransactionToDb(transaction);
     }
-    private void ChargeWallet(Wallet wallet, int spentCurrency) =>
-        wallet.Amount -= spentCurrency;
-    private void DepositToWallet(Wallet wallet, int spentCurrency) =>
-        wallet.Amount += spentCurrency;
+    private void ChargeWallet(Wallet wallet, int amount) =>
+        wallet.Amount -= amount;
+    private void DepositToWallet(Wallet wallet, int amount) =>
+        wallet.Amount += amount;
     
     public async Task<TransactionDto> AddTransactionToDb(Transaction transaction)
     {
