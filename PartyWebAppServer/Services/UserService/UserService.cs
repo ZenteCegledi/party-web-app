@@ -34,7 +34,8 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
             BirthDate = user.BirthDate,
             Email = user.Email,
             Phone = user.Phone,
-            Password = BCrypt.Net.BCrypt.HashPassword(user.Password)
+            Password = BCrypt.Net.BCrypt.HashPassword(user.Password),
+            Language = user.Language
         };
         dbContext.Users.Add(tmpUser);
         await dbContext.SaveChangesAsync();
@@ -85,6 +86,7 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
         if (userRequest.BirthDate != null) user.BirthDate = (DateTime)userRequest.BirthDate;
         if (userRequest.Phone != null) user.Phone = userRequest.Phone;
         if (userRequest.Password != null) user.Password = userRequest.Password;
+        user.Language = userRequest.Language;
         await dbContext.SaveChangesAsync();
 
         return mapper.Map<UserDto>(user);
