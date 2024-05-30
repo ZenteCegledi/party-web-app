@@ -22,10 +22,26 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
                 );
 
     public async Task<List<TransactionDTO>> GetUserTransactions(string username) => 
-        _mapper.Map<List<TransactionDTO>>(await _dbContext.Transactions.Where(t => t.Wallet.Owner.Username == username).OrderBy(t => t.Date).ToListAsync());
+        _mapper
+            .Map<List<TransactionDTO>>(
+                await 
+                    _dbContext
+                        .Transactions
+                        .Where(t => t.Wallet.Owner.Username == username)
+                        .OrderBy(t => t.Date)
+                        .ToListAsync()
+                    );
 
     public async Task<List<TransactionDTO>> GetTransactionsByType(TransactionType transactionType) => 
-        _mapper.Map<List<TransactionDTO>>(await _dbContext.Transactions.Where(t => t.TransactionType == transactionType).OrderBy(t => t.Date).ToListAsync());
+        _mapper
+            .Map<List<TransactionDTO>>(
+                await 
+                    _dbContext
+                        .Transactions
+                        .Where(t => t.TransactionType == transactionType)
+                        .OrderBy(t => t.Date)
+                        .ToListAsync()
+                    );
 
     public Transaction CreateTransaction(NewTransactionRequest newTransactionRequest)
     {
