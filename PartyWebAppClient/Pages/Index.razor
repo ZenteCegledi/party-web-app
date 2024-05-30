@@ -1,10 +1,8 @@
 @page "/"
-@using Microsoft.Extensions.Localization
-@using PartyWebAppClient.Resources
 @inject IStringLocalizer<Resources> Localize;
 
 
-<PageTitle>Party Web App - Home</PageTitle>
+<PageTitle>Party Web App - @Localize["Home"]</PageTitle>
 
 <h1 class="text-center mt-4">@Localize["HelloWorld"]</h1>
-<p class="text-center mt-2">Sign in to use the app.</p>
+<p class="text-center mt-2">@Localize["SignInToUseApp"]</p>
