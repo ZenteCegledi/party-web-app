@@ -4,6 +4,7 @@ using PartyWebAppServer.Database.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace PartyWebAppServer.Services.JwtService;
 
@@ -46,10 +47,7 @@ public class JwtService : IJwtService
         _refreshTokenDuration = options.RefreshTokenDuration;
     }
 
-    public string? GetTokenFromRequest(HttpRequest request) => request.Headers["Cookie"]
-        .ToString()
-        .Split(";").FirstOrDefault(x => x.Contains("AccessToken"))
-        .Split("=")[1];
+    public string? GetTokenFromRequest(HttpRequest request) => request.Cookies["AccessToken"] ?? request.Cookies["RefreshToken"];
 
     public JwtPair BuildJwtPair(User? user)
     {
