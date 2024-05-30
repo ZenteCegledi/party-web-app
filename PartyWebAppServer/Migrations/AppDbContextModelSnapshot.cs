@@ -30,6 +30,9 @@ namespace PartyWebAppServer.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Currency")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
@@ -63,6 +66,7 @@ namespace PartyWebAppServer.Migrations
                         new
                         {
                             Id = 1,
+                            Currency = 0,
                             Description = "This is the description of Event 1. It is a very cool event in the club.",
                             EndDateTime = new DateTime(2024, 6, 1, 4, 0, 0, 0, DateTimeKind.Utc),
                             LocationId = 1,
@@ -74,6 +78,7 @@ namespace PartyWebAppServer.Migrations
                         new
                         {
                             Id = 2,
+                            Currency = 0,
                             Description = "This is the description of Event 2. It is a very cool event in the pub.",
                             EndDateTime = new DateTime(2024, 6, 2, 4, 0, 0, 0, DateTimeKind.Utc),
                             LocationId = 2,

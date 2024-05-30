@@ -9,6 +9,7 @@ public class EventDTO
     public EventType Type { get; set; }
     public int? LocationId { get; set; }
     public LocationDto? Location { get; set; }
+    public CurrencyType Currency { get; set; }
     public int Price { get; set; }
     public string Description { get; set; }
     public DateTime StartDateTime { get; set; }

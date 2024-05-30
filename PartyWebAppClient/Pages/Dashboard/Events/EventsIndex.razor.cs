@@ -14,6 +14,10 @@ public partial class EventsIndex : ComponentBase
     private IToastService? ToastService { get; set; }
     
     private List<EventDTO> Events { get; set; } = new List<EventDTO>();
+    private List<EventDTO> FutureEvents { get; set; } = new List<EventDTO>();
+    private List<EventDTO> CurrentEvents { get; set; } = new List<EventDTO>();
+    private List<EventDTO> PastEvents { get; set; } = new List<EventDTO>();
+    
 
     protected override async Task OnInitializedAsync()
     {
@@ -26,6 +30,22 @@ public partial class EventsIndex : ComponentBase
         else
         {
             Events = events;
+            foreach (var item in Events)
+            {
+                if (DateTime.Now < item.StartDateTime)
+                {
+                    FutureEvents.Add(item);
+                }
+                else if (DateTime.Now > item.EndDateTime)
+                {
+                    PastEvents.Add(item);
+                }
+                else
+                {
+                    CurrentEvents.Add(item);
+                }
+            }
+            
         }
     }
 }

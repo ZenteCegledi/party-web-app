@@ -1,11 +1,15 @@
-﻿<h3>EventCard</h3>
+﻿<FluentCard Height="300px" class="">
+    
+    <FluentBadge Appearance="Appearance.Lightweight">
+        <FluentIcon Value="@(new Icons.Regular.Size16.Calendar())"/> @Event.StartDateTime.ToString("yyyy-MM-dd HH:mm")
+    </FluentBadge>
 
-<FluentCard Width="300px" Height="300px">
-    <p>This is an event card csá</p>
-    @Event.Name
-    @Event.Description
-    @Event.Price
-    @Event.Location?.Name
-    @Event.StartDateTime
-    @Event.EndDateTime
+    <FluentBadge Appearance="Appearance.Lightweight">
+        <FluentIcon Value="@(new Icons.Regular.Size16.Location())"/> @Event.Location?.Name
+    </FluentBadge>
+
+    <h1 class="mb-1">@Event.Name</h1>
+    <p>@Event.Description</p>
+
+    <h3>@Event.Price @Event.Currency</h3>
 </FluentCard>

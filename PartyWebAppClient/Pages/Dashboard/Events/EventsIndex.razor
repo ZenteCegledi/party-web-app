@@ -1,12 +1,33 @@
 ﻿@page "/dashboard/events"
 @using PartyWebAppCommon.DTOs
 @using PartyWebAppClient.Components.Dashboard
+@using PartyWebAppClient.Layout
+@layout DashboardLayout
+@attribute [Authorize]
 
 
-<h3>EventIndex</h3>
+<h2 class="text-center mt-4 mb-2">Events</h2>
 
+<FluentCard class="mb-3"><h3 class="text-left mb-0">Current Events</h3></FluentCard>
+<FluentStack class="mb-5 d-flex flex-wrap">
+    @foreach(EventDTO eventItem in CurrentEvents)
+    {
+        <EventCard Event="eventItem"/>
+    }
+</FluentStack>
 
-@foreach(EventDTO eventItem in Events)
+<FluentCard class="mb-3"><h3 class="text-left mb-0">Upcoming Events</h3></FluentCard>
+<FluentStack class="mb-5 d-flex flex-wrap">
+    @foreach(EventDTO eventItem in FutureEvents)
+    {
+        <EventCard Event="eventItem"/>
+    }
+</FluentStack>
+
+<FluentCard class="mb-3"><h3 class="text-left mb-0">Past Events</h3></FluentCard>
+<FluentStack class="mb-5 d-flex flex-wrap">
+@foreach(EventDTO eventItem in PastEvents)
 {
     <EventCard Event="eventItem"/>
 }
+</FluentStack>
