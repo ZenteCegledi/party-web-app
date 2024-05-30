@@ -5,7 +5,7 @@ using PartyWebAppCommon.DTOs;
 
 namespace PartyWebAppClient.Pages.Dashboard.Events;
 
-public partial class EventIndex : ComponentBase
+public partial class Index : ComponentBase
 {
     [Inject]
     private IEventService EventService { get; set; }
