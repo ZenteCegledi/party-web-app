@@ -87,9 +87,18 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
             case TransactionType.Deposit:
                 if (location == null) throw new LocationNotExistsAppException(newTransactionRequest.Location);
                 if (location.Type != LocationType.ATM) throw new LocationShouldBeAtmAppException(newTransactionRequest.Location);
+                if (wallet == null) throw new UserHasNoWalletAppException(newTransactionRequest.User, newTransactionRequest.Wallet);
+                
+                if (wallet.Amount < newTransactionRequest.SpentCurrency)
+                    throw new WalletInsufficientFundsAppException(newTransactionRequest.Wallet, newTransactionRequest.SpentCurrency);
+                break;
+            case TransactionType.Withdraw:
+                if (location == null) throw new LocationNotExistsAppException(newTransactionRequest.Location);
+                if (location.Type != LocationType.ATM) throw new LocationShouldBeAtmAppException(newTransactionRequest.Location);
 
                 if (wallet == null)
                     wallet = new Wallet { Currency = newTransactionRequest.Wallet.Currency, Owner = user, Amount = 0};
+                break;
                 break;
             case TransactionType.Credit:
                 location = null;
@@ -126,6 +135,9 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
                 break;
             case TransactionType.Deposit:
                 DepositToWallet(transaction.Wallet, transaction.SpentCurrency);
+                break;
+            case TransactionType.Withdraw:
+                ChargeWallet(transaction.Wallet, transaction.SpentCurrency);
                 break;
             case TransactionType.Credit:
                 throw new NotImplementedException();
