@@ -28,7 +28,7 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
                     _dbContext
                         .Transactions
                         .Where(t => t.Wallet.Owner.Username == username)
-                        .OrderBy(t => t.Date)
+                        .OrderByDescending(t => t.Date)
                         .ToListAsync()
                     );
 
@@ -39,7 +39,7 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
                     _dbContext
                         .Transactions
                         .Where(t => t.Wallet.Owner.Username == username && t.Wallet.Currency == currencyType)
-                        .OrderBy(t => t.Date)
+                        .OrderByDescending(t => t.Date)
                         .ToListAsync()
             );
     
@@ -50,75 +50,81 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
                     _dbContext
                         .Transactions
                         .Where(t => t.TransactionType == transactionType)
-                        .OrderBy(t => t.Date)
+                        .OrderByDescending(t => t.Date)
                         .ToListAsync()
                     );
 
-    public Transaction CreateTransaction(NewTransactionRequest newTransactionRequest)
+    public async Task<TransactionDto> NewTransaction(NewTransactionRequest transactionRequest)
     {
-        Wallet? wallet = _dbContext.Wallets.FirstOrDefault(w => w.Id == newTransactionRequest.WalletId);
+        Transaction transaction = CreateTransaction(transactionRequest);
+        ExecuteTransaction(transaction);
+        return await AddTransactionToDb(transaction);
+    }
+    private Transaction CreateTransaction(NewTransactionRequest transactionRequest)
+    {
+        Wallet? wallet = _dbContext.Wallets.FirstOrDefault(w => w.Id == transactionRequest.WalletId);
 
-        Location? location = _dbContext.Locations.FirstOrDefault(l => l.Id == newTransactionRequest.LocationId);
-        Event? currentEvent = location != null ? _dbContext.Events.FirstOrDefault(e => e.Id == newTransactionRequest.EventId) : null;
+        Location? location = _dbContext.Locations.FirstOrDefault(l => l.Id == transactionRequest.LocationId);
+        Event? currentEvent = location != null ? _dbContext.Events.FirstOrDefault(e => e.Id == transactionRequest.EventId) : null;
 
         if (currentEvent != null && currentEvent.Location != location)
             throw new EventNotExistsAtLocationAppException(currentEvent.Name, location.Name, location.Address);
         
-        switch (newTransactionRequest.TransactionType)
+        switch (transactionRequest.TransactionType)
         {
             case TransactionType.Food:
-                if (location == null) throw new LocationIdNotFoundAppException(newTransactionRequest.LocationId);
-                if (location.Type == LocationType.ATM) throw new LocationShouldNotBeAtmAppException(newTransactionRequest.TransactionType);
-                if (wallet == null) throw new WalletNotExistsAppException($"Wallet with id: {newTransactionRequest.WalletId} not found.");
+                if (location == null) throw new LocationIdNotFoundAppException(transactionRequest.LocationId);
+                if (location.Type == LocationType.ATM) throw new LocationShouldNotBeAtmAppException(transactionRequest.TransactionType);
+                if (wallet == null) throw new WalletNotExistsAppException($"Wallet with id: {transactionRequest.WalletId} not found.");
 
-                if (wallet.Amount < newTransactionRequest.Amount) 
-                    throw new WalletInsufficientFundsAppException(newTransactionRequest.WalletId, newTransactionRequest.Amount, wallet.Currency);
+                if (wallet.Amount < transactionRequest.Amount) 
+                    throw new WalletInsufficientFundsAppException(transactionRequest.WalletId, transactionRequest.Amount, wallet.Currency);
                 break;
             case TransactionType.Ticket:
-                if (location == null) throw new LocationIdNotFoundAppException(newTransactionRequest.LocationId);
-                if (location.Type == LocationType.ATM) throw new LocationShouldNotBeAtmAppException(newTransactionRequest.TransactionType);
-                if (currentEvent == null) throw new EventIdNotFoundAppException(newTransactionRequest.EventId);
-                if (wallet == null) throw new WalletNotExistsAppException($"Wallet with id: {newTransactionRequest.WalletId} not found.");
+                if (location == null) throw new LocationIdNotFoundAppException(transactionRequest.LocationId);
+                if (location.Type == LocationType.ATM) throw new LocationShouldNotBeAtmAppException(transactionRequest.TransactionType);
+                if (currentEvent == null) throw new EventIdNotFoundAppException(transactionRequest.EventId);
+                if (wallet == null) throw new WalletNotExistsAppException($"Wallet with id: {transactionRequest.WalletId} not found.");
                 
-                if (wallet.Amount < newTransactionRequest.Amount)
-                    throw new WalletInsufficientFundsAppException(newTransactionRequest.WalletId, newTransactionRequest.Amount, wallet.Currency);
+                if (wallet.Amount < transactionRequest.Amount)
+                    throw new WalletInsufficientFundsAppException(transactionRequest.WalletId, transactionRequest.Amount, wallet.Currency);
                 break;
             case TransactionType.Deposit:
-                if (location == null) throw new LocationIdNotFoundAppException(newTransactionRequest.LocationId);
-                if (location.Type != LocationType.ATM) throw new LocationShouldBeAtmAppException(newTransactionRequest.TransactionType, location.Type);
+                if (location == null) throw new LocationIdNotFoundAppException(transactionRequest.LocationId);
+                if (location.Type != LocationType.ATM) throw new LocationShouldBeAtmAppException(transactionRequest.TransactionType, location.Type);
 
                 if (wallet == null)
-                    throw new WalletNotExistsAppException($"Wallet with id: {newTransactionRequest.WalletId} not found.");;
+                    throw new WalletNotExistsAppException($"Wallet with id: {transactionRequest.WalletId} not found.");;
                 break;
             case TransactionType.Withdraw:
-                if (location == null) throw new LocationIdNotFoundAppException(newTransactionRequest.LocationId);
-                if (location.Type != LocationType.ATM) throw new LocationShouldBeAtmAppException(newTransactionRequest.TransactionType, location.Type);
-                if (wallet == null) throw new WalletNotExistsAppException($"Wallet with id: {newTransactionRequest.WalletId} not found.");;
+                if (location == null) throw new LocationIdNotFoundAppException(transactionRequest.LocationId);
+                if (location.Type != LocationType.ATM) throw new LocationShouldBeAtmAppException(transactionRequest.TransactionType, location.Type);
+                if (wallet == null) throw new WalletNotExistsAppException($"Wallet with id: {transactionRequest.WalletId} not found.");;
                 
-                if (wallet.Amount < newTransactionRequest.Amount)
-                    throw new WalletInsufficientFundsAppException(newTransactionRequest.WalletId, newTransactionRequest.Amount, wallet.Currency);
+                if (wallet.Amount < transactionRequest.Amount)
+                    throw new WalletInsufficientFundsAppException(transactionRequest.WalletId, transactionRequest.Amount, wallet.Currency);
                 break;
             case TransactionType.Credit:
                 location = null;
                 currentEvent = null;
                 
                 if (wallet == null) 
-                    throw new WalletNotExistsAppException($"Wallet with id: {newTransactionRequest.WalletId} not found.");
+                    throw new WalletNotExistsAppException($"Wallet with id: {transactionRequest.WalletId} not found.");
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(newTransactionRequest.TransactionType), newTransactionRequest.TransactionType, "Transaction type does not exist.");
+                throw new ArgumentOutOfRangeException(nameof(transactionRequest.TransactionType), transactionRequest.TransactionType, "Transaction type does not exist.");
         }
         
         return new 
             Transaction
             {
                 Wallet = wallet, 
-                Amount = newTransactionRequest.Amount, 
-                ItemCount = newTransactionRequest.ItemCount, 
+                Amount = transactionRequest.Amount, 
+                ItemCount = transactionRequest.ItemCount, 
                 Location = location, 
                 Event = currentEvent, 
-                TransactionType = newTransactionRequest.TransactionType, 
-                Date = newTransactionRequest.Date
+                TransactionType = transactionRequest.TransactionType, 
+                Date = transactionRequest.Date
             };
     }
 
@@ -127,16 +133,16 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
         switch (transaction.TransactionType)
         {
             case TransactionType.Food:
-                ChargeWallet(transaction.Wallet, transaction.SpentCurrency );
+                ChargeWallet(transaction.Wallet, transaction.Amount );
                 break;
             case TransactionType.Ticket:
-                ChargeWallet(transaction.Wallet, transaction.SpentCurrency);
+                ChargeWallet(transaction.Wallet, transaction.Amount);
                 break;
             case TransactionType.Deposit:
-                DepositToWallet(transaction.Wallet, transaction.SpentCurrency);
+                DepositToWallet(transaction.Wallet, transaction.Amount);
                 break;
             case TransactionType.Withdraw:
-                ChargeWallet(transaction.Wallet, transaction.SpentCurrency);
+                ChargeWallet(transaction.Wallet, transaction.Amount);
                 break;
             case TransactionType.Credit:
                 throw new NotImplementedException();
