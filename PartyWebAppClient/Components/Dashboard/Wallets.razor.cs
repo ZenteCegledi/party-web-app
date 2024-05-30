@@ -140,14 +140,14 @@ public partial class Wallets : ComponentBase
             return;
         }
 
-        var index = wallets.FindIndex(w => w.Currency == wallet.Currency);
-        wallets.ForEach(w => w.IsPrimary = false);
-        wallets[index] = wallet;
-        chosenWallet = wallet;
-
+        wallets = wallets.Select(w =>
+        {
+            w.IsPrimary = w.Currency == wallet.Currency;
+            return w;
+        }).ToList();
         wallets = wallets.OrderBy(w => w.IsPrimary ? 0 : 1).ToList();
         
-        ToastService?.ShowSuccess("Primary wallet set successfully");
+        if (wallet is not null) ToastService?.ShowSuccess("Primary wallet set successfully");
 
         modalSubmitting = false;
 
