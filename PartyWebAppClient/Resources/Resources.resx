@@ -78,4 +78,13 @@
     <data name="YouAlreadyHaveAllWallets" xml:space="preserve">
         <value>You already have all the available wallets!</value>
     </data>
+    <data name="AddWallet" xml:space="preserve">
+        <value>Add Wallet</value>
+    </data>
+    <data name="Events" xml:space="preserve">
+        <value>Events</value>
+    </data>
+    <data name="SignOut" xml:space="preserve">
+        <value>Sign Out</value>
+    </data>
 </root>

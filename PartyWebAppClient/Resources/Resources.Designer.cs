@@ -164,5 +164,23 @@ namespace PartyWebAppClient.Resources {
                 return ResourceManager.GetString("YouAlreadyHaveAllWallets", resourceCulture);
             }
         }
+        
+        internal static string AddWallet {
+            get {
+                return ResourceManager.GetString("AddWallet", resourceCulture);
+            }
+        }
+        
+        internal static string Events {
+            get {
+                return ResourceManager.GetString("Events", resourceCulture);
+            }
+        }
+        
+        internal static string SignOut {
+            get {
+                return ResourceManager.GetString("SignOut", resourceCulture);
+            }
+        }
     }
 }

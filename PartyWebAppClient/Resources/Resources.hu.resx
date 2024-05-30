@@ -78,4 +78,13 @@
     <data name="YouAlreadyHaveAllWallets" xml:space="preserve">
         <value>Már minden pénznemben van tárcád!</value>
     </data>
+    <data name="AddWallet" xml:space="preserve">
+        <value>Tárca hozzáadása</value>
+    </data>
+    <data name="Events" xml:space="preserve">
+        <value>Események</value>
+    </data>
+    <data name="SignOut" xml:space="preserve">
+        <value>Kijelentkezés</value>
+    </data>
 </root>
