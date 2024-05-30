@@ -239,96 +239,23 @@ public class AppDbContext : DbContext
         );
 
         #endregion
+        
+        #region TransactionSeed
 
-        // #region TransactionSeed
+        modelBuilder.Entity<Transaction>().HasData(
+            new Transaction()
+            {
+                Id = 1,
+                WalletId = 1,
+                LocationId = 1,
+                EventId = 1,
+                Count = 1,
+                SpentCurrency = 10,
+                Date = DateTime.UtcNow,
+                TransactionType = TransactionType.Food
+            }
+        );
 
-        // modelBuilder.Entity<Transaction>().HasData(
-        //     new Transaction
-        //     {
-        //         Id = 1,
-        //         WalletId = 1,
-        //         SpentCurrency = 1000,
-        //         Count = 1,
-        //         TransactionType = TransactionType.Deposit,
-        //         Date = new DateTime(2024, 5, 31, 21, 0, 0).ToUniversalTime()
-        //     }
-        // );
-
-        // modelBuilder.Entity<Transaction>().HasData(
-        //     new Transaction
-        //     {
-        //         Id = 2,
-        //         WalletId = 3,
-        //         SpentCurrency = 2000,
-        //         Count = 2,
-        //         TransactionType = TransactionType.Deposit,
-        //         Date = new DateTime(2024, 6, 1, 21, 0, 0).ToUniversalTime()
-        //     }
-        // );
-
-        // modelBuilder.Entity<Transaction>().HasData(
-        //     new Transaction
-        //     {
-        //         Id = 3,
-        //         WalletId = 3,
-        //         SpentCurrency = 8000,
-        //         Count = 2,
-        //         TransactionType = TransactionType.Deposit,
-        //         Date = new DateTime(2024, 6, 1, 21, 0, 0).ToUniversalTime()
-        //     }
-        // );
-
-        // modelBuilder.Entity<Transaction>().HasData(
-        //     new Transaction
-        //     {
-        //         Id = 4,
-        //         WalletId = 3,
-        //         SpentCurrency = 1000,
-        //         Count = 2,
-        //         TransactionType = TransactionType.Withdraw,
-        //         Date = new DateTime(2024, 6, 1, 21, 0, 0).ToUniversalTime()
-        //     }
-        // );
-
-        // modelBuilder.Entity<Transaction>().HasData(
-        //     new Transaction
-        //     {
-        //         Id = 5,
-        //         WalletId = 1,
-        //         SpentCurrency = 50,
-        //         LocationId = 1,
-        //         EventId = 1,
-        //         Count = 2,
-        //         TransactionType = TransactionType.Food,
-        //         Date = new DateTime(2024, 6, 1, 21, 0, 0).ToUniversalTime()
-        //     }
-        // );
-
-        // modelBuilder.Entity<Transaction>().HasData(
-        //     new Transaction
-        //     {
-        //         Id = 6,
-        //         WalletId = 1,
-        //         SpentCurrency = 200,
-        //         LocationId = 2,
-        //         Count = 2,
-        //         TransactionType = TransactionType.Ticket,
-        //         Date = new DateTime(2024, 6, 1, 21, 0, 0).ToUniversalTime()
-        //     }
-        // );
-
-        // modelBuilder.Entity<Transaction>().HasData(
-        //     new Transaction
-        //     {
-        //         Id = 7,
-        //         WalletId = 1,
-        //         SpentCurrency = 1000,
-        //         Count = 2,
-        //         TransactionType = TransactionType.Credit,
-        //         Date = new DateTime(2024, 6, 1, 21, 0, 0).ToUniversalTime()
-        //     }
-        // );
-
-        // #endregion
+        #endregion
     }
 }
