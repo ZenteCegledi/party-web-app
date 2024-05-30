@@ -12,8 +12,8 @@ using PartyWebAppServer.Database;
 namespace PartyWebAppServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240530075220_reInitAgain")]
-    partial class reInitAgain
+    [Migration("20240530085320_ServicesPage")]
+    partial class ServicesPage
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -190,10 +190,10 @@ namespace PartyWebAppServer.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("EventId")
+                    b.Property<int>("EventId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("LocationId")
+                    b.Property<int>("LocationId")
                         .HasColumnType("integer");
 
                     b.Property<int>("SpentCurrency")
@@ -202,12 +202,8 @@ namespace PartyWebAppServer.Migrations
                     b.Property<int>("TransactionType")
                         .HasColumnType("integer");
 
-                    b.Property<int>("WalletCurrency")
+                    b.Property<int>("WalletId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("WalletUsername")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -215,7 +211,7 @@ namespace PartyWebAppServer.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.HasIndex("WalletCurrency", "WalletUsername");
+                    b.HasIndex("WalletId");
 
                     b.ToTable("Transactions");
                 });
@@ -258,33 +254,33 @@ namespace PartyWebAppServer.Migrations
                         new
                         {
                             Username = "admin",
-                            BirthDate = new DateTime(1994, 5, 30, 7, 52, 19, 69, DateTimeKind.Utc).AddTicks(2111),
+                            BirthDate = new DateTime(1994, 5, 30, 8, 53, 19, 497, DateTimeKind.Utc).AddTicks(9301),
                             Email = "admin@admin.com",
                             Name = "Admin User",
-                            Password = "$2a$11$uY.LsF.rE66dxWMAcSMyZ.Phy4SYqqPbccfoVJzmsmHdK4bRGgKz2",
-                            PasswordUpdated = new DateTime(2024, 5, 30, 7, 52, 19, 69, DateTimeKind.Utc).AddTicks(2128),
+                            Password = "$2a$11$zQMP./.6ehDT4R7Sn2Ykk.dnAGQpEAWS2IVJcfp22mCE8ln6BGmLe",
+                            PasswordUpdated = new DateTime(2024, 5, 30, 8, 53, 19, 497, DateTimeKind.Utc).AddTicks(9312),
                             Phone = "1234567890",
                             RoleId = 1
                         },
                         new
                         {
                             Username = "user",
-                            BirthDate = new DateTime(2004, 5, 30, 7, 52, 19, 340, DateTimeKind.Utc).AddTicks(1122),
+                            BirthDate = new DateTime(2004, 5, 30, 8, 53, 19, 630, DateTimeKind.Utc).AddTicks(1040),
                             Email = "user@gmail.com",
                             Name = "User",
-                            Password = "$2a$11$HA3YfKdK1.CUa4nVknkOye6wi0s5cFJ0pWbmUz2I./wf84P.H6fcy",
-                            PasswordUpdated = new DateTime(2024, 5, 30, 7, 52, 19, 340, DateTimeKind.Utc).AddTicks(1147),
+                            Password = "$2a$11$JGbWQtEoOH5q5T7GHKeh.Oh/hCDsE1DRgkn4baYQV7swFYfwn8JA6",
+                            PasswordUpdated = new DateTime(2024, 5, 30, 8, 53, 19, 630, DateTimeKind.Utc).AddTicks(1049),
                             Phone = "0987654321",
                             RoleId = 2
                         },
                         new
                         {
                             Username = "user2",
-                            BirthDate = new DateTime(2004, 5, 30, 7, 52, 19, 599, DateTimeKind.Utc).AddTicks(236),
+                            BirthDate = new DateTime(2004, 5, 30, 8, 53, 19, 768, DateTimeKind.Utc).AddTicks(8053),
                             Email = "user2@gmail.com",
                             Name = "User2",
-                            Password = "$2a$11$a06Tr5won9AUmnit9ogXMeivNOlKcpuiCGxeaG9DJLB3gvJVFGoAW",
-                            PasswordUpdated = new DateTime(2024, 5, 30, 7, 52, 19, 599, DateTimeKind.Utc).AddTicks(247),
+                            Password = "$2a$11$B/2AEDx9LTB54xPpv0dIP.cPjz8G2ywjK3o0w9AdvTwg5d0zGanYO",
+                            PasswordUpdated = new DateTime(2024, 5, 30, 8, 53, 19, 768, DateTimeKind.Utc).AddTicks(8061),
                             Phone = "0987654321",
                             RoleId = 2
                         });
@@ -292,19 +288,26 @@ namespace PartyWebAppServer.Migrations
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Wallet", b =>
                 {
-                    b.Property<int>("Currency")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    b.Property<string>("Username")
-                        .HasColumnType("text");
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
+                    b.Property<int>("Currency")
+                        .HasColumnType("integer");
+
                     b.Property<bool>("IsPrimary")
                         .HasColumnType("boolean");
 
-                    b.HasKey("Currency", "Username");
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("Username");
 
@@ -313,38 +316,43 @@ namespace PartyWebAppServer.Migrations
                     b.HasData(
                         new
                         {
-                            Currency = 1,
-                            Username = "user",
+                            Id = 1,
                             Amount = 100m,
-                            IsPrimary = false
+                            Currency = 1,
+                            IsPrimary = false,
+                            Username = "user"
                         },
                         new
                         {
-                            Currency = 2,
-                            Username = "user",
+                            Id = 2,
                             Amount = 400m,
-                            IsPrimary = false
+                            Currency = 2,
+                            IsPrimary = false,
+                            Username = "user"
                         },
                         new
                         {
-                            Currency = 0,
-                            Username = "user",
+                            Id = 3,
                             Amount = 5000m,
-                            IsPrimary = true
-                        },
-                        new
-                        {
-                            Currency = 3,
-                            Username = "user",
-                            Amount = 10000m,
-                            IsPrimary = false
-                        },
-                        new
-                        {
                             Currency = 0,
-                            Username = "user2",
+                            IsPrimary = true,
+                            Username = "user"
+                        },
+                        new
+                        {
+                            Id = 4,
                             Amount = 10000m,
-                            IsPrimary = true
+                            Currency = 3,
+                            IsPrimary = false,
+                            Username = "user"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Amount = 10000m,
+                            Currency = 0,
+                            IsPrimary = true,
+                            Username = "user2"
                         });
                 });
 
@@ -362,16 +370,20 @@ namespace PartyWebAppServer.Migrations
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Transaction", b =>
                 {
                     b.HasOne("PartyWebAppServer.Database.Models.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId");
+                        .WithMany("Transactions")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PartyWebAppServer.Database.Models.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
+                        .WithMany("Transactions")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PartyWebAppServer.Database.Models.Wallet", "Wallet")
-                        .WithMany()
-                        .HasForeignKey("WalletCurrency", "WalletUsername")
+                        .WithMany("Transactions")
+                        .HasForeignKey("WalletId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -393,9 +405,24 @@ namespace PartyWebAppServer.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("PartyWebAppServer.Database.Models.Event", b =>
+                {
+                    b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("PartyWebAppServer.Database.Models.Location", b =>
+                {
+                    b.Navigation("Transactions");
+                });
+
             modelBuilder.Entity("PartyWebAppServer.Database.Models.User", b =>
                 {
                     b.Navigation("Wallets");
+                });
+
+            modelBuilder.Entity("PartyWebAppServer.Database.Models.Wallet", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

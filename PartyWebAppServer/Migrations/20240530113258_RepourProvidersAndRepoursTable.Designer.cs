@@ -12,8 +12,8 @@ using PartyWebAppServer.Database;
 namespace PartyWebAppServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240529125252_TransactionTableCreate")]
-    partial class TransactionTableCreate
+    [Migration("20240530113258_RepourProvidersAndRepoursTable")]
+    partial class RepourProvidersAndRepoursTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,6 @@ namespace PartyWebAppServer.Migrations
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("EndDateTime")
@@ -50,6 +49,9 @@ namespace PartyWebAppServer.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("integer");
 
+                    b.Property<int>("RepourProviderId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("StartDateTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -59,6 +61,8 @@ namespace PartyWebAppServer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LocationId");
+
+                    b.HasIndex("RepourProviderId");
 
                     b.ToTable("Events");
 
@@ -71,6 +75,7 @@ namespace PartyWebAppServer.Migrations
                             LocationId = 1,
                             Name = "Event 1",
                             Price = 1000,
+                            RepourProviderId = 1,
                             StartDateTime = new DateTime(2024, 5, 31, 18, 0, 0, 0, DateTimeKind.Utc),
                             Type = 0
                         },
@@ -82,6 +87,7 @@ namespace PartyWebAppServer.Migrations
                             LocationId = 2,
                             Name = "Event 2",
                             Price = 2000,
+                            RepourProviderId = 2,
                             StartDateTime = new DateTime(2024, 6, 1, 18, 0, 0, 0, DateTimeKind.Utc),
                             Type = 0
                         });
@@ -254,33 +260,33 @@ namespace PartyWebAppServer.Migrations
                         new
                         {
                             Username = "admin",
-                            BirthDate = new DateTime(1994, 5, 29, 12, 52, 50, 666, DateTimeKind.Utc).AddTicks(5837),
+                            BirthDate = new DateTime(1994, 5, 30, 11, 32, 57, 61, DateTimeKind.Utc).AddTicks(3810),
                             Email = "admin@admin.com",
                             Name = "Admin User",
-                            Password = "$2a$11$tgFOeED7236WFDYrmmcU3e5.IASq7vpgCw7thyUTvNA8vY4LuGqyK",
-                            PasswordUpdated = new DateTime(2024, 5, 29, 12, 52, 50, 666, DateTimeKind.Utc).AddTicks(5851),
+                            Password = "$2a$11$osLqKY/VW1iLn.bHgiX1xeSNXbN8DpEc1qbX4FMRGumJvTtVqnmQC",
+                            PasswordUpdated = new DateTime(2024, 5, 30, 11, 32, 57, 61, DateTimeKind.Utc).AddTicks(3825),
                             Phone = "1234567890",
                             RoleId = 1
                         },
                         new
                         {
                             Username = "user",
-                            BirthDate = new DateTime(2004, 5, 29, 12, 52, 50, 836, DateTimeKind.Utc).AddTicks(3145),
+                            BirthDate = new DateTime(2004, 5, 30, 11, 32, 57, 338, DateTimeKind.Utc).AddTicks(6720),
                             Email = "user@gmail.com",
                             Name = "User",
-                            Password = "$2a$11$buPmMtrjbKekdQ4.hJCmr.KCA0b3BpgFb5pRJwLsSDws95gKbJVai",
-                            PasswordUpdated = new DateTime(2024, 5, 29, 12, 52, 50, 836, DateTimeKind.Utc).AddTicks(3156),
+                            Password = "$2a$11$oVyFGZFxDUtE/kqz4EzJXODd3h3xmtALymFGhG2Jj7VnRHf7kJ9Fm",
+                            PasswordUpdated = new DateTime(2024, 5, 30, 11, 32, 57, 338, DateTimeKind.Utc).AddTicks(6738),
                             Phone = "0987654321",
                             RoleId = 2
                         },
                         new
                         {
                             Username = "user2",
-                            BirthDate = new DateTime(2004, 5, 29, 12, 52, 51, 4, DateTimeKind.Utc).AddTicks(9654),
+                            BirthDate = new DateTime(2004, 5, 30, 11, 32, 57, 611, DateTimeKind.Utc).AddTicks(9178),
                             Email = "user2@gmail.com",
                             Name = "User2",
-                            Password = "$2a$11$Fjfz2BgMwQG3kF5xRENW5u7xVSa4hYp2C61P0jUbxMtAIabL1tp5i",
-                            PasswordUpdated = new DateTime(2024, 5, 29, 12, 52, 51, 4, DateTimeKind.Utc).AddTicks(9671),
+                            Password = "$2a$11$hdAWqSD8otkPgF0ReQ6yA.GRLkp7cypLgtxcVZSlY0AeVXfbNRNWK",
+                            PasswordUpdated = new DateTime(2024, 5, 30, 11, 32, 57, 611, DateTimeKind.Utc).AddTicks(9195),
                             Phone = "0987654321",
                             RoleId = 2
                         });
@@ -356,6 +362,75 @@ namespace PartyWebAppServer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Repour", b =>
+                {
+                    b.Property<int>("ProviderId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Owner")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ProviderId", "Owner");
+
+                    b.ToTable("Repours");
+
+                    b.HasData(
+                        new
+                        {
+                            ProviderId = 1,
+                            Owner = "user",
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ProviderId = 2,
+                            Owner = "user2",
+                            Quantity = 2
+                        });
+                });
+
+            modelBuilder.Entity("RepourProvider", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("RepourPrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("RepourToken")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RepourProviders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "RepourProvider 1",
+                            RepourPrice = 100m,
+                            RepourToken = new Guid("12e57abd-4f2e-4374-8191-4740cb495dbd")
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "RepourProvider 2",
+                            RepourPrice = 120m,
+                            RepourToken = new Guid("822c7ae0-125a-441c-ae35-1057e7dfb1e1")
+                        });
+                });
+
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Event", b =>
                 {
                     b.HasOne("PartyWebAppServer.Database.Models.Location", "Location")
@@ -364,7 +439,15 @@ namespace PartyWebAppServer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RepourProvider", "RepourProvider")
+                        .WithMany()
+                        .HasForeignKey("RepourProviderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Location");
+
+                    b.Navigation("RepourProvider");
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.Transaction", b =>

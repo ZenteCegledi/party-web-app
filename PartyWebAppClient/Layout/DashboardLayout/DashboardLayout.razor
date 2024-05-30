@@ -6,53 +6,59 @@
 @inject IUserService UserService
 
 <FluentLayout class="container" Style="max-width: 800px; max-height: 200px">
-	<FluentCard class="navbar navbar-expand-lg rounded-4 mt-3">
-		<div class="container-fluid">
-			<div class="d-flex w-100 justify-content-between">
-				<!-- Left group: Brand link -->
-				<a class="navbar-brand" href="/">PartyWebApp</a>
+    <FluentCard class="navbar navbar-expand-lg rounded-4 mt-3">
+        <div class="container-fluid">
+            <div class="d-flex w-100 justify-content-between">
+                <!-- Left group: Brand link -->
+                <a class="navbar-brand" href="/">PartyWebApp</a>
 
-				<!-- Center group: Navigation links -->
-				<div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-					<ul class="navbar-nav">
-						<li class="nav-item">
-							<FluentAnchor Appearance="Appearance.Lightweight"
-								IconStart="@(new Icons.Regular.Size20.Wallet())" Href="/dashboard">
-								Wallets
-							</FluentAnchor>
-						</li>
-						<li class="nav-item">
-							<FluentAnchor Appearance="Appearance.Lightweight"
-								IconStart="@(new Icons.Regular.Size20.Location())" Href="/dashboard/locations">
-								Events
-							</FluentAnchor>
-						</li>
-					</ul>
-				</div>
+                <!-- Center group: Navigation links -->
+                <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <FluentAnchor Appearance="Appearance.Lightweight"
+                                IconStart="@(new Icons.Regular.Size20.Wallet())" Href="/dashboard">
+                                Wallets
+                            </FluentAnchor>
+                        </li>
+                        <li class="nav-item">
+                            <FluentAnchor Appearance="Appearance.Lightweight"
+                                IconStart="@(new Icons.Regular.Size20.Location())" Href="/dashboard/locations">
+                                Events
+                            </FluentAnchor>
+                        </li>
+                        <li class="nav-item">
+                            <FluentAnchor Appearance="Appearance.Lightweight"
+                                IconStart="@(new Icons.Regular.Size20.ServiceBell())" Href="/dashboard/services">
+                                Services
+                            </FluentAnchor>
+                        </li>
+                    </ul>
+                </div>
 
-				<!-- Right group: AuthorizeView component -->
-				<div class="d-flex align-items-center">
-					<AuthorizeView>
-						<Authorized>
-							<FluentButton style="margin-left: 8px"
-								IconStart="@(new Icons.Regular.Size20.DoorArrowLeft())"
-								OnClick="async () => await SignOutAsync()">
-								Sign Out
-							</FluentButton>
-						</Authorized>
-					</AuthorizeView>
-				</div>
-			</div>
-		</div>
-	</FluentCard>
+                <!-- Right group: AuthorizeView component -->
+                <div class="d-flex align-items-center">
+                    <AuthorizeView>
+                        <Authorized>
+                            <FluentButton style="margin-left: 8px"
+                                IconStart="@(new Icons.Regular.Size20.DoorArrowLeft())"
+                                OnClick="async () => await SignOutAsync()">
+                                Sign Out
+                            </FluentButton>
+                        </Authorized>
+                    </AuthorizeView>
+                </div>
+            </div>
+        </div>
+    </FluentCard>
 
-	<FluentStack Class="main overflow-visible" Orientation="Orientation.Horizontal" Width="100%">
-		<FluentBodyContent Class="body-content overflow-visible">
-			<div class="content">
-				@Body
-			</div>
-		</FluentBodyContent>
-	</FluentStack>
+    <FluentStack Class="main overflow-visible" Orientation="Orientation.Horizontal" Width="100%">
+        <FluentBodyContent Class="body-content overflow-visible">
+            <div class="content">
+                @Body
+            </div>
+        </FluentBodyContent>
+    </FluentStack>
 
-	<FluentToastProvider MaxToastCount="6" />
+    <FluentToastProvider MaxToastCount="6" />
 </FluentLayout>

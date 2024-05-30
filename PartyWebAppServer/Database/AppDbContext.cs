@@ -10,11 +10,12 @@ public class AppDbContext : DbContext
 
     public DbSet<Wallet> Wallets { get; set; }
     public DbSet<User> Users { get; set; }
-
+    public DbSet<Transaction> Transactions { get; set; }
     public DbSet<Location> Locations { get; set; }
     public DbSet<Event> Events { get; set; }
-    public DbSet<Transaction> Transactions { get; set; }
     public DbSet<Role> Roles { get; set; }
+    public DbSet<RepourProvider> RepourProviders { get; set; }
+    public DbSet<Repour> Repours { get; set; }
 
     public AppDbContext()
     {
@@ -42,6 +43,11 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Transaction>().HasOne(t => t.Location).WithMany(l => l.Transactions).HasForeignKey(t => t.LocationId);
         modelBuilder.Entity<Transaction>().HasOne(t => t.Event).WithMany(e => e.Transactions).HasForeignKey(t => t.EventId);
         modelBuilder.Entity<Transaction>().HasOne(t => t.Wallet).WithMany(w => w.Transactions).HasForeignKey(t => t.WalletId);
+
+        modelBuilder.Entity<RepourProvider>().HasKey(rp => rp.Id);
+        modelBuilder.Entity<Event>().HasOne(e => e.RepourProvider).WithMany().HasForeignKey(e => e.RepourProviderId);
+
+        modelBuilder.Entity<Repour>().HasKey(r => new { r.ProviderId, r.Owner });
 
         #region RoleSeed
 
@@ -207,6 +213,27 @@ public class AppDbContext : DbContext
 
         #endregion
 
+        #region RepourProviderSeed
+
+        modelBuilder.Entity<RepourProvider>().HasData(
+            new RepourProvider
+            {
+                Id = 1,
+                Name = "RepourProvider 1",
+                RepourToken = Guid.NewGuid(),
+                RepourPrice = 100
+            },
+            new RepourProvider
+            {
+                Id = 2,
+                Name = "RepourProvider 2",
+                RepourToken = Guid.NewGuid(),
+                RepourPrice = 120
+            }
+        );
+
+        #endregion
+
         #region EventSeed
 
         modelBuilder.Entity<Event>().HasData(
@@ -219,7 +246,8 @@ public class AppDbContext : DbContext
 
                 LocationId = 1,
                 Description = "This is the description of Event 1. It is a very cool event in the club.",
-                Price = 1000
+                Price = 1000,
+                RepourProviderId = 1
             }
         );
 
@@ -233,7 +261,30 @@ public class AppDbContext : DbContext
 
                 LocationId = 2,
                 Description = "This is the description of Event 2. It is a very cool event in the pub.",
-                Price = 2000
+                Price = 2000,
+                RepourProviderId = 2
+            }
+        );
+
+        #endregion
+
+        #region RepourSeed
+
+        modelBuilder.Entity<Repour>().HasData(
+            new Repour
+            {
+                ProviderId = 1,
+                Owner = "user",
+                Quantity = 1
+            }
+        );
+
+        modelBuilder.Entity<Repour>().HasData(
+            new Repour
+            {
+                ProviderId = 2,
+                Owner = "user2",
+                Quantity = 2
             }
         );
 

@@ -15,7 +15,10 @@ public class Event
     public Location? Location { get; set; }
     public DateTime StartDateTime { get; set; }
     public DateTime EndDateTime { get; set; }
-    public string Description { get; set; }
+    public string? Description { get; set; }
     public int Price { get; set; }
-    public List<Transaction> Transactions { get; set; }
+    public List<Transaction>? Transactions { get; set; }
+    [ForeignKey("RepourProvider")]
+    public int RepourProviderId { get; set; }
+    public RepourProvider RepourProvider { get; set; }
 }
