@@ -7,7 +7,7 @@ namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
 public class LocationNotExistsAppException : AppException
 {
-    public LocationNotExistsAppException(LocationDTO location)
+    public LocationNotExistsAppException(LocationDto location)
     {
         Message = $"Location with name:'{location.Name}' and address:'{location.Address}' does not exist in DB.";
         ErrorObject = new LocationNotExistsErrorModel{Name = location.Name, Address = location.Address};
