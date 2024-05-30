@@ -62,9 +62,9 @@ namespace PartyWebAppClient.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Helló Világ!.
         /// </summary>
-        internal static string hello_world {
+        internal static string HelloWorld {
             get {
-                return ResourceManager.GetString("hello_world", resourceCulture);
+                return ResourceManager.GetString("HelloWorld", resourceCulture);
             }
         }
     }
