@@ -6,7 +6,7 @@ namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
 public class UserNotExistsAppException : AppException
 {
-    public UserNotExistsAppException(UserDTO user)
+    public UserNotExistsAppException(UserDto user)
     {
         Message = $"User with '{user.Username}' username does not exist.";
         ErrorObject = new UserNotExistsErrorModel{Username = user.Username};
