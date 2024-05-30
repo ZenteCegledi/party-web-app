@@ -6,7 +6,7 @@ namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
 public class LocationShouldBeAtmAppException : AppException
 {
-    public LocationShouldBeAtmAppException(LocationDTO location)
+    public LocationShouldBeAtmAppException(LocationDto location)
     {
         Message = $"Cannot Deposit from {location.Type}";
         ErrorObject = new  LocationShouldBeAtmErrorModel{Name = location.Name, Address = location.Address};
