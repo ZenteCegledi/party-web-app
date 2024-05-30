@@ -13,5 +13,6 @@ public class EventDTO
     public string Description { get; set; }
     public DateTime StartDateTime { get; set; }
     public DateTime EndDateTime { get; set; }
+    public RepourProviderDto RepourProvider { get; set; }
 
 }
