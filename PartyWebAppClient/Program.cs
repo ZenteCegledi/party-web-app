@@ -8,6 +8,8 @@ using BitzArt.Blazor.Auth;
 using BitzArt.Blazor.Cookies;
 using PartyWebAppClient.Services.WalletService;
 using PartyWebAppClient.Services.TransactionService;
+using PartyWebAppClient.Services.UserService;
+using IUserService = PartyWebAppClient.Services.UserService.IUserService;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 var baseUri = new Uri(builder.HostEnvironment.BaseAddress);
@@ -19,6 +21,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddTransient<IAppHttpClient, AppHttpClient>();
 builder.Services.AddTransient<IWalletService, WalletService>();
 builder.Services.AddTransient<ITransactionService, TransactionService>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddBlazorBootstrap();
 
