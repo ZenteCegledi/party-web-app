@@ -5,12 +5,12 @@
     <FluentCard class="mt-4" Width="100%">
         <h3 class="font-monospace">Transactions of  @chosenWallet.Currency</h3>
         
-        @if (tempTransactions.Count == 0)
+        @if (transactions.Count == 0)
         {
             <p>No transactions found.</p>
         }
         
-        @foreach (var transaction in tempTransactions) {
+        @foreach (var transaction in transactions) {
             var operation = transaction.TransactionType == TransactionType.Deposit ? "+" : "-";
             
             <FluentCard class="mt-2 shadow-none" Width="100%" MinimalStyle="true">
