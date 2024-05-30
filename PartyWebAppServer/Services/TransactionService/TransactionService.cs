@@ -32,6 +32,17 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
                         .ToListAsync()
                     );
 
+    public async Task<List<TransactionDTO>> GetWalletTransactions(string username, CurrencyType currencyType) =>
+        _mapper
+            .Map<List<TransactionDTO>>(
+                await 
+                    _dbContext
+                        .Transactions
+                        .Where(t => t.Wallet.Owner.Username == username && t.Wallet.Currency == currencyType)
+                        .OrderBy(t => t.Date)
+                        .ToListAsync()
+            );
+    
     public async Task<List<TransactionDTO>> GetTransactionsByType(TransactionType transactionType) => 
         _mapper
             .Map<List<TransactionDTO>>(
