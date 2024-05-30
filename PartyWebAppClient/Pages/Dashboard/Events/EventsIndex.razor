@@ -1,11 +1,12 @@
 ﻿@page "/dashboard/events"
 @using PartyWebAppCommon.DTOs
+@using PartyWebAppClient.Components.Dashboard
 
 
 <h3>EventIndex</h3>
 
-<EventCard/>
+
 @foreach(EventDTO eventItem in Events)
 {
-    <EventCard Event="@eventItem"/>
+    <EventCard Event="eventItem"/>
 }
