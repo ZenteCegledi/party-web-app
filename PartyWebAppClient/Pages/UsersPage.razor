@@ -1,15 +1,13 @@
 ﻿@using System.Runtime.InteropServices.JavaScript
-@using PartyWebAppClient.Services
-@using PartyWebAppCommon.enums
+@using PartyWebAppClient.Services.UserService
+@using PartyWebAppCommon.Enums
 @using PartyWebAppCommon.DTOs
 @using Microsoft.FluentUI.AspNetCore.Components
+@using PartyWebAppCommon.Requests
 @inject HttpClient Http
 @inject NavigationManager NavManager
 @page "/admin/users"
 
-@{
-    
-}
 <FluentDataGrid Items = "@users">
     <div style="height: 434px; overflow:auto;" tabindex="-1">
         <FluentDataGrid Loading = "true" Virtualize = "true" ItemSize = "46" GenerateHeader = "GenerateHeaderOption.Sticky">
@@ -23,6 +21,7 @@
         </FluentDataGrid>
     </div>
 </FluentDataGrid>
+
 @code {
     
     IQueryable<UserDto> users = new List<UserDto>
