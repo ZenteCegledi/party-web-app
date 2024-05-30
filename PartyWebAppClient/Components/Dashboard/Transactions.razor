@@ -1,26 +1,42 @@
-﻿@attribute [Authorize]
+﻿@using PartyWebAppCommon.Enums
+@attribute [Authorize]
 
 <AuthorizeView>
     <FluentCard class="mt-4" Width="100%">
-        <h3 class="font-monospace">Transactions</h3>
+        <h3 class="font-monospace">Transactions of  @chosenWallet.Currency</h3>
         
-        @if (transactions.Count == 0)
+        @if (tempTransactions.Count == 0)
         {
             <p>No transactions found.</p>
         }
         
-        @foreach (var transaction in transactions)
-        {
-            <FluentCard class="mt-2" Width="100%">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h5>@transaction.TransactionType</h5>
-                        <h6>@transaction.Date</h6>
+        @foreach (var transaction in tempTransactions) {
+            var operation = transaction.TransactionType == TransactionType.Deposit ? "+" : "-";
+            
+            <FluentCard class="mt-2 shadow-none" Width="100%" MinimalStyle="true">
+                <div class="d-flex justify-content-between align-items-end">
+                    <div class = "d-flex gap-2 align-items-center">
+                        @if (transaction.TransactionType == TransactionType.Food)
+                        {<FluentIcon Value = "@(new Icons.Regular.Size32.FoodChickenLeg())"/>}
+                        
+                        @if (transaction.TransactionType == TransactionType.Deposit)
+                        {<FluentIcon Value = "@(new Icons.Regular.Size32.ArrowCircleUp())"/>}
+                        
+                        @if (transaction.TransactionType == TransactionType.Withdraw)
+                        {<FluentIcon Value = "@(new Icons.Regular.Size32.ArrowCircleDown())"/>}
+                        
+                        @if (transaction.TransactionType == TransactionType.Ticket)
+                        {<FluentIcon Value = "@(new Icons.Regular.Size28.TicketDiagonal())"/>}
+                        
+                        @if (transaction.TransactionType == TransactionType.Credit)
+                        {<FluentIcon Value = "@(new Icons.Regular.Size32.WalletCreditCard())"/>}
+                        
+                        <div class="h-100 d-flex flex-column justify-content-center">
+                            <h5 class="mb-0 mt-2">@transaction.TransactionType</h5>
+                            <p>@transaction.Date</p>
+                        </div>
                     </div>
-                    <div>
-                        <h5>@transaction.SpentCurrency</h5>
-                        <h6>@transaction.WalletId</h6>
-                    </div>
+                    <h5>@operation @transaction.SpentCurrency <span class="fw-normal fst-italic">@chosenWallet.Currency</span></h5>
                 </div>
             </FluentCard>
         }

@@ -33,7 +33,7 @@ public partial class Transactions : ComponentBase
                 WalletId = 1,
                 Date = DateTime.Now.ToUniversalTime(),
                 Id = i,
-                TransactionType = (TransactionType)Random.Next(0, 3),
+                TransactionType = (TransactionType)(i),
                 Count = 1,
             });
         }

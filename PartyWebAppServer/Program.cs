@@ -36,7 +36,8 @@ builder.AddBlazorAuth<AuthService>();
 
 builder.Services.AddTransient<IAuthorizationHandler, IsAdminHandler>();
 
-builder.Services.AddAuthentication(UserAuthenticationHandler.Schema).AddScheme<UserAuthenticationOptions, UserAuthenticationHandler>(UserAuthenticationHandler.Schema, null);
+builder.Services.AddAuthentication(UserAuthenticationHandler.Schema)
+    .AddScheme<UserAuthenticationOptions, UserAuthenticationHandler>(UserAuthenticationHandler.Schema, null);
 
 builder.Services.AddAuthorization(options =>
 {
