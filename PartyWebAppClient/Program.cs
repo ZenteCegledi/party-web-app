@@ -12,6 +12,7 @@ using PartyWebAppClient.Services.WalletService;
 using PartyWebAppClient.Services.TransactionService;
 using PartyWebAppClient.Services.UserService;
 using IUserService = PartyWebAppClient.Services.UserService.IUserService;
+using PartyWebAppClient.Services.EventService;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 var baseUri = new Uri(builder.HostEnvironment.BaseAddress);
@@ -26,6 +27,7 @@ builder.Services.AddTransient<ITransactionService, TransactionService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ILocationService, LocationService>();
 builder.Services.AddTransient<IToastService, ToastService>();
+builder.Services.AddTransient<IEventService, EventService>();
 
 builder.Services.AddBlazorBootstrap();
 
