@@ -10,5 +10,5 @@ public class EditUserRequest
     public string? Phone { get; set; }
     public string? Password { get; set; }
     
-    public LanguageType Language { get; set; }
+    public LanguageType? Language { get; set; }
 }
