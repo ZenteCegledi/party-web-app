@@ -34,10 +34,6 @@ public class TransactionController(ITransactionService _transactionService)
         await _transactionService.GetTransactionsByType(transactionType);
 
     [HttpPost()]
-    public async Task<TransactionDto> NewTransactionRequest(NewTransactionRequest newTransactionRequest)
-    {
-        Transaction transaction = _transactionService.CreateTransaction(newTransactionRequest);
-        _transactionService.ExecuteTransaction(transaction);
-        return await _transactionService.AddTransactionToDb(transaction);
-    }
+    public async Task<TransactionDto> NewTransactionRequest(NewTransactionRequest newTransactionRequest) =>
+        await _transactionService.NewTransaction(newTransactionRequest);
 }

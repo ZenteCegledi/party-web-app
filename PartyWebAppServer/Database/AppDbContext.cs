@@ -249,8 +249,8 @@ public class AppDbContext : DbContext
                 WalletId = 1,
                 LocationId = 1,
                 EventId = 1,
-                Count = 1,
-                SpentCurrency = 10,
+                ItemCount = 1,
+                Amount = 10,
                 Date = DateTime.UtcNow,
                 TransactionType = TransactionType.Food
             }
