@@ -24,6 +24,10 @@ public class TransactionController(ITransactionService _transactionService)
     [HttpGet("user/{username}")]
     public async Task<List<TransactionDTO>> GetUserTransactions(string username) =>
         await _transactionService.GetUserTransactions(username);
+    
+    [HttpGet("wallet/{username}/{currency}")]
+    public async Task<List<TransactionDTO>> GetUserTransactions(string username, CurrencyType currency) =>
+        await _transactionService.GetWalletTransactions(username, currency);
 
     [HttpGet("type/{transactionType}")]
     public async Task<List<TransactionDTO>> GetTransactionsByType(TransactionType transactionType) =>
