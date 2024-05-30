@@ -1,27 +1,60 @@
 ﻿@using System.Runtime.InteropServices.JavaScript
 @using PartyWebAppClient.Services
-@using PartyWebAppCommon
+@using PartyWebAppCommon.enums
+@using PartyWebAppCommon.DTOs
+@using Microsoft.FluentUI.AspNetCore.Components
+@inject HttpClient Http
+@inject NavigationManager NavManager
 @page "/admin/users"
 
-<!--<FluentDataGrid Items = "@users">
-    <PropertyCloumn Property = "@(d => d.Username)" />
-    <PropertyColumn Property = "@(d => d.BirthDate)" />
-    <PropertyColumn Property = "@(d => d.Email)" />
-    <PropertyColumn Property = "@(d => d.Phone)"/>
-    <PropertyColumn Property = "@(d => d.Password)" />
-    <PropertyCOlumn Property = "@(d => d.Wallets)" />
-</FluentDataGrid>-->
+@{
+    
+}
+<FluentDataGrid Items = "@users">
+    <div style="height: 434px; overflow:auto;" tabindex="-1">
+        <FluentDataGrid Loading = "true" Virtualize = "true" ItemSize = "46" GenerateHeader = "GenerateHeaderOption.Sticky">
+            <PropertyColumn Title = "Username" Property="@(d => d.Username)" />
+            <PropertyColumn Title = "Name" Property = "@(d => d.Name)" />
+            <PropertyColumn Title= "Birth date" Property = "@(d => d.BirthDate)" />
+            <TemplateColumn Title="Actions" Align="@Align.End">
+                <FluentButton aria-label="Edit item" IconEnd = "@(new Icons.Regular.Size16.Edit())" OnClick = "@(() => Console.WriteLine("Edit clicked"))" />
+                <FluentButton aria-label="Delete item" IconEnd = "@(new Icons.Regular.Size16.Delete())" OnClick = "@(() => Console.WriteLine("Delete clicked"))" />
+            </TemplateColumn>
+        </FluentDataGrid>
+    </div>
+</FluentDataGrid>
+@code {
+    
+    IQueryable<UserDto> users = new List<UserDto>
+    {
+        new UserDto { Username = "Akos", Name = "Olajkár Ákos", BirthDate = new DateTime(2005, 08, 15) }
+    }.AsQueryable();
+}
+@code {
+    GridItemsProvider<UserDto> userProvider = default!;
+    int numResults;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        userProvider = async req =>
+        {
+            var url = NavManager.GetUriWithQueryParameters("api/user/", new Dictionary<string, object?>
+            {
+                { "skip", req.StartIndex },
+                { "limit", req.Count },
+            });
 
-<!-- [Key]
-    public string Username { get; set; }
+            var response = await Http.GetFromJsonAsync<UserDto>(url, req.CancellationToken);
+            if (req.Count is null)
+            {
+                await Task.Delay(2500);
+            }
 
-    public string Name { get; set; }
-    public DateTime BirthDate { get; set; }
-    public string Email { get; set; }
-    public string Phone { get; set; }
-    public string Password { get; set; }
-
-    public List<Wallet> Wallets { get; set; } -->
-@code{
-    // IQueryable<User> users = 
+            return GridItemsProviderResult.From(
+                items: response!.Results,
+                totalItemCount: response!.Meta.Results.Total);
+        };
+        
+        numResults = (await Http.GetFromJsonAsync<UserDto>("api/user/"))!.Meta.Results.Total;
+    }
 }

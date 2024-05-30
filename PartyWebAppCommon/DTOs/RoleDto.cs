@@ -1,6 +1,6 @@
-﻿namespace PartyWebAppCommon.DTOs;
+namespace PartyWebAppCommon.DTOs;
 
-public class RoleDTO
+public class RoleDto
 {
     public int Id { get; set; }
     public string Name { get; set; }
