@@ -21,4 +21,61 @@
     <data name="HelloWorld" xml:space="preserve">
         <value>Helló Világ!</value>
     </data>
+    <data name="Home" xml:space="preserve">
+        <value>Kezdőlap</value>
+    </data>
+    <data name="SignInToUseApp" xml:space="preserve">
+        <value>Jelentkezz be hogy használhasd az alkalmazást.</value>
+    </data>
+    <data name="SignIn" xml:space="preserve">
+        <value>Bejelentkezés</value>
+    </data>
+    <data name="Password" xml:space="preserve">
+        <value>Jelszó</value>
+    </data>
+    <data name="Dashboard" xml:space="preserve">
+        <value>Vezérlőpult</value>
+    </data>
+    <data name="Hello" xml:space="preserve">
+        <value>Üdv</value>
+    </data>
+    <data name="Loading" xml:space="preserve">
+        <value>Betöltés...</value>
+    </data>
+    <data name="Wallets" xml:space="preserve">
+        <value>Tárcák</value>
+    </data>
+    <data name="Deposit" xml:space="preserve">
+        <value>Befizetés</value>
+    </data>
+    <data name="Amount" xml:space="preserve">
+        <value>Mennyiség</value>
+    </data>
+    <data name="Close" xml:space="preserve">
+        <value>Bezárás</value>
+    </data>
+    <data name="Withdraw" xml:space="preserve">
+        <value>Kifizetés</value>
+    </data>
+    <data name="CreateWallet" xml:space="preserve">
+        <value>Tárca létrehozása</value>
+    </data>
+    <data name="Currency" xml:space="preserve">
+        <value>Pénznem</value>
+    </data>
+    <data name="SelectCurrency" xml:space="preserve">
+        <value>Pénznem kiválasztása</value>
+    </data>
+    <data name="Your" xml:space="preserve">
+        <value>Te</value>
+    </data>
+    <data name="Wallets2" xml:space="preserve">
+        <value>Tárcáid</value>
+    </data>
+    <data name="DontHaveWallets" xml:space="preserve">
+        <value>Jelenleg még nincsenek tárcáid, készíts egyet, hogy tudd használni az alkalmazást.</value>
+    </data>
+    <data name="YouAlreadyHaveAllWallets" xml:space="preserve">
+        <value>Már minden pénznemben van tárcád!</value>
+    </data>
 </root>

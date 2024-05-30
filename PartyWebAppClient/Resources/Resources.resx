@@ -21,4 +21,61 @@
     <data name="HelloWorld" xml:space="preserve">
         <value>Hello World!</value>
     </data>
+    <data name="Home" xml:space="preserve">
+        <value>Home</value>
+    </data>
+    <data name="SignInToUseApp" xml:space="preserve">
+        <value>Sign in to use the app.</value>
+    </data>
+    <data name="SignIn" xml:space="preserve">
+        <value>Sign In</value>
+    </data>
+    <data name="Password" xml:space="preserve">
+        <value>Password</value>
+    </data>
+    <data name="Dashboard" xml:space="preserve">
+        <value>Dashboard</value>
+    </data>
+    <data name="Hello" xml:space="preserve">
+        <value>Hello</value>
+    </data>
+    <data name="Loading" xml:space="preserve">
+        <value>Loading...</value>
+    </data>
+    <data name="Wallets" xml:space="preserve">
+        <value>Wallets</value>
+    </data>
+    <data name="Deposit" xml:space="preserve">
+        <value>Deposit</value>
+    </data>
+    <data name="Amount" xml:space="preserve">
+        <value>Amount</value>
+    </data>
+    <data name="Close" xml:space="preserve">
+        <value>Close</value>
+    </data>
+    <data name="Withdraw" xml:space="preserve">
+        <value>Withdraw</value>
+    </data>
+    <data name="CreateWallet" xml:space="preserve">
+        <value>Create Wallet</value>
+    </data>
+    <data name="Currency" xml:space="preserve">
+        <value>Currency</value>
+    </data>
+    <data name="SelectCurrency" xml:space="preserve">
+        <value>Select Currency</value>
+    </data>
+    <data name="Your" xml:space="preserve">
+        <value>Your</value>
+    </data>
+    <data name="Wallets2" xml:space="preserve">
+        <value>Wallets</value>
+    </data>
+    <data name="DontHaveWallets" xml:space="preserve">
+        <value>You don't have any wallets yet, you need to create one to start using the app.</value>
+    </data>
+    <data name="YouAlreadyHaveAllWallets" xml:space="preserve">
+        <value>You already have all the available wallets!</value>
+    </data>
 </root>
