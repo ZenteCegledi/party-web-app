@@ -1,6 +1,7 @@
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 @inject IUserService UserService
+@inject IStringLocalizer<Resources> Localize;
 
 <FluentLayout>
     <FluentHeader>
@@ -9,12 +10,12 @@
         <AuthorizeView>
             <NotAuthorized>
                 <FluentAnchor Href="/signin" IconStart="@(new Icons.Regular.Size16.PersonArrowRight())">
-                    Sign In
+                    @Localize["SignIn"]
                 </FluentAnchor>
             </NotAuthorized>
             <Authorized>
                 <FluentAnchor Href="/dashboard" IconStart="@(new Icons.Regular.Size16.Home())">
-                    Dashboard
+                    @Localize["Dashboard"]
                 </FluentAnchor>
             </Authorized>
         </AuthorizeView>
