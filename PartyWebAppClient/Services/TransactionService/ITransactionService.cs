@@ -1,4 +1,5 @@
 using PartyWebAppClient.Models;
+using PartyWebAppCommon.DTOs;
 
 namespace PartyWebAppClient.Services.TransactionService;
 

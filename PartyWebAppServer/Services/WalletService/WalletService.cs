@@ -81,8 +81,8 @@ public class WalletService(AppDbContext context, IMapper mapper) : IWalletServic
         // TEMPORARY - create a deposit transaction for the wallet
         var transaction = new Transaction
         {
-            SpentCurrency = (int)_req.Amount,
-            Count = 1,
+            ItemCount = 1,
+            Amount = (int)_req.Amount,
             Date = DateTime.Now.ToUniversalTime(),
             WalletId = walletEntity.Id,
             TransactionType = TransactionType.Deposit,

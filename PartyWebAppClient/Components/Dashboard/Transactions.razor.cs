@@ -23,14 +23,14 @@ public partial class Transactions : ComponentBase
     
     protected override async Task OnInitializedAsync()
     {
-        var (transactions, error) = await transactionService.GetWalletTransactions(chosenWallet.Id);
+        var (_transactions, error) = await transactionService.GetWalletTransactions(chosenWallet.Id);
         if (error is not null)
         {
             ToastService?.ShowError(error.Message);
             return;
         }
 
-        this.transactions = transactions!;
+        this.transactions = _transactions!;
         
         StateHasChanged();
     }
