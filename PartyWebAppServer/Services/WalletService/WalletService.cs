@@ -52,7 +52,7 @@ public class WalletService(AppDbContext context, IMapper mapper) : IWalletServic
         if (user == null) throw new UserNotFoundException("No user found with that username: " + username);
 
         var wallet = context.Wallets.FirstOrDefault(w => w.Username == username && w.Currency == currency);
-        if (wallet == null) throw new WalletNotExistsAppException();
+        if (wallet == null) throw new WalletNotExistsAppException(username, currency);
 
         context.Wallets.Remove(wallet);
         context.SaveChanges();
@@ -65,10 +65,10 @@ public class WalletService(AppDbContext context, IMapper mapper) : IWalletServic
         if (user == null) throw new UserNotFoundException("No user found with that username: " + _req.Username);
 
         var walletEntity = context.Wallets.FirstOrDefault(w => w.Username == _req.Username && w.Currency == _req.Currency);
-        if (walletEntity == null) throw new WalletNotExistsAppException();
+        if (walletEntity == null) throw new WalletNotExistsAppException(_req.Username, _req.Currency);
 
         walletEntity.Amount += _req.Amount;
-        
+
         // TEMPORARY - create a deposit transaction for the wallet
         var transaction = new Transaction
         {
@@ -79,7 +79,7 @@ public class WalletService(AppDbContext context, IMapper mapper) : IWalletServic
             TransactionType = TransactionType.Deposit,
         };
         context.Transactions.Add(transaction);
-        
+
         context.SaveChanges();
 
         return mapper.Map<WalletDto>(walletEntity);
