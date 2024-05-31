@@ -10,13 +10,13 @@
 			<div class="d-flex align-items-center gap-2">
 				<img alt="@chosenWallet.Currency" class="rounded-circle" height="30"
 					src="@currencyMap[chosenWallet.Currency].image" style="object-fit: cover" width="30" />
-				<h4 class="font-monospace m-0">Setting Primary Wallet</h4>
+				<h4 class="font-monospace m-0">@Localize["SettingPrimaryWallet"]</h4>
 			</div>
 		</HeaderTemplate>
 		<FooterTemplate>
 			<FluentButton IconStart="@(new Icons.Regular.Size20.Star())" @onclick="SetPrimary"
 				Loading="@modalSubmitting">
-				Set</FluentButton>
+				@Localize["Set"]</FluentButton>
 		</FooterTemplate>
 	</Modal>
 
@@ -99,7 +99,7 @@
 		</BodyTemplate>
 		<FooterTemplate>
 			<FluentButton @onclick="() => HideModal(CreateWalletModal)" IconStart="@(new Icons.Regular.Size20.Delete())"
-				Loading="@modalSubmitting">Cancel</FluentButton>
+				Loading="@modalSubmitting">@Localize["Cancel"]</FluentButton>
 			<FluentButton @onclick="CreateWallet" IconStart="@(new Icons.Regular.Size20.Save())"
 				Loading="@modalSubmitting">
 				@Localize["CreateWallet"]
@@ -171,14 +171,14 @@
 						{
 							<div class="m-2 d-flex gap-2">
 								<FluentIcon Value="@(new Icons.Regular.Size20.StarCheckmark())" />
-								<span>Primary Wallet</span>
+								<span>@Localize["PrimaryWallet"]</span>
 							</div>
 						}
 						else
 						{
 							<FluentButton IconStart="@(new Icons.Regular.Size20.StarAdd())"
 								@onclick="() => ShowModal(PrimaryModal)">
-								Make Default
+								@Localize["MakeDefault"]
 							</FluentButton>
 						}
 					</div>
