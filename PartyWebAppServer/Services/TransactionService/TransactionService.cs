@@ -149,6 +149,8 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
     {
         _dbContext.Transactions.Add(transaction);
         await _dbContext.SaveChangesAsync();
-        return _mapper.Map<TransactionDto>(transaction);
+        var transactionDto = _mapper.Map<TransactionDto>(transaction);
+        transactionDto.Currency = transaction.Wallet.Currency;
+        return transactionDto;
     }
 }
