@@ -28,6 +28,15 @@ public class WalletService(AppDbContext context, IMapper mapper) : IWalletServic
 
         return mapper.Map<WalletDto>(wallet);
     }
+
+    public async Task<WalletDto> GetWalletById(int id)
+    {
+        var wallet = context.Wallets.FirstOrDefault(w => w.Id == id);
+        if (wallet == null) throw new WalletNotExistsAppException();
+
+        return mapper.Map<WalletDto>(wallet);    
+    }
+    
     public async Task<WalletDto> CreateWallet(CreateWalletRequest _req)
     {
         var user = context.Users.FirstOrDefault(u => u.Username == _req.Username);
