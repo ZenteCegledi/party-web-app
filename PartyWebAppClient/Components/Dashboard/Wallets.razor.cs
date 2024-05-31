@@ -15,8 +15,6 @@ public partial class Wallets : ComponentBase
 
     private Modal PrimaryModal;
 
-    private Modal PrimaryModal;
-
     private Modal DepositModal;
     private decimal depositAmount;
 
@@ -141,15 +139,17 @@ public partial class Wallets : ComponentBase
             ToastService?.ShowError(error.Message);
             return;
         }
-
-        wallets = wallets.Select(w =>
+        else if (wallet.IsPrimary)
         {
-            w.IsPrimary = w.Currency == wallet.Currency;
-            return w;
-        }).ToList();
-        wallets = wallets.OrderBy(w => w.IsPrimary ? 0 : 1).ToList();
+            wallets = wallets.Select(w =>
+            {
+                w.IsPrimary = w.Currency == wallet.Currency;
+                return w;
+            }).ToList();
+            wallets = wallets.OrderBy(w => w.IsPrimary ? 0 : 1).ToList();
 
-        if (wallet is not null) ToastService?.ShowSuccess("Primary wallet set successfully");
+            if (wallet is not null) ToastService?.ShowSuccess("Primary wallet set successfully");
+        }
 
         modalSubmitting = false;
 
