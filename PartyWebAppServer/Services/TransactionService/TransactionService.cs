@@ -7,11 +7,15 @@ using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
 using PartyWebAppServer.ErrorHandling.Exceptions;
+using PartyWebAppServer.Services.JwtService;
 
 namespace PartyWebAppServer.Services.TransactionService;
 
-public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITransactionService
+public class TransactionService(AppDbContext _dbContext, IMapper _mapper, IHttpContextAccessor httpContextAccessor,
+    IJwtService jwtService) : ITransactionService
 {
+    private readonly HttpContext _httpContext = httpContextAccessor.HttpContext!;
+    
     public async Task<List<TransactionDto>> GetTransactions() =>  
         _mapper
             .Map<List<TransactionDto>>(
@@ -57,6 +61,9 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
     public async Task<TransactionDto> NewTransaction(NewTransactionRequest transactionRequest)
     {
         Wallet? wallet = _dbContext.Wallets.FirstOrDefault(w => w.Id == transactionRequest.WalletId);
+        
+        if (!jwtService.IsUserTheUser(_httpContext.Request, wallet.Username) || !jwtService.IsUserAdmin(_httpContext.Request))
+            throw new UnauthorizedAccessException("You can only create your own transactions.");
 
         Location? location = _dbContext.Locations.FirstOrDefault(l => l.Id == transactionRequest.LocationId);
         Event? currentEvent = location != null ? _dbContext.Events.FirstOrDefault(e => e.Id == transactionRequest.EventId) : null;
