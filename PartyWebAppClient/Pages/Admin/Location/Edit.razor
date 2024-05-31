@@ -43,12 +43,12 @@ else
                     </FluentSelect>
                     <div class="d-flex justify-content-center mt-3">
                         <FluentButton class="w-100" IconStart="@(new Icons.Filled.Size16.Save().WithColor("#fff"))" Type="ButtonType.Submit" Appearance="Appearance.Accent">
-                            Save changes
+                            @Localize["SaveChanges"]
                         </FluentButton>
                     </div>
                     <div class="d-flex justify-content-center mt-3">
                         <FluentButton class="w-100" IconStart="@(new Icons.Filled.Size16.ArrowLeft().WithColor("#000"))" Type="ButtonType.Button" Appearance="Appearance.Outline" OnClick="NavigateToIndex">
-                            Back
+                            @Localize["Back"]
                         </FluentButton>
                     </div>
                 </EditForm>

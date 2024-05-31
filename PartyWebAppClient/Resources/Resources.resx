@@ -123,4 +123,19 @@
     <data name="LocationNotFound" xml:space="preserve">
         <value>Location Not Found</value>
     </data>
+    <data name="BuyTicket" xml:space="preserve">
+        <value>Buy Tiicket</value>
+    </data>
+    <data name="SaveChanges" xml:space="preserve">
+        <value>Save changes</value>
+    </data>
+    <data name="CurrentEvents" xml:space="preserve">
+        <value>Current Events</value>
+    </data>
+    <data name="UpcomingEvents" xml:space="preserve">
+        <value>Upcoming Events</value>
+    </data>
+    <data name="PastEvents" xml:space="preserve">
+        <value>Past Events</value>
+    </data>
 </root>

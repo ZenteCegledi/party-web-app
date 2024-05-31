@@ -123,4 +123,19 @@
     <data name="LocationNotFound" xml:space="preserve">
         <value>A helyszín nem található.</value>
     </data>
+    <data name="BuyTicket" xml:space="preserve">
+        <value>Jegy vásárlása</value>
+    </data>
+    <data name="SaveChanges" xml:space="preserve">
+        <value>Változtatások mentése</value>
+    </data>
+    <data name="CurrentEvents" xml:space="preserve">
+        <value>Aktuális események</value>
+    </data>
+    <data name="UpcomingEvents" xml:space="preserve">
+        <value>Közelgő események</value>
+    </data>
+    <data name="PastEvents" xml:space="preserve">
+        <value>Múltbéli események</value>
+    </data>
 </root>
