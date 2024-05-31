@@ -1,5 +1,6 @@
 ﻿@page "/admin/locations"
 @using PartyWebAppClient.Layout.AdminLayout
+@inject IStringLocalizer<Resources> Localize;
 
 @namespace PartyWebAppClient.Pages.Admin.Location
 
@@ -7,7 +8,7 @@
 
 @attribute [Authorize (Policy = "RequireAdminRole")]
 
-<h1 class="text-center mt-5 font-monospace">Locations</h1>
+<h1 class="text-center mt-5 font-monospace">@Localize["Locations"]</h1>
 
 @if(_isLoading)
 {
@@ -43,7 +44,7 @@ else
                 <FluentSearch @bind-Value="_searchValue" @onchange="SearchLocations" Placeholder="Search for a location" Size="30" Name="SearchBar"/>
             </div>
             <div>
-                <FluentButton aria-label="Add location" OnClick="@(() => NavigateToAddLocation())" IconStart="@(new Icons.Filled.Size16.Add())">Create New Location</FluentButton>
+                <FluentButton aria-label="Add location" OnClick="@(() => NavigateToAddLocation())" IconStart="@(new Icons.Filled.Size16.Add())">@Localize["CreateLocation"]</FluentButton>
             </div>
         </div>
 

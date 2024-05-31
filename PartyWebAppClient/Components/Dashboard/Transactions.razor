@@ -1,13 +1,14 @@
 ﻿@using PartyWebAppCommon.Enums
 @attribute [Authorize]
+@inject IStringLocalizer<Resources> Localize;
 
 <AuthorizeView>
     <FluentCard class="mt-4" Width="100%">
-        <h3 class="font-monospace">Transactions of  @chosenWallet.Currency</h3>
+        <h3 class="font-monospace">@Localize["TransactionsOf"]  @chosenWallet.Currency</h3>
         
         @if (transactions.Count == 0)
         {
-            <p>No transactions found.</p>
+            <p>@Localize["NoTransactions"]</p>
         }
         
         @foreach (var transaction in transactions) {

@@ -4,12 +4,13 @@
 @using PartyWebAppClient.Layout.AdminLayout
 @using PartyWebAppCommon.Enums
 @using ButtonType = Microsoft.FluentUI.AspNetCore.Components.ButtonType
+@inject IStringLocalizer<Resources> Localize;
 
 @layout AdminLayout
 
 @attribute [Authorize (Policy = "RequireAdminRole")]
 
-<h1 class="text-center mt-5 font-monospace">Edit Location</h1>
+<h1 class="text-center mt-5 font-monospace">@Localize["EditLocation"]</h1>
 
 @if(isLoading)
 {
@@ -57,7 +58,7 @@ else
     else
     {
         <div class="position-fixed top-50 start-50 translate-middle font-monospace">
-            <h1 class="text-danger">Location not found</h1>
+            <h1 class="text-danger">@Localize["LocationNotFound"]</h1>
         </div>
     }
 }

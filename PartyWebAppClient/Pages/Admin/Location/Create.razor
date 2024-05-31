@@ -2,6 +2,7 @@
 @using PartyWebAppClient.Layout.AdminLayout
 @using PartyWebAppCommon.Enums
 @using ButtonType = Microsoft.FluentUI.AspNetCore.Components.ButtonType
+@inject IStringLocalizer<Resources> Localize;
 
 @layout AdminLayout
 
@@ -21,12 +22,12 @@
             </FluentSelect>
             <div class="d-flex justify-content-center mt-3">
                 <FluentButton class="w-100" IconStart="@(new Icons.Filled.Size16.Add().WithColor("#fff"))" Type="ButtonType.Submit" Appearance="Appearance.Accent">
-                    Create location
+                    @Localize["CreateLocation"]
                 </FluentButton>
             </div>
             <div class="d-flex justify-content-center mt-3">
                 <FluentButton class="w-100" IconStart="@(new Icons.Filled.Size16.ArrowLeft().WithColor("#000"))" Type="ButtonType.Button" Appearance="Appearance.Outline" OnClick="NavigateToIndex">
-                    Back
+                    @Localize["Back"]
                 </FluentButton>
             </div>
         </EditForm>

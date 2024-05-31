@@ -19,7 +19,7 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="HelloWorld" xml:space="preserve">
-        <value>Helló Világ!</value>
+        <value>Helló világ!</value>
     </data>
     <data name="Home" xml:space="preserve">
         <value>Kezdőlap</value>
@@ -86,5 +86,41 @@
     </data>
     <data name="SignOut" xml:space="preserve">
         <value>Kijelentkezés</value>
+    </data>
+    <data name="TransactionsOf" xml:space="preserve">
+        <value>Tranzakciók: </value>
+    </data>
+    <data name="NoTransactions" xml:space="preserve">
+        <value>Nem találhatóak tranzakciók.</value>
+    </data>
+    <data name="SettingPrimaryWallet" xml:space="preserve">
+        <value>Elsődleges tárca beállítása</value>
+    </data>
+    <data name="Set" xml:space="preserve">
+        <value>Kiválasztás</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Mégse</value>
+    </data>
+    <data name="PrimaryWallet" xml:space="preserve">
+        <value>Elsődleges tárca</value>
+    </data>
+    <data name="MakeDefault" xml:space="preserve">
+        <value>Beállítás alapértelmezettként</value>
+    </data>
+    <data name="Locations" xml:space="preserve">
+        <value>Helyszínek</value>
+    </data>
+    <data name="CreateLocation" xml:space="preserve">
+        <value>Helyszín létrehozása</value>
+    </data>
+    <data name="Back" xml:space="preserve">
+        <value>Vissza</value>
+    </data>
+    <data name="EditLocation" xml:space="preserve">
+        <value>Helyszín szerkesztése</value>
+    </data>
+    <data name="LocationNotFound" xml:space="preserve">
+        <value>A helyszín nem található.</value>
     </data>
 </root>
