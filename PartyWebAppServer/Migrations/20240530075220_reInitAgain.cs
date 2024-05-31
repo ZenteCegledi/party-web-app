@@ -8,8 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace PartyWebAppServer.Migrations
 {
-    /// <inheritdoc />
-    public partial class ReInit : Migration
+    public partial class reInitAgain : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -168,9 +167,10 @@ namespace PartyWebAppServer.Migrations
                 columns: new[] { "Username", "BirthDate", "Email", "Name", "Password", "PasswordUpdated", "Phone", "RoleId" },
                 values: new object[,]
                 {
-                    { "admin", new DateTime(1994, 5, 29, 17, 52, 4, 883, DateTimeKind.Utc).AddTicks(2557), "admin@admin.com", "Admin User", "$2a$11$YRSVX1UIiy/ck8XTJ8IaA.CeU9VCbkgKxNbF1OeO0mT5GpAsbu0yK", new DateTime(2024, 5, 29, 17, 52, 4, 883, DateTimeKind.Utc).AddTicks(2570), "1234567890", 1 },
-                    { "user", new DateTime(2004, 5, 29, 17, 52, 5, 9, DateTimeKind.Utc).AddTicks(2471), "user@gmail.com", "User", "$2a$11$aZWkkH0IyPboaXIiImyDaufJOyHc5dlsXlcKKTlbjN0XyqBVG8SkW", new DateTime(2024, 5, 29, 17, 52, 5, 9, DateTimeKind.Utc).AddTicks(2480), "0987654321", 2 },
-                    { "user2", new DateTime(2004, 5, 29, 17, 52, 5, 133, DateTimeKind.Utc).AddTicks(5020), "user2@gmail.com", "User2", "$2a$11$e9.F.PrfoBz3oJLUEUcl/OtMd9N61IgDhJ.HzDUhX8C8WnBRtBtMy", new DateTime(2024, 5, 29, 17, 52, 5, 133, DateTimeKind.Utc).AddTicks(5029), "0987654321", 2 }
+
+                    { "admin", new DateTime(1994, 5, 30, 7, 52, 19, 69, DateTimeKind.Utc).AddTicks(2111), "admin@admin.com", "Admin User", "$2a$11$uY.LsF.rE66dxWMAcSMyZ.Phy4SYqqPbccfoVJzmsmHdK4bRGgKz2", new DateTime(2024, 5, 30, 7, 52, 19, 69, DateTimeKind.Utc).AddTicks(2128), "1234567890", 1 },
+                    { "user", new DateTime(2004, 5, 30, 7, 52, 19, 340, DateTimeKind.Utc).AddTicks(1122), "user@gmail.com", "User", "$2a$11$HA3YfKdK1.CUa4nVknkOye6wi0s5cFJ0pWbmUz2I./wf84P.H6fcy", new DateTime(2024, 5, 30, 7, 52, 19, 340, DateTimeKind.Utc).AddTicks(1147), "0987654321", 2 },
+                    { "user2", new DateTime(2004, 5, 30, 7, 52, 19, 599, DateTimeKind.Utc).AddTicks(236), "user2@gmail.com", "User2", "$2a$11$a06Tr5won9AUmnit9ogXMeivNOlKcpuiCGxeaG9DJLB3gvJVFGoAW", new DateTime(2024, 5, 30, 7, 52, 19, 599, DateTimeKind.Utc).AddTicks(247), "0987654321", 2 }
                 });
 
             migrationBuilder.InsertData(

@@ -26,6 +26,7 @@
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Pages\Admin\Admin.razor" />
       <_ContentIncludedByDefault Remove="Pages\Charts\Charts.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Dashboard\Events\Event\EventIndex.razor" />
     </ItemGroup>
 
     <ItemGroup>
