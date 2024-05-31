@@ -1,10 +1,11 @@
-﻿@namespace PartyWebAppClient.Pages.Admin.Location
-
-@page "/admin/locations"
-@layout AdminLayout
-@attribute [Authorize]
-
+﻿@page "/admin/locations"
 @using PartyWebAppClient.Layout.AdminLayout
+
+@namespace PartyWebAppClient.Pages.Admin.Location
+
+@layout AdminLayout
+
+@attribute [Authorize (Policy = "RequireAdminRole")]
 
 <h1 class="text-center mt-5 font-monospace">Locations</h1>
 

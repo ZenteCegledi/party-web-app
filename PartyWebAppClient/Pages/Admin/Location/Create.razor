@@ -5,6 +5,8 @@
 
 @layout AdminLayout
 
+@attribute [Authorize (Policy = "RequireAdminRole")]
+
 <h1 class="text-center mt-5 font-monospace">Create Location</h1>
 <div class="d-flex justify-content-center">
     <FluentCard Style="width: max-content" AreaRestricted="false">

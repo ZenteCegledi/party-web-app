@@ -1,10 +1,13 @@
-﻿@namespace PartyWebAppClient.Pages.Admin
-
-@page "/admin"
-@layout AdminLayout
-@attribute [Authorize]
-
+﻿@page "/admin"
 @using PartyWebAppClient.Layout.AdminLayout
+
+@namespace PartyWebAppClient.Pages.Admin
+
+@layout AdminLayout
+
+@attribute [Authorize (Policy = "RequireAdminRole")]
+
+
 
 <PageTitle>PartyWebApp - Admin</PageTitle>
 
