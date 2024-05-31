@@ -87,4 +87,40 @@
     <data name="SignOut" xml:space="preserve">
         <value>Sign Out</value>
     </data>
+    <data name="TransactionsOf" xml:space="preserve">
+        <value>Transactions of</value>
+    </data>
+    <data name="NoTransactions" xml:space="preserve">
+        <value>No transactions found.</value>
+    </data>
+    <data name="SettingPrimaryWallet" xml:space="preserve">
+        <value>Setting primary wallet</value>
+    </data>
+    <data name="Set" xml:space="preserve">
+        <value>Set</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="PrimaryWallet" xml:space="preserve">
+        <value>Primary Wallet</value>
+    </data>
+    <data name="MakeDefault" xml:space="preserve">
+        <value>Make Default</value>
+    </data>
+    <data name="Locations" xml:space="preserve">
+        <value>Locations</value>
+    </data>
+    <data name="CreateLocation" xml:space="preserve">
+        <value>Create Location</value>
+    </data>
+    <data name="Back" xml:space="preserve">
+        <value>Back</value>
+    </data>
+    <data name="EditLocation" xml:space="preserve">
+        <value>Edit Location</value>
+    </data>
+    <data name="LocationNotFound" xml:space="preserve">
+        <value>Location Not Found</value>
+    </data>
 </root>

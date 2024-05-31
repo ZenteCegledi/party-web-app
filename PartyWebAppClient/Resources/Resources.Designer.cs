@@ -182,5 +182,77 @@ namespace PartyWebAppClient.Resources {
                 return ResourceManager.GetString("SignOut", resourceCulture);
             }
         }
+        
+        internal static string TransactionsOf {
+            get {
+                return ResourceManager.GetString("TransactionsOf", resourceCulture);
+            }
+        }
+        
+        internal static string NoTransactions {
+            get {
+                return ResourceManager.GetString("NoTransactions", resourceCulture);
+            }
+        }
+        
+        internal static string SettingPrimaryWallet {
+            get {
+                return ResourceManager.GetString("SettingPrimaryWallet", resourceCulture);
+            }
+        }
+        
+        internal static string Set {
+            get {
+                return ResourceManager.GetString("Set", resourceCulture);
+            }
+        }
+        
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        internal static string PrimaryWallet {
+            get {
+                return ResourceManager.GetString("PrimaryWallet", resourceCulture);
+            }
+        }
+        
+        internal static string MakeDefault {
+            get {
+                return ResourceManager.GetString("MakeDefault", resourceCulture);
+            }
+        }
+        
+        internal static string Locations {
+            get {
+                return ResourceManager.GetString("Locations", resourceCulture);
+            }
+        }
+        
+        internal static string CreateLocation {
+            get {
+                return ResourceManager.GetString("CreateLocation", resourceCulture);
+            }
+        }
+        
+        internal static string Back {
+            get {
+                return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        internal static string EditLocation {
+            get {
+                return ResourceManager.GetString("EditLocation", resourceCulture);
+            }
+        }
+        
+        internal static string LocationNotFound {
+            get {
+                return ResourceManager.GetString("LocationNotFound", resourceCulture);
+            }
+        }
     }
 }
