@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using PartyWebAppCommon.Enums;
 
 namespace PartyWebAppServer.Database.Models;
 
@@ -20,4 +21,6 @@ public class User
 
     [ForeignKey("Role")]
     public int RoleId { get; set; }
+    
+    public LanguageType Language { get; set; } = LanguageType.Hu;
 }

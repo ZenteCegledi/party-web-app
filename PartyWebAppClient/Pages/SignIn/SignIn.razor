@@ -7,9 +7,14 @@
 @inject IUserService UserService
 @inject IToastService ToastService
 
-<PageTitle>PartyWebApp - Sign In</PageTitle>
+@using Microsoft.Extensions.Localization
+@using PartyWebAppClient.Resources
+@inject IStringLocalizer<Resources> Localize;
 
-<h1 class="text-center mt-4">Sign In</h1>
+
+<PageTitle>PartyWebApp - @Localize["SignIn"]</PageTitle>
+
+<h1 class="text-center mt-4">@Localize["SignIn"]</h1>
 
 <div style="display: flex; justify-content: center; align-items: center; width: 100%">
 	<EditForm Model="@_model" OnValidSubmit="@OnValidSubmit" FormName="SignInForm" style="width: 300px;">
@@ -22,7 +27,7 @@
 				<FluentValidationMessage For="@(() => _model.Email)" />
 			</div>
 			<div style="width: 100%;">
-				<FluentTextField @bind-Value="_model.Password" Label="Password" Placeholder="Password" Type="password"
+				<FluentTextField @bind-Value="_model.Password" Label=@Localize["Password"] Placeholder=@Localize["Password"] Type="password"
 				                 Style="width: 100%;" />
 				<FluentValidationMessage For="@(() => _model.Password)" />
 			</div>
@@ -30,7 +35,7 @@
 			<FluentButton Style="width: 100%" IconStart="@(new Icons.Regular.Size16.PersonArrowRight())"
 			              Loading="@loading" Type="Microsoft.FluentUI.AspNetCore.Components.ButtonType.Submit"
 			              Appearance="Appearance.Accent">
-				Sign In</FluentButton>
+				@Localize["SignIn"]</FluentButton>
 		</FluentStack>
 	</EditForm>
 </div>

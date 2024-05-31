@@ -5,6 +5,8 @@
 @inject NavigationManager NavigationManager
 @inject IUserService UserService
 
+@inject IStringLocalizer<Resources> Localize;
+
 <FluentLayout class="container" Style="max-width: 800px; padding-bottom: 24px">
 	<FluentCard class="navbar navbar-expand-lg rounded-4 mt-3">
 		<div class="container-fluid">
@@ -18,13 +20,13 @@
 						<li class="nav-item">
 							<FluentAnchor Appearance="Appearance.Lightweight"
 								IconStart="@(new Icons.Regular.Size20.Wallet())" Href="/dashboard">
-								Wallets
+								@Localize["Wallets"]
 							</FluentAnchor>
 						</li>
 						<li class="nav-item">
 							<FluentAnchor Appearance="Appearance.Lightweight"
 								IconStart="@(new Icons.Regular.Size20.Location())" Href="/dashboard/locations">
-								Events
+								@Localize["Events"]
 							</FluentAnchor>
 						</li>
 					</ul>
@@ -37,7 +39,7 @@
 							<FluentButton style="margin-left: 8px"
 								IconStart="@(new Icons.Regular.Size20.DoorArrowLeft())"
 								OnClick="async () => await SignOutAsync()">
-								Sign Out
+								@Localize["SignOut"]
 							</FluentButton>
 						</Authorized>
 					</AuthorizeView>

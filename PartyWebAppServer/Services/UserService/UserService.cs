@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppCommon.DTOs;
+using PartyWebAppCommon.Enums;
 using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Database.Models;
@@ -12,7 +13,7 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
 {
     public async Task<List<UserDto>> GetAllUsers()
     {
-       return mapper.Map<List<UserDto>>(dbContext.Users.ToListAsync());
+        return mapper.Map<List<UserDto>>(dbContext.Users.ToListAsync());
     }
 
     public async Task<UserDto> CreateUser(CreateUserRequest user)
@@ -34,7 +35,8 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
             BirthDate = user.BirthDate,
             Email = user.Email,
             Phone = user.Phone,
-            Password = BCrypt.Net.BCrypt.HashPassword(user.Password)
+            Password = BCrypt.Net.BCrypt.HashPassword(user.Password),
+            Language = user.Language
         };
         dbContext.Users.Add(tmpUser);
         await dbContext.SaveChangesAsync();
@@ -78,13 +80,14 @@ public class UserService(AppDbContext dbContext, IMapper mapper) : IUserService
         if (userRequest.Email != null)
         {
             var userWithMail = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == userRequest.Email);
-            if(userWithMail != null) throw new EmailAlreadyInUseException(userRequest.Email);
+            if (userWithMail != null) throw new EmailAlreadyInUseException(userRequest.Email);
             user.Email = userRequest.Email;
         }
-        
+
         if (userRequest.BirthDate != null) user.BirthDate = (DateTime)userRequest.BirthDate;
         if (userRequest.Phone != null) user.Phone = userRequest.Phone;
         if (userRequest.Password != null) user.Password = userRequest.Password;
+        if (userRequest.Language != null) user.Language = (LanguageType)userRequest.Language;
         await dbContext.SaveChangesAsync();
 
         return mapper.Map<UserDto>(user);

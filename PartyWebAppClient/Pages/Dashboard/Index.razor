@@ -1,17 +1,19 @@
-@namespace PartyWebAppClient.Pages.Dashboard
+﻿@namespace PartyWebAppClient.Pages.Dashboard
 
 @page "/dashboard"
 @layout DashboardLayout
 @attribute [Authorize]
 
+@inject IStringLocalizer<Resources> Localize;
+
 @using PartyWebAppClient.Layout
 @using System.Text.Json
 @using PartyWebAppClient.Components.Dashboard
 
-<PageTitle>PartyWebApp - Dashboard</PageTitle>
+<PageTitle>PartyWebApp - @Localize["Dashboard"]</PageTitle>
 
 <AuthorizeView>
-    <h1 class="font-monospace mt-5">Hello, @context.User.FindFirst("Username")!.Value</h1>
+	<h1 class="font-monospace mt-5">@Localize["Hello"], @_user?.Name</h1>
 
-    <Wallets />
+	<Wallets />
 </AuthorizeView>

@@ -1,6 +1,6 @@
 ﻿@attribute [Authorize]
+@inject IStringLocalizer<Resources> Localize;
 
-@using PartyWebAppClient.Components.Dashboard
 @using PartyWebAppCommon.DTOs
 @using PartyWebAppCommon.Enums
 
@@ -25,17 +25,20 @@
 			<div class="d-flex align-items-center gap-2">
 				<img alt="@chosenWallet.Currency" class="rounded-circle" height="30"
 					src="@currencyMap[chosenWallet.Currency].image" style="object-fit: cover" width="30" />
-				<h4 class="font-monospace m-0">Deposit</h4>
+				<h4 class="font-monospace m-0">@Localize["Deposit"]</h4>
 			</div>
 		</HeaderTemplate>
 		<BodyTemplate>
-			<p class="mb-1"><b><i>@currencyMap[chosenWallet.Currency].symbol</i></b> - Amount:</p>
+			<p class="mb-1"><b><i>@currencyMap[chosenWallet.Currency].symbol</i></b> - @Localize["Amount"]:</p>
 			<FluentNumberField @bind-Value="depositAmount" Min="1" class="w-100" />
 		</BodyTemplate>
 		<FooterTemplate>
+			<FluentButton IconStart="@(new Icons.Regular.Size20.Delete())" @onclick="() => HideModal(DepositModal)"
+				Loading="@modalSubmitting">
+				@Localize["Close"]</FluentButton>
 			<FluentButton IconStart="@(new Icons.Regular.Size20.ArrowUp())" @onclick="Deposit"
 				Loading="@modalSubmitting">
-				Deposit</FluentButton>
+				@Localize["Deposit"]</FluentButton>
 		</FooterTemplate>
 	</Modal>
 
@@ -44,17 +47,20 @@
 			<div class="d-flex align-items-center gap-2">
 				<img alt="@chosenWallet.Currency" class="rounded-circle" height="30"
 					src="@currencyMap[chosenWallet.Currency].image" style="object-fit: cover" width="30" />
-				<h4 class="font-monospace m-0">Withdraw</h4>
+				<h4 class="font-monospace m-0">@Localize["Withdraw"]</h4>
 			</div>
 		</HeaderTemplate>
 		<BodyTemplate>
-			<p class="mb-1"><b><i>@currencyMap[chosenWallet.Currency].symbol</i></b> - Amount:</p>
+			<p class="mb-1"><b><i>@currencyMap[chosenWallet.Currency].symbol</i></b> - @Localize["Amount"]:</p>
 			<FluentNumberField @bind-Value="withdrawAmount" Min="1" class="w-100" />
 		</BodyTemplate>
 		<FooterTemplate>
+			<FluentButton IconStart="@(new Icons.Regular.Size20.Delete())" @onclick="() => HideModal(WithdrawModal)"
+				Loading="@modalSubmitting">
+				@Localize["Close"]</FluentButton>
 			<FluentButton IconStart="@(new Icons.Regular.Size20.ArrowDown())" @onclick="Withdraw"
 				Loading="@modalSubmitting">
-				Withdraw</FluentButton>
+				@Localize["Withdraw"]</FluentButton>
 		</FooterTemplate>
 	</Modal>
 
@@ -62,16 +68,16 @@
 		<HeaderTemplate>
 			<div class="d-flex align-items-center gap-2">
 				<FluentIcon Value="@(new Icons.Regular.Size28.AddCircle())" />
-				<h4 class="font-monospace m-0">Create Wallet</h4>
+				<h4 class="font-monospace m-0">@Localize["CreateWallet"]</h4>
 			</div>
 		</HeaderTemplate>
 		<BodyTemplate>
 			<FluentStack Orientation="Orientation.Vertical" Width="100%">
 				<div class="w-100">
-					<p class="mb-1">Currency:</p>
+					<p class="mb-1">@Localize["Currency"]:</p>
 					<FluentSelect Style="width: 100%;" name="class" Id="currency" @bind-Value="@CreateWalletCurrency"
 						TOption="CurrencyType">
-						<FluentOption Value="">Select Currency ...</FluentOption>
+						<FluentOption Value="">@Localize["SelectCurrency"] ...</FluentOption>
 
 						@foreach (CurrencyType currency in CreateWalletCurrencyOptions)
 						{
@@ -85,7 +91,7 @@
 					</FluentSelect>
 				</div>
 				<div class="w-100">
-					<p class="mb-1">Amount:</p>
+					<p class="mb-1">@Localize["Amount"]:</p>
 
 					<FluentNumberField class="w-100" Name="amount" @bind-Value="@CreateWalletAmount" Min="1" />
 				</div>
@@ -96,7 +102,7 @@
 				Loading="@modalSubmitting">Cancel</FluentButton>
 			<FluentButton @onclick="CreateWallet" IconStart="@(new Icons.Regular.Size20.Save())"
 				Loading="@modalSubmitting">
-				Create Wallet
+				@Localize["CreateWallet"]
 			</FluentButton>
 		</FooterTemplate>
 	</Modal>
@@ -105,12 +111,12 @@
 		<div class="w-100 d-flex justify-content-between">
 			<div>
 				<h3 class="font-monospace">
-					<i>Your</i> Wallets
+					<i>@Localize["Your"]</i> @Localize["Wallets2"]
 				</h3>
 
 				@if (wallets.Count == 0)
 				{
-					<p class="text-black-50">You don't have any wallets yet, you need to create one to start using the app.
+					<p class="text-black-50">@Localize["DontHaveWallets"]
 					</p>
 				}
 
@@ -127,12 +133,12 @@
 			</div>
 
 			<div>
-				<FluentButton IconStart="@(new Icons.Regular.Size20.Wallet())" OnClick='() =>
+				<FluentButton IconStart="@(new Icons.Regular.Size20.Wallet())" OnClick=@(() =>
 					{
-						if (wallets.Count == 4) ToastService?.ShowError("You already have all the available wallets!");
+						if (wallets.Count == 4) ToastService?.ShowError(@Localize["YouAlreadyHaveAllWallets"]);
 						else ShowModal(CreateWalletModal);
-					}'>
-					Add Wallet
+					})>
+					@Localize["AddWallet"]
 				</FluentButton>
 			</div>
 		</div>
