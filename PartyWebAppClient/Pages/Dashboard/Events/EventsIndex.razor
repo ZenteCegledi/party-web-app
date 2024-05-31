@@ -6,28 +6,41 @@
 @attribute [Authorize]
 
 
-<h2 class="text-center mt-4 mb-2">Events</h2>
+<h2 class="font-monospace text-center mt-4 mb-2">Events</h2>
 
-<FluentCard class="mb-3"><h3 class="text-left mb-0">Current Events</h3></FluentCard>
-<FluentStack class="mb-5 d-flex flex-wrap">
+<FluentCard class="mb-3">
+    <h3 class="text-left mb-0 font-monospace">Current Events</h3>
+</FluentCard>
+<div class="mb-5 row g-2">
     @foreach(EventDTO eventItem in CurrentEvents)
     {
-        <EventCard Event="eventItem"/>
+    <div class="col-md-4">
+        <EventCard Event="eventItem" />
+    </div>
     }
-</FluentStack>
+</div>
 
-<FluentCard class="mb-3"><h3 class="text-left mb-0">Upcoming Events</h3></FluentCard>
-<FluentStack class="mb-5 d-flex flex-wrap">
+<FluentCard class="mb-3">
+    <h3 class="text-left mb-0 font-monospace">Upcoming Events</h3>
+</FluentCard>
+<div class="mb-5 row g-2">
     @foreach(EventDTO eventItem in FutureEvents)
     {
-        <EventCard Event="eventItem"/>
+    <div class="col-md-4">
+        <EventCard Event="eventItem" />
+    </div>
     }
-</FluentStack>
+</div>
 
-<FluentCard class="mb-3"><h3 class="text-left mb-0">Past Events</h3></FluentCard>
-<FluentStack class="mb-5 d-flex flex-wrap">
-@foreach(EventDTO eventItem in PastEvents)
-{
-    <EventCard Event="eventItem"/>
-}
-</FluentStack>
+
+<FluentCard class="mb-3">
+    <h3 class="text-left mb-0 font-monospace">Past Events</h3>
+</FluentCard>
+<div class="mb-5 row g-2">
+    @foreach(EventDTO eventItem in PastEvents)
+    {
+    <div class="col-md-4">
+        <EventCard Event="eventItem" />
+    </div>
+    }
+</div>
