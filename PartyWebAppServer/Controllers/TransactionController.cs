@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -61,11 +62,17 @@ public class TransactionController(
 
     [HttpPost()]
     public async Task<TransactionDto> NewTransactionRequest(NewTransactionRequest newTransactionRequest)
-    {   
-        if (!jwtService.IsUserTheUser(_httpContext.Request, _httpContext.Request.Body.) && !jwtService.IsUserAdmin(_httpContext.Request))
+    {
+        string? username = null;
+        
+        var token = jwtService.GetTokenFromRequest(_httpContext.Request);
+        ClaimsPrincipal claims = jwtService.GetPrincipalFromToken(token);
+        username = claims.FindFirst("Username").Value;
+        
+        if (!jwtService.IsUserTheUser(_httpContext.Request, username) && !jwtService.IsUserAdmin(_httpContext.Request))
             throw new UnauthorizedAccessException("You can only create your own transactions.");
         
-        return await _transactionService.NewTransaction(newTransactionRequest);
+        return await _transactionService.NewTransaction(newTransactionRequest, username);
     } 
         
 }

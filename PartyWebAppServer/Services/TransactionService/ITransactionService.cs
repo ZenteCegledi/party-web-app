@@ -15,5 +15,5 @@ public interface ITransactionService
     public Task<List<TransactionDto>> GetWalletTransactions(string username, CurrencyType currencyType);
     public Task<List<TransactionDto>> GetTransactionsByType(TransactionType transactionType);
 
-    public Task<TransactionDto> NewTransaction(NewTransactionRequest transactionRequest);
+    public Task<TransactionDto> NewTransaction(NewTransactionRequest transactionRequest, string? username = null);
 }
