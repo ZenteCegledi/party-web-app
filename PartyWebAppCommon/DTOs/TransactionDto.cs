@@ -7,7 +7,7 @@ public class TransactionDto
     public WalletDto Wallet { get; set; }
     
     public LocationDto Location { get; set; }
-    public EventDto Event { get; set; }
+    public EventDTO Event { get; set; }
     
     public int ItemCount { get; set; }
     public int Amount { get; set; }
