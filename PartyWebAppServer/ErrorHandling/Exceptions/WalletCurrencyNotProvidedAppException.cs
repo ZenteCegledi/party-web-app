@@ -1,18 +1,17 @@
-using System.Net;
+﻿using System.Net;
+using PartyWebAppCommon.Enums;
 using PartyWebAppServer.ErrorHandling.ErrorModels;
 
 namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
-public class EventIdNotFoundAppException : AppException
+public class WalletCurrencyNotProvidedAppException : AppException
 {
     public override string Message { get; }
-
     public override HttpStatusCode HttpStatusCode { get; }
 
-    public EventIdNotFoundAppException(int? eventId)
+    public WalletCurrencyNotProvidedAppException()
     {
-        Message = $"Event with id {eventId} not found";
+        Message = $"Currency not provided in request.";
         HttpStatusCode = HttpStatusCode.BadRequest;
-        ErrorObject = new EventIdNotFoundErrorModel { Id = eventId };
     }
 }

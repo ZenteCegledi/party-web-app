@@ -4,18 +4,19 @@ using PartyWebAppServer.ErrorHandling.ErrorModels;
 
 namespace PartyWebAppServer.ErrorHandling.Exceptions;
 
-public class WalletNotExistsAppException : AppException
+public class WalletInsufficientFundsAppException : AppException
 {
     public override string Message { get; }
     public override HttpStatusCode HttpStatusCode { get; }
 
-    public WalletNotExistsAppException(string username, CurrencyType currency)
+    public WalletInsufficientFundsAppException(string username, int amount, CurrencyType currency)
     {
-        Message = $"Wallet for user {username} does not have the {currency} wallet.";
-        ErrorObject = new WalletNotFoundModel
+        Message = $"{username} has insufficient funds to withdraw {amount} {currency}.";
+        ErrorObject = new WalletInsufficientFundsModel
         {
             Username = username,
-            Currency = currency,
+            Amount = amount,
+            Currency = currency
         };
         HttpStatusCode = HttpStatusCode.BadRequest;
     }

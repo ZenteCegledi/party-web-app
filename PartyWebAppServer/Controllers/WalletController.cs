@@ -21,7 +21,7 @@ public class WalletController(IWalletService walletService, AppDbContext dbConte
     {
         return await walletService.GetWallets(username);
     }
-
+    
     [HttpGet("{username}/{currency}")]
     public async Task<WalletDto> GetWallet(string username, CurrencyType currency)
     {

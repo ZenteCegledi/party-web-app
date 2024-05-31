@@ -181,7 +181,7 @@ namespace PartyWebAppServer.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Count")
+                    b.Property<int>("Amount")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Date")
@@ -190,10 +190,10 @@ namespace PartyWebAppServer.Migrations
                     b.Property<int?>("EventId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("LocationId")
+                    b.Property<int>("ItemCount")
                         .HasColumnType("integer");
 
-                    b.Property<int>("SpentCurrency")
+                    b.Property<int>("LocationId")
                         .HasColumnType("integer");
 
                     b.Property<int>("TransactionType")
@@ -211,6 +211,19 @@ namespace PartyWebAppServer.Migrations
                     b.HasIndex("WalletId");
 
                     b.ToTable("Transactions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Amount = 10,
+                            Date = new DateTime(2024, 5, 30, 12, 55, 48, 588, DateTimeKind.Utc).AddTicks(3749),
+                            EventId = 1,
+                            ItemCount = 1,
+                            LocationId = 1,
+                            TransactionType = 0,
+                            WalletId = 2
+                        });
                 });
 
             modelBuilder.Entity("PartyWebAppServer.Database.Models.User", b =>
@@ -254,36 +267,36 @@ namespace PartyWebAppServer.Migrations
                         new
                         {
                             Username = "admin",
-                            BirthDate = new DateTime(1994, 5, 30, 19, 19, 50, 276, DateTimeKind.Utc).AddTicks(8677),
+                            BirthDate = new DateTime(1994, 5, 30, 12, 55, 48, 242, DateTimeKind.Utc).AddTicks(6203),
                             Email = "admin@admin.com",
                             Language = 0,
                             Name = "Admin User",
-                            Password = "$2a$11$MFnZ6KSebcmC6wIv7old2.TueQlwppuWYKoYqWq9iunz1toGVJoeW",
-                            PasswordUpdated = new DateTime(2024, 5, 30, 19, 19, 50, 276, DateTimeKind.Utc).AddTicks(8689),
+                            Password = "$2a$11$JwzROVTDbgoAr4kh5yKh6uuYtpb6SugJLQG77MfkO811KMnyEZzWa",
+                            PasswordUpdated = new DateTime(2024, 5, 30, 12, 55, 48, 242, DateTimeKind.Utc).AddTicks(6227),
                             Phone = "1234567890",
                             RoleId = 1
                         },
                         new
                         {
                             Username = "user",
-                            BirthDate = new DateTime(2004, 5, 30, 19, 19, 50, 406, DateTimeKind.Utc).AddTicks(1829),
+                            BirthDate = new DateTime(2004, 5, 30, 12, 55, 48, 414, DateTimeKind.Utc).AddTicks(3905),
                             Email = "user@gmail.com",
                             Language = 0,
                             Name = "User",
-                            Password = "$2a$11$LygOnI0ZDvz6ZwewOGSHfOp.TekUaFwbhsgp52MdOGVvXETBZK5my",
-                            PasswordUpdated = new DateTime(2024, 5, 30, 19, 19, 50, 406, DateTimeKind.Utc).AddTicks(1838),
+                            Password = "$2a$11$ZeykoWgoFJq0Usxgm1H52eu7NPwUpSbLH0733aNyhZhCwsE6//TrG",
+                            PasswordUpdated = new DateTime(2024, 5, 30, 12, 55, 48, 414, DateTimeKind.Utc).AddTicks(3918),
                             Phone = "0987654321",
                             RoleId = 2
                         },
                         new
                         {
                             Username = "user2",
-                            BirthDate = new DateTime(2004, 5, 30, 19, 19, 50, 535, DateTimeKind.Utc).AddTicks(2538),
+                            BirthDate = new DateTime(2004, 5, 30, 12, 55, 48, 588, DateTimeKind.Utc).AddTicks(2528),
                             Email = "user2@gmail.com",
                             Language = 0,
                             Name = "User2",
-                            Password = "$2a$11$OQYkr8AAUyJ4Nlj9gQKyJeVEtOjBXmH/Jb9IhgnyqyNlRRfnksFkG",
-                            PasswordUpdated = new DateTime(2024, 5, 30, 19, 19, 50, 535, DateTimeKind.Utc).AddTicks(2548),
+                            Password = "$2a$11$rhNgNnfYgdyIT1YiAGzABuuvFrkNd3FoZIvk17jclxU.dTda54voi",
+                            PasswordUpdated = new DateTime(2024, 5, 30, 12, 55, 48, 588, DateTimeKind.Utc).AddTicks(2542),
                             Phone = "0987654321",
                             RoleId = 2
                         });
