@@ -11,11 +11,8 @@ using PartyWebAppServer.Services.JwtService;
 
 namespace PartyWebAppServer.Services.TransactionService;
 
-public class TransactionService(AppDbContext _dbContext, IMapper _mapper, IHttpContextAccessor httpContextAccessor,
-    IJwtService jwtService) : ITransactionService
+public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITransactionService
 {
-    private readonly HttpContext _httpContext = httpContextAccessor.HttpContext!;
-    
     public async Task<List<TransactionDto>> GetTransactions() =>  
         _mapper
             .Map<List<TransactionDto>>(
@@ -58,12 +55,9 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper, IHttpC
                         .ToListAsync()
                     );
     
-    public async Task<TransactionDto> NewTransaction(NewTransactionRequest transactionRequest)
+    public async Task<TransactionDto> NewTransaction(NewTransactionRequest transactionRequest, string? username = null)
     {
         Wallet? wallet = _dbContext.Wallets.FirstOrDefault(w => w.Id == transactionRequest.WalletId);
-        
-        if (!jwtService.IsUserTheUser(_httpContext.Request, wallet.Username) || !jwtService.IsUserAdmin(_httpContext.Request))
-            throw new UnauthorizedAccessException("You can only create your own transactions.");
 
         Location? location = _dbContext.Locations.FirstOrDefault(l => l.Id == transactionRequest.LocationId);
         Event? currentEvent = location != null ? _dbContext.Events.FirstOrDefault(e => e.Id == transactionRequest.EventId) : null;
@@ -95,7 +89,14 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper, IHttpC
                 if (location.Type != LocationType.ATM) throw new LocationShouldBeAtmAppException(transactionRequest.TransactionType, location.Type);
 
                 if (wallet == null)
-                    throw new WalletNotExistsAppException($"Wallet with id: {transactionRequest.WalletId} not found.");;
+                    wallet = 
+                        new Wallet
+                        {
+                            Username = username ?? throw new UserNotProvidedAppException(), 
+                            Amount = 0,
+                            Currency = transactionRequest.Currency ?? throw new WalletCurrencyNotProvidedAppException(),
+                            IsPrimary = false
+                        };
                 break;
             case TransactionType.Withdraw:
                 if (location == null) throw new LocationIdNotFoundAppException(transactionRequest.LocationId);

@@ -8,7 +8,7 @@ public class LocationIdNotFoundAppException : AppException
     public override string Message { get; }
     public override HttpStatusCode HttpStatusCode { get; }
 
-    public LocationIdNotFoundAppException(int id)
+    public LocationIdNotFoundAppException(int? id)
     {
         Message = $"Location with id {id} not found";
         HttpStatusCode = HttpStatusCode.BadRequest;

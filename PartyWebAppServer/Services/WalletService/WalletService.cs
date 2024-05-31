@@ -32,7 +32,7 @@ public class WalletService(AppDbContext context, IMapper mapper) : IWalletServic
     public async Task<WalletDto> GetWalletById(int id)
     {
         var wallet = context.Wallets.FirstOrDefault(w => w.Id == id);
-        if (wallet == null) throw new WalletNotExistsAppException();
+        if (wallet == null) throw new WalletNotExistsAppException($"Wallet with id: '{id}' does not exist.");
 
         return mapper.Map<WalletDto>(wallet);    
     }

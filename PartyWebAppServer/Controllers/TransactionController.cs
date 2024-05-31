@@ -36,7 +36,7 @@ public class TransactionController(
     [HttpGet("{username}")]
     public async Task<List<TransactionDto>> GetUserTransactions(string username)
     {
-        if (!jwtService.IsUserTheUser(_httpContext.Request, username) || !jwtService.IsUserAdmin(_httpContext.Request))
+        if (!jwtService.IsUserTheUser(_httpContext.Request, username) && !jwtService.IsUserAdmin(_httpContext.Request))
             throw new UnauthorizedAccessException("You can only access your own transactions.");
         return await _transactionService.GetUserTransactions(username);
     }
@@ -44,7 +44,7 @@ public class TransactionController(
     [HttpGet("wallet/{username}/{currency}")]
     public async Task<List<TransactionDto>> GetUserTransactions(string username, CurrencyType currency)
     {
-        if (!jwtService.IsUserTheUser(_httpContext.Request, username) || !jwtService.IsUserAdmin(_httpContext.Request))
+        if (!jwtService.IsUserTheUser(_httpContext.Request, username) && !jwtService.IsUserAdmin(_httpContext.Request))
             throw new UnauthorizedAccessException("You can only access your own transactions.");
         
         return await _transactionService.GetWalletTransactions(username, currency);
@@ -61,7 +61,10 @@ public class TransactionController(
 
     [HttpPost()]
     public async Task<TransactionDto> NewTransactionRequest(NewTransactionRequest newTransactionRequest)
-    {
+    {   
+        if (!jwtService.IsUserTheUser(_httpContext.Request, _httpContext.Request.Body.) && !jwtService.IsUserAdmin(_httpContext.Request))
+            throw new UnauthorizedAccessException("You can only create your own transactions.");
+        
         return await _transactionService.NewTransaction(newTransactionRequest);
     } 
         
