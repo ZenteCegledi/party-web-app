@@ -1,0 +1,18 @@
+﻿@page "/admin"
+@using PartyWebAppClient.Layout.AdminLayout
+
+@namespace PartyWebAppClient.Pages.Admin
+
+@layout AdminLayout
+
+@attribute [Authorize (Policy = "RequireAdminRole")]
+
+
+
+<PageTitle>PartyWebApp - Admin</PageTitle>
+
+<h1 class="text-center m-3 font-monospace">Hello, Admin!</h1>
+
+@code {
+    
+}

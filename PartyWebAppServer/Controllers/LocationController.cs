@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Requests;
 using PartyWebAppServer.Services.JwtService;

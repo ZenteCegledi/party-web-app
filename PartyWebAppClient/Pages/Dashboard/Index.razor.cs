@@ -17,12 +17,22 @@ public partial class Index : ComponentBase {
 	
 	[Inject]
 	IToastService ToastService { get; set; }
+	
+	[Inject]
+	NavigationManager NavigationManager { get; set; }
     
 	protected override async Task OnInitializedAsync() {
 		var authState = await authenticationState!;
 		var user      = authState?.User;
 
 		if (user == null) return;
+
+		if (user.FindFirst("IsAdmin").Value == "true")
+		{
+			NavigationManager.NavigateTo("/admin");
+			return;
+		}
+
 		
 		var (userDto, error) = await userService.GetUser(user.FindFirst("Username")!.Value);
 		if (error is not null) {
