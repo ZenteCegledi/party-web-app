@@ -17,8 +17,8 @@ public class Transaction
     [ForeignKey("Event")] public int? EventId { get; set; }
     public Event? Event { get; set; }
 
-    public int SpentCurrency { get; set; }
-    public int Count { get; set; }
+    public int ItemCount { get; set; }
+    public int Amount { get; set; }
 
     public TransactionType TransactionType { get; set; }
     public DateTime Date { get; set; }
