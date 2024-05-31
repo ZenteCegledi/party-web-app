@@ -1,4 +1,5 @@
 ﻿@using PartyWebAppCommon.Enums
+@inject IStringLocalizer<Resources> Localize;
 <FluentCard Height="300px" class="mb-2">
     
     <FluentBadge Appearance="Appearance.Lightweight">
@@ -19,7 +20,7 @@
         </h5>
         <FluentButton Appearance="Appearance.Accent" class="align-self-end w-100">
             <FluentIcon Value="@(new Icons.Regular.Size20.TicketDiagonal())" Color="@Color.Lightweight" Slot="start" />
-            Buy Ticket
+            @Localize["BuyTicket"]
         </FluentButton>
     </div>
 </FluentCard>

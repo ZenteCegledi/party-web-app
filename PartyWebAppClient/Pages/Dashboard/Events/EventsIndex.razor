@@ -4,12 +4,13 @@
 @using PartyWebAppClient.Layout
 @layout DashboardLayout
 @attribute [Authorize]
+@inject IStringLocalizer<Resources> Localize;
 
 
-<h2 class="font-monospace text-center mt-4 mb-2">Events</h2>
+<h2 class="font-monospace text-center mt-4 mb-2">@Localize["Events"]</h2>
 
 <FluentCard class="mb-3">
-    <h3 class="text-left mb-0 font-monospace">Current Events</h3>
+    <h3 class="text-left mb-0 font-monospace">@Localize["CurrentEvents"]</h3>
 </FluentCard>
 <div class="mb-5 row g-2">
     @foreach(EventDTO eventItem in CurrentEvents)
@@ -21,7 +22,7 @@
 </div>
 
 <FluentCard class="mb-3">
-    <h3 class="text-left mb-0 font-monospace">Upcoming Events</h3>
+    <h3 class="text-left mb-0 font-monospace">@Localize["UpcomingEvents"]</h3>
 </FluentCard>
 <div class="mb-5 row g-2">
     @foreach(EventDTO eventItem in FutureEvents)
@@ -34,7 +35,7 @@
 
 
 <FluentCard class="mb-3">
-    <h3 class="text-left mb-0 font-monospace">Past Events</h3>
+    <h3 class="text-left mb-0 font-monospace">@Localize["PastEvents"]</h3>
 </FluentCard>
 <div class="mb-5 row g-2">
     @foreach(EventDTO eventItem in PastEvents)
