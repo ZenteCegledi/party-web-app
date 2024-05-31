@@ -6,20 +6,56 @@
 
 @using PartyWebAppClient.Layout.AdminLayout
 
-<h1 class="text-center mt-3">Locations</h1>
+<h1 class="text-center mt-5 font-monospace">Locations</h1>
 
-<div class="w-100 mt-3 mb-3 d-flex justify-content-between">
-    <FluentSearch @bind-Value="_searchValue" @oninput="SearchLocations" Placeholder="Search for a location" Size="50" />
-    <FluentButton BackgroundColor="#28a745" aria-label="Add location" OnClick="@(() => NavigateToAddLocation())" IconStart="@(new Icons.Filled.Size16.Add().WithColor("#fff"))" Style="color: white; font-weight: bold;">Create</FluentButton>
-</div>
+@if(isLoading)
+{
+    <FluentCard>
+        <div class="w-100 mt-3 mb-3 d-flex justify-content-between">
+            <div class="d-flex">
+                <FluentSkeleton Shimmer="true" Width="308px" Height="32px"/>
+            </div>
+            <div>
+                <FluentSkeleton Shimmer="true" Width="176.88px" Height="32px"/>
+            </div>
+        </div>
 
-<FluentDataGrid Items="@_locations">
-   <PropertyColumn Property="@(l => l.Id)" Sortable="true" />
-   <PropertyColumn Property="@(l => l.Name)" Sortable="true" />
-   <PropertyColumn Property="@(l => l.Address)" Sortable="true" />
-   <PropertyColumn Property="@(l => l.Type)" Sortable="true" />
-   <TemplateColumn Title="Actions" Align="@Align.End">
-       <FluentButton BackgroundColor="#087cfc" aria-label="Edit location" IconEnd="@(new Icons.Filled.Size16.Edit().WithColor("#fff"))" OnClick="@(() => NavigateToEditLocation(context.Id))"/>
-       <FluentButton BackgroundColor="#e03444" aria-label="Delete location" IconEnd="@(new Icons.Filled.Size16.Delete().WithColor("#fff"))" OnClick="@(() => DeleteLocation(context.Id))"/>
-   </TemplateColumn>
-</FluentDataGrid>
+        <FluentSkeleton Shimmer="true" Width="100%" Height="43.6px" Class="mt-2"/>
+        @for (int i = 0; i < 5; i++)
+        {
+            <div class="d-flex">
+                <FluentSkeleton Shimmer="true" Width="5%" Height="43.6px" Class="mt-2 mx-1"/>
+                <FluentSkeleton Shimmer="true" Width="35%" Height="43.6px" Class="mt-2 mx-1"/>
+                <FluentSkeleton Shimmer="true" Width="35%" Height="43.6px" Class="mt-2 mx-1"/>
+                <FluentSkeleton Shimmer="true" Width="15%" Height="43.6px" Class="mt-2 mx-1"/>
+                <FluentSkeleton Shimmer="true" Width="5%" Height="43.6px" Class="mt-2 mx-1"/>
+                <FluentSkeleton Shimmer="true" Width="5%" Height="43.6px" Class="mt-2 mx-1"/>
+            </div>
+        }
+    </FluentCard>
+}
+else
+{
+    <FluentCard>
+        <div class="w-100 mt-3 mb-3 d-flex justify-content-between">
+            <div class="d-flex"> 
+                <FluentSearch @bind-Value="_searchValue" @onchange="SearchLocations" Placeholder="Search for a location" Size="30" Name="SearchBar"/>
+            </div>
+            <div>
+                <FluentButton aria-label="Add location" OnClick="@(() => NavigateToAddLocation())" IconStart="@(new Icons.Filled.Size16.Add())">Create New Location</FluentButton>
+            </div>
+        </div>
+
+        <FluentDataGrid Items="@_locations?.OrderBy(l => l.Id)">
+            <PropertyColumn Width="5%" Property="@(l => l.Id)" Sortable="true" />
+            <PropertyColumn Width="35%" Property="@(l => l.Name)" Sortable="true" />
+            <PropertyColumn Width="35%" Property="@(l => l.Address)" Sortable="true" />
+            <PropertyColumn Width="15%" Property="@(l => l.Type)" Sortable="true" />
+            <TemplateColumn Width="10%" Title="Actions" Align="@Align.End">
+                <FluentButton aria-label="Edit location" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => NavigateToEditLocation(context.Id))"/>
+                <FluentButton aria-label="Delete location" IconEnd="@(new Icons.Regular.Size16.Delete().WithColor("#e03444"))" OnClick="@(() => DeleteLocation(context.Id))"/>
+            </TemplateColumn>
+        </FluentDataGrid>
+    </FluentCard>
+}
+

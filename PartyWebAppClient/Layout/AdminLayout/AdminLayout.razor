@@ -5,24 +5,30 @@
 <FluentLayout Class="container">
 
     <nav class="navbar navbar-expand-lg rounded-4 mt-3"
-         style="background-color: #18a4bc; box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);">
+         style="box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);">
         <div class="container-fluid">
             <!-- Left group: Brand link -->
-            <a class="navbar-brand text-white" href="/">PartyWebApp</a>
-            <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="/">PartyWebApp</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <!-- Center group: Navigation links -->
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link text-white" aria-current="page" href="/dashboard">Home</a>
+                        <FluentAnchor Appearance="Appearance.Lightweight" IconStart="@(new Icons.Regular.Size20.Home())" Href="/admin" Class="text-black">
+                            Home
+                        </FluentAnchor>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/admin/events">Events</a>
+                        <FluentAnchor Appearance="Appearance.Lightweight" IconStart="@(new Icons.Regular.Size20.Calendar())" Href="/admin/events" Class="text-black">
+                            Events
+                        </FluentAnchor>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/admin/locations">Locations</a>
+                        <FluentAnchor Appearance="Appearance.Lightweight" IconStart="@(new Icons.Regular.Size20.Location())" Href="/admin/locations" Class="text-black">
+                            Locations
+                        </FluentAnchor>
                     </li>
                 </ul>
             </div>
@@ -47,4 +53,6 @@
             </div>
         </FluentBodyContent>
     </FluentStack>
+
+    <FluentToastProvider MaxToastCount="6" />
 </FluentLayout>

@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.JSInterop;
-using PartyWebAppClient.Services.ClientLocationService;
+using PartyWebAppClient.Models;
+using PartyWebAppClient.Services.LocationService;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppCommon.Enums;
 using PartyWebAppCommon.Requests;
@@ -15,41 +16,67 @@ public partial class Edit : ComponentBase
     [Parameter] 
     public int Id { get; set; }
     [Inject]
-    private IClientLocationService _clientLocationService { get; set; }
+    private ILocationService LocationService { get; set; }
+    
+    [Inject]
+    private IToastService? ToastService { get; set; }
+    
+    [Inject]
+    private NavigationManager Navigation { get; set; }
     
     private LocationDto _location;
 
+    private List<LocationDto> _allLocations;
+    
     private string _selectedType;
-
+    
+    bool isLoading = true;
     protected override async Task OnInitializedAsync()
     {   
-        _location = await GetLocation();
+        
+        var (tempLocations, getAllLocationsError) = await LocationService.GetAllLocations();
+        if (getAllLocationsError is not null)
+        {
+            ToastService?.ShowError(getAllLocationsError.Message);
+            return;
+        }
+        _allLocations = tempLocations;
+        
+        var (tempLocation, getLocationError) = await LocationService.GetLocation(Id);
+        if (getLocationError is not null)
+        {
+            ToastService?.ShowError(getLocationError.Message);
+            return;
+        }
+        _location = tempLocation;
         _selectedType = Convert.ToString(_location.Type);
+        
+        isLoading = false;
     }
     
-    private Task<LocationDto> GetLocation()
+    private Task<(LocationDto?, AppErrorModel?)> GetLocation()
     {
-        return _clientLocationService.GetLocation(Id);
+        return LocationService.GetLocation(Id);
     }
     
     private async Task EditLocation()
     {
-        try
+        EditLocationRequest editRequest = new EditLocationRequest()
         {
-            EditLocationRequest request = new EditLocationRequest()
-            {
-                Name = _location.Name,
-                Address = _location.Address,
-                Type = Enum.Parse<LocationType>(_selectedType)
-            };
-            await _clientLocationService.EditLocation(Id, request);
-            Navigation.NavigateTo("/admin/locations");
-        }
-        catch (Exception e)
+            Name = _location.Name,
+            Address = _location.Address,
+            Type = Enum.Parse<LocationType>(_selectedType)
+        };
+        
+        if(_allLocations.Any(l =>l.Id != Id && l.Name == editRequest.Name && l.Address.ToLower().Equals(editRequest.Address.ToLower())))
         {
-            ToastService.ShowToast(ToastIntent.Error, "Nagy a baj");
+            ToastService?.ShowError("Location with this name and address already exists!");
+            return;
         }
-
+        
+        await LocationService.EditLocation(Id, editRequest);
+        NavigateToIndex();
+        ToastService?.ShowSuccess("Changes saved successfully!");
     }
     
     private void NavigateToIndex()

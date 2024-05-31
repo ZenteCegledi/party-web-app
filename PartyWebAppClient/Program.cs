@@ -6,7 +6,7 @@ using PartyWebAppClient;
 using PartyWebAppClient.Services;
 using BitzArt.Blazor.Auth;
 using BitzArt.Blazor.Cookies;
-using PartyWebAppClient.Services.ClientLocationService;
+using PartyWebAppClient.Services.LocationService;
 using Microsoft.AspNetCore.Components.Authorization;
 using PartyWebAppClient.Services.WalletService;
 using PartyWebAppClient.Services.TransactionService;
@@ -24,6 +24,8 @@ builder.Services.AddTransient<IAppHttpClient, AppHttpClient>();
 builder.Services.AddTransient<IWalletService, WalletService>();
 builder.Services.AddTransient<ITransactionService, TransactionService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<ILocationService, LocationService>();
+builder.Services.AddTransient<IToastService, ToastService>();
 
 builder.Services.AddBlazorBootstrap();
 
