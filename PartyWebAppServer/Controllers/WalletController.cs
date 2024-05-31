@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PartyWebAppCommon.DTOs;
 using PartyWebAppServer.Database;
 using PartyWebAppServer.Services.JwtService;
@@ -15,11 +16,9 @@ public class WalletController(IWalletService walletService, AppDbContext dbConte
     private readonly HttpContext _httpContext = httpContextAccessor.HttpContext!;
 
     [HttpGet("{username}")]
+    [Authorize (Policy = "IsAdminPolicy")]
     public async Task<List<WalletDto>> GetWallets(string username)
     {
-        if (!jwtService.IsUserTheUser(_httpContext.Request, username) && !jwtService.IsUserAdmin(_httpContext.Request))
-            throw new UnauthorizedAccessException("You can only access your own wallets.");
-
         return await walletService.GetWallets(username);
     }
 

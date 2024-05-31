@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using PartyWebAppServer.Database;
 using BitzArt.Blazor.Auth;
+using Microsoft.AspNetCore.Authorization;
+using PartyWebAppServer.Handlers;
 using PartyWebAppServer.Services.AuthService;
 using PartyWebAppServer.Services.EventService;
 using PartyWebAppServer.Services.JwtService;
@@ -32,6 +34,11 @@ builder.Services.AddSwaggerGen();
 
 builder.AddBlazorAuth<AuthService>();
 
+builder.Services.AddTransient<IAuthorizationHandler, IsAdminHandler>();
+
+builder.Services.AddAuthentication(UserAuthenticationHandler.Schema)
+    .AddScheme<UserAuthenticationOptions, UserAuthenticationHandler>(UserAuthenticationHandler.Schema, null);
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdminRole",
@@ -40,6 +47,10 @@ builder.Services.AddAuthorization(options =>
             context.User.HasClaim(claim => claim.Type == "IsAdmin" && claim.Value == "true")
         )
     );
+    
+    options.AddPolicy("IsAdminPolicy", policy => {
+        policy.AddRequirements(new IsAdminRequirement());
+    });
 });
 
 builder.Services.AddHttpContextAccessor();

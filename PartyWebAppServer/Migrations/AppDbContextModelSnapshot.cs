@@ -187,10 +187,10 @@ namespace PartyWebAppServer.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("EventId")
+                    b.Property<int?>("EventId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("LocationId")
+                    b.Property<int?>("LocationId")
                         .HasColumnType("integer");
 
                     b.Property<int>("SpentCurrency")
@@ -225,6 +225,9 @@ namespace PartyWebAppServer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("Language")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -251,33 +254,36 @@ namespace PartyWebAppServer.Migrations
                         new
                         {
                             Username = "admin",
-                            BirthDate = new DateTime(1994, 5, 29, 12, 52, 50, 666, DateTimeKind.Utc).AddTicks(5837),
+                            BirthDate = new DateTime(1994, 5, 30, 19, 19, 50, 276, DateTimeKind.Utc).AddTicks(8677),
                             Email = "admin@admin.com",
+                            Language = 0,
                             Name = "Admin User",
-                            Password = "$2a$11$tgFOeED7236WFDYrmmcU3e5.IASq7vpgCw7thyUTvNA8vY4LuGqyK",
-                            PasswordUpdated = new DateTime(2024, 5, 29, 12, 52, 50, 666, DateTimeKind.Utc).AddTicks(5851),
+                            Password = "$2a$11$MFnZ6KSebcmC6wIv7old2.TueQlwppuWYKoYqWq9iunz1toGVJoeW",
+                            PasswordUpdated = new DateTime(2024, 5, 30, 19, 19, 50, 276, DateTimeKind.Utc).AddTicks(8689),
                             Phone = "1234567890",
                             RoleId = 1
                         },
                         new
                         {
                             Username = "user",
-                            BirthDate = new DateTime(2004, 5, 29, 12, 52, 50, 836, DateTimeKind.Utc).AddTicks(3145),
+                            BirthDate = new DateTime(2004, 5, 30, 19, 19, 50, 406, DateTimeKind.Utc).AddTicks(1829),
                             Email = "user@gmail.com",
+                            Language = 0,
                             Name = "User",
-                            Password = "$2a$11$buPmMtrjbKekdQ4.hJCmr.KCA0b3BpgFb5pRJwLsSDws95gKbJVai",
-                            PasswordUpdated = new DateTime(2024, 5, 29, 12, 52, 50, 836, DateTimeKind.Utc).AddTicks(3156),
+                            Password = "$2a$11$LygOnI0ZDvz6ZwewOGSHfOp.TekUaFwbhsgp52MdOGVvXETBZK5my",
+                            PasswordUpdated = new DateTime(2024, 5, 30, 19, 19, 50, 406, DateTimeKind.Utc).AddTicks(1838),
                             Phone = "0987654321",
                             RoleId = 2
                         },
                         new
                         {
                             Username = "user2",
-                            BirthDate = new DateTime(2004, 5, 29, 12, 52, 51, 4, DateTimeKind.Utc).AddTicks(9654),
+                            BirthDate = new DateTime(2004, 5, 30, 19, 19, 50, 535, DateTimeKind.Utc).AddTicks(2538),
                             Email = "user2@gmail.com",
+                            Language = 0,
                             Name = "User2",
-                            Password = "$2a$11$Fjfz2BgMwQG3kF5xRENW5u7xVSa4hYp2C61P0jUbxMtAIabL1tp5i",
-                            PasswordUpdated = new DateTime(2024, 5, 29, 12, 52, 51, 4, DateTimeKind.Utc).AddTicks(9671),
+                            Password = "$2a$11$OQYkr8AAUyJ4Nlj9gQKyJeVEtOjBXmH/Jb9IhgnyqyNlRRfnksFkG",
+                            PasswordUpdated = new DateTime(2024, 5, 30, 19, 19, 50, 535, DateTimeKind.Utc).AddTicks(2548),
                             Phone = "0987654321",
                             RoleId = 2
                         });
@@ -368,15 +374,11 @@ namespace PartyWebAppServer.Migrations
                 {
                     b.HasOne("PartyWebAppServer.Database.Models.Event", "Event")
                         .WithMany("Transactions")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EventId");
 
                     b.HasOne("PartyWebAppServer.Database.Models.Location", "Location")
                         .WithMany("Transactions")
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LocationId");
 
                     b.HasOne("PartyWebAppServer.Database.Models.Wallet", "Wallet")
                         .WithMany("Transactions")

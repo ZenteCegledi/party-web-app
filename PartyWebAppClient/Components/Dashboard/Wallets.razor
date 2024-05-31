@@ -4,9 +4,24 @@
 @using PartyWebAppCommon.DTOs
 @using PartyWebAppCommon.Enums
 
-<AuthorizeView>	
-	<Modal>
-	<HeaderTemplate>
+<AuthorizeView>
+	<Modal @ref="PrimaryModal">
+		<HeaderTemplate>
+			<div class="d-flex align-items-center gap-2">
+				<img alt="@chosenWallet.Currency" class="rounded-circle" height="30"
+					src="@currencyMap[chosenWallet.Currency].image" style="object-fit: cover" width="30" />
+				<h4 class="font-monospace m-0">Setting Primary Wallet</h4>
+			</div>
+		</HeaderTemplate>
+		<FooterTemplate>
+			<FluentButton IconStart="@(new Icons.Regular.Size20.Star())" @onclick="SetPrimary"
+				Loading="@modalSubmitting">
+				Set</FluentButton>
+		</FooterTemplate>
+	</Modal>
+
+	<Modal @ref="DepositModal">
+		<HeaderTemplate>
 			<div class="d-flex align-items-center gap-2">
 				<img alt="@chosenWallet.Currency" class="rounded-circle" height="30"
 					src="@currencyMap[chosenWallet.Currency].image" style="object-fit: cover" width="30" />
@@ -120,7 +135,7 @@
 			<div>
 				<FluentButton IconStart="@(new Icons.Regular.Size20.Wallet())" OnClick=@(() =>
 					{
-						if (wallets.Count == 4) ToastService.ShowError(@Localize["YouAlreadyHaveAllWallets"]);
+						if (wallets.Count == 4) ToastService?.ShowError(@Localize["YouAlreadyHaveAllWallets"]);
 						else ShowModal(CreateWalletModal);
 					})>
 					@Localize["AddWallet"]
@@ -145,13 +160,32 @@
 					</div>
 				</div>
 
-				<div>
-					<h1 class="mb-0 font-monospace">@chosenWallet.Amount</h1>
-					<h3 class="text-black-50 fw-lighter">@currencyMap[chosenWallet.Currency].symbol - @chosenWallet.Currency
-					</h3>
+				<div class="d-flex w-100 justify-content-between align-items-end">
+					<div>
+						<h1 class="mb-0 font-monospace">@chosenWallet.Amount</h1>
+						<h3 class="text-black-50 fw-lighter">@currencyMap[chosenWallet.Currency].symbol -
+							@chosenWallet.Currency</h3>
+					</div>
+					<div>
+						@if (chosenWallet.IsPrimary)
+						{
+							<div class="m-2 d-flex gap-2">
+								<FluentIcon Value="@(new Icons.Regular.Size20.StarCheckmark())" />
+								<span>Primary Wallet</span>
+							</div>
+						}
+						else
+						{
+							<FluentButton IconStart="@(new Icons.Regular.Size20.StarAdd())"
+								@onclick="() => ShowModal(PrimaryModal)">
+								Make Default
+							</FluentButton>
+						}
+					</div>
 				</div>
-
 			</div>
 		</FluentCard>
 	}
+
+	<Transactions chosenWallet="chosenWallet"/>
 </AuthorizeView>

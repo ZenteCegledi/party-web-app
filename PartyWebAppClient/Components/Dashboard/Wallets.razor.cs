@@ -13,6 +13,8 @@ public partial class Wallets : ComponentBase
 {
     private bool modalSubmitting = false;
 
+    private Modal PrimaryModal;
+
     private Modal DepositModal;
     private decimal depositAmount;
 
@@ -121,6 +123,39 @@ public partial class Wallets : ComponentBase
         StateHasChanged();
 
         await HideModal(WithdrawModal);
+    }
+
+    private async Task SetPrimary()
+    {
+        modalSubmitting = true;
+
+        var (wallet, error) = await walletService.SetPrimaryWallet(new SetPrimaryWalletRequest
+        {
+            Username = chosenWallet.Username,
+            Currency = chosenWallet.Currency
+        });
+        if (error is not null)
+        {
+            ToastService?.ShowError(error.Message);
+            return;
+        }
+        else if (wallet.IsPrimary)
+        {
+            wallets = wallets.Select(w =>
+            {
+                w.IsPrimary = w.Currency == wallet.Currency;
+                return w;
+            }).ToList();
+            wallets = wallets.OrderBy(w => w.IsPrimary ? 0 : 1).ToList();
+
+            if (wallet is not null) ToastService?.ShowSuccess("Primary wallet set successfully");
+        }
+
+        modalSubmitting = false;
+
+        StateHasChanged();
+
+        await HideModal(PrimaryModal);
     }
 
     private async Task CreateWallet()
