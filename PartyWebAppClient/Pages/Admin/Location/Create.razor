@@ -10,18 +10,17 @@
 <h1 class="text-center mt-5 font-monospace">Create Location</h1>
 <div class="d-flex justify-content-center">
     <FluentCard Style="width: max-content" AreaRestricted="false">
-        <EditForm Model="_location">
+        <EditForm Model="_location" OnValidSubmit="ValidateForm">
             <FluentTextField class="w-100" @bind-Value="_location.Name" Label="Name" Required Name="Name"></FluentTextField>
             <FluentTextField class="w-100" @bind-Value="_location.Address" Label="Address" Required Name="Address"></FluentTextField>
-            <FluentSelect class="w-100" name="Type" Id="type" TOption="LocationType" Label="Type" Required @bind-Value="_selectedType">
-                <FluentOption Value="">Please select a type...</FluentOption>
+            <FluentSelect class="w-100" name="Type" Id="type" @bind-Value="SelectedType" TOption="LocationType" Label="Type">
                 @foreach (var type in Enum.GetValues(typeof(LocationType)))
                 {
-                <FluentOption Value="@type.ToString()">@type</FluentOption>
+                    <FluentOption Value="@type.ToString()">@type</FluentOption>
                 }
             </FluentSelect>
             <div class="d-flex justify-content-center mt-3">
-                <FluentButton class="w-100" IconStart="@(new Icons.Filled.Size16.Add().WithColor("#fff"))" Type="ButtonType.Submit" Appearance="Appearance.Accent" OnClick="CreateLocation">
+                <FluentButton class="w-100" IconStart="@(new Icons.Filled.Size16.Add().WithColor("#fff"))" Type="ButtonType.Submit" Appearance="Appearance.Accent">
                     Create location
                 </FluentButton>
             </div>

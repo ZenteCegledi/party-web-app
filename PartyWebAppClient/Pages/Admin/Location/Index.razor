@@ -9,7 +9,7 @@
 
 <h1 class="text-center mt-5 font-monospace">Locations</h1>
 
-@if(isLoading)
+@if(_isLoading)
 {
     <FluentCard>
         <div class="w-100 mt-3 mb-3 d-flex justify-content-between">
@@ -47,7 +47,7 @@ else
             </div>
         </div>
 
-        <FluentDataGrid Items="@_locations?.OrderBy(l => l.Id)">
+        <FluentDataGrid Items="@_locations">
             <PropertyColumn Width="5%" Property="@(l => l.Id)" Sortable="true" />
             <PropertyColumn Width="35%" Property="@(l => l.Name)" Sortable="true" />
             <PropertyColumn Width="35%" Property="@(l => l.Address)" Sortable="true" />

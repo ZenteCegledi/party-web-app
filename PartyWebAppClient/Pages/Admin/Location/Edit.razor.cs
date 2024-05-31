@@ -28,12 +28,16 @@ public partial class Edit : ComponentBase
 
     private List<LocationDto> _allLocations;
     
-    private string _selectedType;
-    
+    private LocationType? _selectedType;
+
+    private string SelectedType
+    {
+        get => _selectedType?.ToString();
+        set => _selectedType = (LocationType) Enum.Parse(typeof(LocationType), value);
+    }
     bool isLoading = true;
     protected override async Task OnInitializedAsync()
-    {   
-        
+    {
         var (tempLocations, getAllLocationsError) = await LocationService.GetAllLocations();
         if (getAllLocationsError is not null)
         {
@@ -42,14 +46,15 @@ public partial class Edit : ComponentBase
         }
         _allLocations = tempLocations;
         
-        var (tempLocation, getLocationError) = await LocationService.GetLocation(Id);
-        if (getLocationError is not null)
+        LocationDto? tempLocation = _allLocations.Find(l => l.Id == Id);
+        if (tempLocation is null)
         {
-            ToastService?.ShowError(getLocationError.Message);
+            ToastService?.ShowError("Location not found");
+            isLoading = false;
             return;
         }
         _location = tempLocation;
-        _selectedType = Convert.ToString(_location.Type);
+        _selectedType = _location.Type;
         
         isLoading = false;
     }
@@ -59,13 +64,24 @@ public partial class Edit : ComponentBase
         return LocationService.GetLocation(Id);
     }
     
+    private void ValidateForm()
+    {
+        if(String.IsNullOrEmpty(_location.Name.Trim()) || String.IsNullOrEmpty(_location.Address.Trim()) || _selectedType == null)
+        {
+            ToastService?.ShowError("Please fill in all fields!");
+            return;
+        }
+
+        EditLocation();
+    }
+    
     private async Task EditLocation()
     {
         EditLocationRequest editRequest = new EditLocationRequest()
         {
             Name = _location.Name,
             Address = _location.Address,
-            Type = Enum.Parse<LocationType>(_selectedType)
+            Type = _selectedType
         };
         
         if(_allLocations.Any(l =>l.Id != Id && l.Name == editRequest.Name && l.Address.ToLower().Equals(editRequest.Address.ToLower())))

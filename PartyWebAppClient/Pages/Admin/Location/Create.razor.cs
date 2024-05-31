@@ -21,6 +21,14 @@ public partial class Create : ComponentBase
     
     private List<LocationDto> _allLocations;
 
+    private LocationType _selectedType;
+
+    private string SelectedType
+    {
+        get => _selectedType.ToString();
+        set => _selectedType = (LocationType) Enum.Parse(typeof(LocationType), value);
+    }
+
     protected override async Task OnInitializedAsync()
     {
         var (tempLocations, error) = await LocationService.GetAllLocations();
@@ -31,20 +39,25 @@ public partial class Create : ComponentBase
         }
         _allLocations = tempLocations;
     }
-    
-    private string? _selectedType;
-    private async Task CreateLocation()
+
+    private void ValidateForm()
     {
         if(String.IsNullOrEmpty(_location.Name.Trim()) || String.IsNullOrEmpty(_location.Address.Trim()) || _selectedType == null)
         {
             ToastService?.ShowError("Please fill in all fields!");
             return;
         }
+
+        CreateLocation();
+    }
+    
+    private async Task CreateLocation()
+    {
         CreateLocationRequest createRequest = new CreateLocationRequest()
         {
             Name = _location.Name.Trim(),
             Address = _location.Address.Trim(),
-            Type = Enum.Parse<LocationType>(_selectedType)
+            Type = _selectedType
         };
         
         if(_allLocations.Any(l => l.Name == createRequest.Name && l.Address.ToLower().Equals(createRequest.Address.ToLower())))

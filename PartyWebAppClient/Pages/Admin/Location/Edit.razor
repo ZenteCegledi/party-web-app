@@ -1,4 +1,6 @@
 ﻿@page "/admin/locations/edit/{id:int}"
+@using System.Collections.Specialized
+@using Newtonsoft.Json.Converters
 @using PartyWebAppClient.Layout.AdminLayout
 @using PartyWebAppCommon.Enums
 @using ButtonType = Microsoft.FluentUI.AspNetCore.Components.ButtonType
@@ -28,11 +30,11 @@ else
     {
         <div class="d-flex justify-content-center">
             <FluentCard Style="width: max-content" AreaRestricted="false">
-                <EditForm Model="_location" OnValidSubmit="EditLocation">
+                <EditForm Model="_location" OnValidSubmit="ValidateForm">
                     <FluentNumberField class="w-100" TValue="int" Value="_location.Id" Label="Id" ReadOnly="true" Required Name="Id"></FluentNumberField>
                     <FluentTextField class="w-100" @bind-Value="_location.Name" Label="Name" Required Name="Name"></FluentTextField>
                     <FluentTextField class="w-100" @bind-Value="_location.Address" Label="Address" Required Name="Address"></FluentTextField>
-                    <FluentSelect class="w-100" name="Type" Id="type" @bind-Value="_selectedType" TOption="LocationType" Label="Type">
+                    <FluentSelect class="w-100" name="Type" @bind-Value="SelectedType" Id="type" TOption="LocationType" Label="Type">
                         @foreach (var type in Enum.GetValues(typeof(LocationType)))
                         {
                             <FluentOption Value="@type.ToString()">@type</FluentOption>
@@ -54,8 +56,8 @@ else
     }
     else
     {
-        <div class="position-fixed top-50 start-50 translate-middle">
-            <h1>Location not found</h1>
+        <div class="position-fixed top-50 start-50 translate-middle font-monospace">
+            <h1 class="text-danger">Location not found</h1>
         </div>
     }
 }
