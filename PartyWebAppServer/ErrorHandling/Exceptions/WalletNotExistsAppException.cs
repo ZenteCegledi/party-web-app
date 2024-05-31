@@ -9,13 +9,12 @@ public class WalletNotExistsAppException : AppException
     public override string Message { get; }
     public override HttpStatusCode HttpStatusCode { get; }
 
-    public WalletNotExistsAppException(string username, CurrencyType currency)
+    public WalletNotExistsAppException(string username)
     {
-        Message = $"Wallet for user {username} with currency {currency} does not exist.";
+        Message = $"Wallet for user {username} does not have the requested wallet.";
         ErrorObject = new WalletNotFoundModel
         {
             Username = username,
-            Currency = currency
         };
         HttpStatusCode = HttpStatusCode.BadRequest;
     }

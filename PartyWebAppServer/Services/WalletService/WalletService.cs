@@ -24,17 +24,9 @@ public class WalletService(AppDbContext context, IMapper mapper) : IWalletServic
         if (user == null) throw new UserNotFoundException("No user found with that username: " + username);
 
         var wallet = context.Wallets.FirstOrDefault(w => w.Username == username && w.Currency == currency);
-        if (wallet == null) throw new WalletNotExistsAppException();
+        if (wallet == null) throw new WalletNotExistsAppException(username);
 
         return mapper.Map<WalletDto>(wallet);
-    }
-
-    public async Task<WalletDto> GetWalletById(int id)
-    {
-        var wallet = context.Wallets.FirstOrDefault(w => w.Id == id);
-        if (wallet == null) throw new WalletNotExistsAppException($"Wallet with id: '{id}' does not exist.");
-
-        return mapper.Map<WalletDto>(wallet);    
     }
     
     public async Task<WalletDto> CreateWallet(CreateWalletRequest _req)
@@ -61,7 +53,7 @@ public class WalletService(AppDbContext context, IMapper mapper) : IWalletServic
         if (user == null) throw new UserNotFoundException("No user found with that username: " + username);
 
         var wallet = context.Wallets.FirstOrDefault(w => w.Username == username && w.Currency == currency);
-        if (wallet == null) throw new WalletNotExistsAppException();
+        if (wallet == null) throw new WalletNotExistsAppException(username);
 
         context.Wallets.Remove(wallet);
         context.SaveChanges();
@@ -74,7 +66,7 @@ public class WalletService(AppDbContext context, IMapper mapper) : IWalletServic
         if (user == null) throw new UserNotFoundException("No user found with that username: " + _req.Username);
 
         var walletEntity = context.Wallets.FirstOrDefault(w => w.Username == _req.Username && w.Currency == _req.Currency);
-        if (walletEntity == null) throw new WalletNotExistsAppException();
+        if (walletEntity == null) throw new WalletNotExistsAppException(_req.Username);
 
         walletEntity.Amount += _req.Amount;
         
@@ -99,7 +91,7 @@ public class WalletService(AppDbContext context, IMapper mapper) : IWalletServic
         if (user == null) throw new UserNotFoundException("No user found with that username: " + _req.Username);
 
         var walletEntity = context.Wallets.FirstOrDefault(w => w.Username == _req.Username && w.Currency == _req.Currency);
-        if (walletEntity == null) throw new WalletNotExistsAppException();
+        if (walletEntity == null) throw new WalletNotExistsAppException(_req.Username);
 
         if (walletEntity.Amount < _req.Amount) throw new NotEnoughMoneyInWalletException(_req.Username, _req.Currency);
 
@@ -114,7 +106,7 @@ public class WalletService(AppDbContext context, IMapper mapper) : IWalletServic
         if (user == null) throw new UserNotFoundException("No user found with that username: " + _req.Username);
 
         var walletEntity = context.Wallets.FirstOrDefault(w => w.Username == _req.Username && w.Currency == _req.Currency);
-        if (walletEntity == null) throw new WalletNotExistsAppException();
+        if (walletEntity == null) throw new WalletNotExistsAppException(_req.Username);
 
         var primaryWallet = context.Wallets.FirstOrDefault(w => w.Username == _req.Username && w.IsPrimary);
         if (primaryWallet != null) primaryWallet.IsPrimary = false;

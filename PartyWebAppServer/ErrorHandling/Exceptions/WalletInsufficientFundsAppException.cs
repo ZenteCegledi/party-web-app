@@ -9,12 +9,12 @@ public class WalletInsufficientFundsAppException : AppException
     public override string Message { get; }
     public override HttpStatusCode HttpStatusCode { get; }
 
-    public WalletInsufficientFundsAppException(string username, int amount, CurrencyType currency)
+    public WalletInsufficientFundsAppException(int walletId, int amount, CurrencyType currency)
     {
-        Message = $"User {username} has insufficient funds to withdraw {amount} {currency}.";
+        Message = $"Wallet {walletId} has insufficient funds to withdraw {amount} {currency}.";
         ErrorObject = new WalletInsufficientFundsModel
         {
-            Username = username,
+            WalletId = walletId,
             Amount = amount,
             Currency = currency
         };

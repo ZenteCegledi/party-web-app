@@ -70,7 +70,7 @@ public class TransactionService(AppDbContext _dbContext, IMapper _mapper) : ITra
             case TransactionType.Food:
                 if (location == null) throw new LocationIdNotFoundAppException(transactionRequest.LocationId);
                 if (location.Type == LocationType.ATM) throw new LocationShouldNotBeAtmAppException(transactionRequest.TransactionType);
-                if (wallet == null) throw new WalletNotExistsAppException($"Wallet with id: {transactionRequest.WalletId} not found.");
+                if (wallet == null) throw new WalletNotExistsAppException(wallet.Username);
 
                 if (wallet.Amount < transactionRequest.Amount) 
                     throw new WalletInsufficientFundsAppException(transactionRequest.WalletId, transactionRequest.Amount, wallet.Currency);
