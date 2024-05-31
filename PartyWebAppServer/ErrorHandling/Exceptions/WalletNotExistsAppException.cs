@@ -1,16 +1,22 @@
-﻿namespace PartyWebAppServer.ErrorHandling.Exceptions;
+﻿using System.Net;
+using PartyWebAppCommon.Enums;
+using PartyWebAppServer.ErrorHandling.ErrorModels;
 
-public class WalletNotExistsAppException : Exception
+namespace PartyWebAppServer.ErrorHandling.Exceptions;
+
+public class WalletNotExistsAppException : AppException
 {
-    public WalletNotExistsAppException() : base("Wallet not found")
-    {
-    }
+    public override string Message { get; }
+    public override HttpStatusCode HttpStatusCode { get; }
 
-    public WalletNotExistsAppException(string message) : base(message)
+    public WalletNotExistsAppException(string username, CurrencyType currency)
     {
-    }
-
-    public WalletNotExistsAppException(string message, Exception innerException) : base(message, innerException)
-    {
+        Message = $"Wallet for user {username} with currency {currency} does not exist.";
+        ErrorObject = new WalletNotFoundModel
+        {
+            Username = username,
+            Currency = currency
+        };
+        HttpStatusCode = HttpStatusCode.BadRequest;
     }
 }
