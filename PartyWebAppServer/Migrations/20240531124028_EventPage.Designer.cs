@@ -12,13 +12,8 @@ using PartyWebAppServer.Database;
 namespace PartyWebAppServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-<<<<<<<< HEAD:PartyWebAppServer/Migrations/20240529175205_ReInit.Designer.cs
-    [Migration("20240529175205_ReInit")]
-    partial class ReInit
-========
-    [Migration("20240530075220_reInitAgain")]
-    partial class reInitAgain
->>>>>>>> 938824c (sync):PartyWebAppServer/Migrations/20240530075220_reInitAgain.Designer.cs
+    [Migration("20240531124028_EventPage")]
+    partial class EventPage
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +32,9 @@ namespace PartyWebAppServer.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -71,6 +69,7 @@ namespace PartyWebAppServer.Migrations
                         new
                         {
                             Id = 1,
+                            Currency = 0,
                             Description = "This is the description of Event 1. It is a very cool event in the club.",
                             EndDateTime = new DateTime(2024, 6, 1, 4, 0, 0, 0, DateTimeKind.Utc),
                             LocationId = 1,
@@ -82,6 +81,7 @@ namespace PartyWebAppServer.Migrations
                         new
                         {
                             Id = 2,
+                            Currency = 0,
                             Description = "This is the description of Event 2. It is a very cool event in the pub.",
                             EndDateTime = new DateTime(2024, 6, 2, 4, 0, 0, 0, DateTimeKind.Utc),
                             LocationId = 2,
@@ -189,7 +189,7 @@ namespace PartyWebAppServer.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Count")
+                    b.Property<int>("Amount")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Date")
@@ -198,10 +198,10 @@ namespace PartyWebAppServer.Migrations
                     b.Property<int?>("EventId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("LocationId")
+                    b.Property<int>("ItemCount")
                         .HasColumnType("integer");
 
-                    b.Property<int>("SpentCurrency")
+                    b.Property<int?>("LocationId")
                         .HasColumnType("integer");
 
                     b.Property<int>("TransactionType")
@@ -233,6 +233,9 @@ namespace PartyWebAppServer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("Language")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -259,57 +262,36 @@ namespace PartyWebAppServer.Migrations
                         new
                         {
                             Username = "admin",
-<<<<<<<< HEAD:PartyWebAppServer/Migrations/20240529175205_ReInit.Designer.cs
-                            BirthDate = new DateTime(1994, 5, 29, 17, 52, 4, 883, DateTimeKind.Utc).AddTicks(2557),
+                            BirthDate = new DateTime(1994, 5, 31, 12, 40, 27, 539, DateTimeKind.Utc).AddTicks(4724),
                             Email = "admin@admin.com",
+                            Language = 0,
                             Name = "Admin User",
-                            Password = "$2a$11$YRSVX1UIiy/ck8XTJ8IaA.CeU9VCbkgKxNbF1OeO0mT5GpAsbu0yK",
-                            PasswordUpdated = new DateTime(2024, 5, 29, 17, 52, 4, 883, DateTimeKind.Utc).AddTicks(2570),
-========
-                            BirthDate = new DateTime(1994, 5, 30, 7, 52, 19, 69, DateTimeKind.Utc).AddTicks(2111),
-                            Email = "admin@admin.com",
-                            Name = "Admin User",
-                            Password = "$2a$11$uY.LsF.rE66dxWMAcSMyZ.Phy4SYqqPbccfoVJzmsmHdK4bRGgKz2",
-                            PasswordUpdated = new DateTime(2024, 5, 30, 7, 52, 19, 69, DateTimeKind.Utc).AddTicks(2128),
->>>>>>>> 938824c (sync):PartyWebAppServer/Migrations/20240530075220_reInitAgain.Designer.cs
+                            Password = "$2a$11$xUE2afObSspitOiLm4epfOd/78VSIZwQVUNxo1FG871FUgjLsICe.",
+                            PasswordUpdated = new DateTime(2024, 5, 31, 12, 40, 27, 539, DateTimeKind.Utc).AddTicks(4742),
                             Phone = "1234567890",
                             RoleId = 1
                         },
                         new
                         {
                             Username = "user",
-<<<<<<<< HEAD:PartyWebAppServer/Migrations/20240529175205_ReInit.Designer.cs
-                            BirthDate = new DateTime(2004, 5, 29, 17, 52, 5, 9, DateTimeKind.Utc).AddTicks(2471),
+                            BirthDate = new DateTime(2004, 5, 31, 12, 40, 27, 754, DateTimeKind.Utc).AddTicks(6392),
                             Email = "user@gmail.com",
+                            Language = 0,
                             Name = "User",
-                            Password = "$2a$11$aZWkkH0IyPboaXIiImyDaufJOyHc5dlsXlcKKTlbjN0XyqBVG8SkW",
-                            PasswordUpdated = new DateTime(2024, 5, 29, 17, 52, 5, 9, DateTimeKind.Utc).AddTicks(2480),
-========
-                            BirthDate = new DateTime(2004, 5, 30, 7, 52, 19, 340, DateTimeKind.Utc).AddTicks(1122),
-                            Email = "user@gmail.com",
-                            Name = "User",
-                            Password = "$2a$11$HA3YfKdK1.CUa4nVknkOye6wi0s5cFJ0pWbmUz2I./wf84P.H6fcy",
-                            PasswordUpdated = new DateTime(2024, 5, 30, 7, 52, 19, 340, DateTimeKind.Utc).AddTicks(1147),
->>>>>>>> 938824c (sync):PartyWebAppServer/Migrations/20240530075220_reInitAgain.Designer.cs
+                            Password = "$2a$11$I3uYENs8HG9oavnqP9NwoeDiBvdDhaL4TwLZlhjV/h7xqAaDpNiu6",
+                            PasswordUpdated = new DateTime(2024, 5, 31, 12, 40, 27, 754, DateTimeKind.Utc).AddTicks(6433),
                             Phone = "0987654321",
                             RoleId = 2
                         },
                         new
                         {
                             Username = "user2",
-<<<<<<<< HEAD:PartyWebAppServer/Migrations/20240529175205_ReInit.Designer.cs
-                            BirthDate = new DateTime(2004, 5, 29, 17, 52, 5, 133, DateTimeKind.Utc).AddTicks(5020),
+                            BirthDate = new DateTime(2004, 5, 31, 12, 40, 27, 963, DateTimeKind.Utc).AddTicks(318),
                             Email = "user2@gmail.com",
+                            Language = 0,
                             Name = "User2",
-                            Password = "$2a$11$e9.F.PrfoBz3oJLUEUcl/OtMd9N61IgDhJ.HzDUhX8C8WnBRtBtMy",
-                            PasswordUpdated = new DateTime(2024, 5, 29, 17, 52, 5, 133, DateTimeKind.Utc).AddTicks(5029),
-========
-                            BirthDate = new DateTime(2004, 5, 30, 7, 52, 19, 599, DateTimeKind.Utc).AddTicks(236),
-                            Email = "user2@gmail.com",
-                            Name = "User2",
-                            Password = "$2a$11$a06Tr5won9AUmnit9ogXMeivNOlKcpuiCGxeaG9DJLB3gvJVFGoAW",
-                            PasswordUpdated = new DateTime(2024, 5, 30, 7, 52, 19, 599, DateTimeKind.Utc).AddTicks(247),
->>>>>>>> 938824c (sync):PartyWebAppServer/Migrations/20240530075220_reInitAgain.Designer.cs
+                            Password = "$2a$11$OnkCvt.V08QO/udHg583ku5uxKoPVPSLVr01JfUutL4g/LDtN3YSi",
+                            PasswordUpdated = new DateTime(2024, 5, 31, 12, 40, 27, 963, DateTimeKind.Utc).AddTicks(335),
                             Phone = "0987654321",
                             RoleId = 2
                         });
