@@ -1,6 +1,6 @@
 # Party Web App
 
-Repohár and party token service application, which we prepared in dual training between *05/13/2024* and *05/31/2024* with [**Gamax KFT.**](https://gamax.hu/) and Hyperplane.
+Repohár and party token service application, which we prepared in dual training between *05/13/2024* and *05/31/2024* with [**Gamax KFT.**](https://gamax.hu/) and [Hyperplane](https://hyperplane.hu).
 ## Creators
 - [@EastboundLil](https://github.com/EastboundLil) *(from Hyperplane)* ~ Project manager, mentor
 - [@vidosits](https://github.com/vidosits) *(from Hyperplane)* ~ Knowledge foundation, Docker, Git/GitHub
