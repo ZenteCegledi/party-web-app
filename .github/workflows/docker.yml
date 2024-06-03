@@ -30,4 +30,4 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ghcr.io/ZenteCegledi/party-web-app:latest
+            ghcr.io/zentecegledi/party-web-app:latest
