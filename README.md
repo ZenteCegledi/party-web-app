@@ -4,7 +4,7 @@ Repohár and party token service application, which we prepared in dual training
 ## Creators
 - [@EastboundLil](https://github.com/EastboundLil) *(from Hyperplane)* ~ Project manager, mentor
 - [@vidosits](https://github.com/vidosits) *(from Hyperplane)* ~ Knowledge foundation, Docker, Git/GitHub
-- [@varnaidvid](https://github.com/varnaidvid) ~ Frontend, UI, authentication, wallet table and
+- [@varnaidvid](https://github.com/varnaidvid) ~ Frontend, UI, authentication, wallet table
 - [@vebesz](https://github.com/vebesz) ~ Frontend, UI, authentication, wallet table and service
 - [@mbalint121](https://github.com/mbalint121) ~ Locations table, service and page
 - [@szhdani](https://github.com/szhdani) ~ Locations table, service and page
