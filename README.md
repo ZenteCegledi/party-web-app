@@ -12,7 +12,7 @@ Repohár and party token service application, which we prepared in dual training
 - [@ZenteCegledi](https://github.com/ZenteCegledi) ~ Users table and service, localization backend and frontend
 - [@balyy](https://github.com/balyy) ~ Events table, service and page
 - [@SchindlerRobert](https://github.com/SchindlerRobert) ~ Events table and service
-- [@eLArcangeles](https://github.com/eLArcangeles) ~ Transaction service and history
+- [@Archangelorum](https://github.com/Archangelorum) ~ Transaction service and history
 - [@Gerencserihuba](https://github.com/Gerencserihuba) ~ Transaction service and history
 - [@Akos05](https://github.com/Akos05)
 
